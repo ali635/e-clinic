@@ -2,9 +2,15 @@
 
 namespace Modules\Patient\Filament\Resources\Patients\Schemas;
 
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Modules\Patient\Models\Disease;
+
+use function Laravel\Prompts\select;
 
 class PatientForm
 {
@@ -34,10 +40,12 @@ class PatientForm
                     ->maxLength(255)
                     ->required(),
 
-                TextInput::make('gender')
+                Select::make('gender')
                     ->label(__('gender'))
-                    ->maxLength(255)
-                    ->required(),
+                    ->options([
+                        'male' => 'male',
+                        'female' => 'female'
+                    ])->required(),
 
                 TextInput::make('phone')
                     ->label(__('phone'))
@@ -48,6 +56,29 @@ class PatientForm
                     ->label(__('date_of_birth'))
                     ->required(),
 
+
+                Toggle::make('status')
+                    ->label(__('status'))
+                    ->required(),
+
+                Select::make('disease_id')
+                    ->label(__('diseases'))
+                    ->options(function () {
+                        return Disease::with('translations')                            
+                            ->get()
+                            ->pluck('name', 'id')
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+                    ->afterStateHydrated(function ($component, $state, $record) {
+                        if ($record) {
+                            $diseaseIds = $record->diseases->pluck('disease_id')->toArray();
+                            $component->state($diseaseIds);
+                        }
+                    })
+                    ->searchable()
+                    ->multiple()
+                    ->required(),
 
             ]);
     }

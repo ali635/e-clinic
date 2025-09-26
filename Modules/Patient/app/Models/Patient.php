@@ -20,8 +20,15 @@ class Patient extends Model
         'phone',
         'gender',
         'date_of_birth',
-        'address'
+        'address',
+        'status'
     ];
+
+
+    public function diseases()
+    {
+        return $this->hasMany(PatientDisease::class, 'patient_id');
+    }
 
     // protected static function newFactory(): PatientFactory
     // {
