@@ -18,10 +18,4 @@ class Disease extends Model
     {
         return $this->belongsToMany(Patient::class, 'patient_diseases');
     }
-
-    // Optional: Custom accessor for name
-    public function getNameAttribute()
-    {
-        return $this->getTranslation('name', app()->getLocale());
-    }
 }
