@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('price')->nullable();
-            $table->dateTime('start')->nullable();
-            $table->dateTime('end')->nullable();
+            $table->time('start')->nullable();
+            $table->time('end')->nullable();
             $table->integer('patient_time_minute')->nullable();
             $table->boolean('status')->nullable();
             $table->tinyInteger('order')->nullable();

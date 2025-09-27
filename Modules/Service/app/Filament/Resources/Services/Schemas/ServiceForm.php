@@ -6,6 +6,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
@@ -25,21 +26,22 @@ class ServiceForm
                     ->numeric()
                     ->required(),
 
-                TextInput::make('patient_time_minute')
+               
+
+                TimePicker::make('start')
+                    ->label(__('start'))
+                    ->required(),
+
+                TimePicker::make('end')
+                    ->label(__('end'))
+                    ->required(),
+                     TextInput::make('patient_time_minute')
                     ->label(__('patient time in minute'))
                     ->numeric()
                     ->required(),
 
-                DateTimePicker::make('start')
-                    ->label(__('start'))
-                    ->required(),
-
-                DateTimePicker::make('end')
-                    ->label(__('end'))
-                    ->required(),
-
                 Textarea::make('short_description')
-                    ->label(__(' short_description'))
+                    ->label(__('short description'))
                     ->required(),
 
                 RichEditor::make('description')

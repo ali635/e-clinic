@@ -14,7 +14,7 @@ use Modules\Service\Filament\Resources\Services\Pages\ViewService;
 use Modules\Service\Filament\Resources\Services\Schemas\ServiceForm;
 use Modules\Service\Filament\Resources\Services\Schemas\ServiceInfolist;
 use Modules\Service\Filament\Resources\Services\Tables\ServicesTable;
-use Service\Service;
+use Modules\Service\Models\Service;
 
 class ServiceResource extends Resource
 {
