@@ -21,7 +21,9 @@ class Service extends Model
         'end',
         'patient_time_minute',
         'status',
-        'order'
+        'order',
+        'image',
+        'is_home'
     ];
 
     // protected static function newFactory(): ServiceFactory

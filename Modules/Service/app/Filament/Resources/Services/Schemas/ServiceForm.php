@@ -2,7 +2,9 @@
 
 namespace Modules\Service\Filament\Resources\Services\Schemas;
 
+use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -26,8 +28,6 @@ class ServiceForm
                     ->numeric()
                     ->required(),
 
-               
-
                 TimePicker::make('start')
                     ->label(__('start'))
                     ->required(),
@@ -35,7 +35,7 @@ class ServiceForm
                 TimePicker::make('end')
                     ->label(__('end'))
                     ->required(),
-                     TextInput::make('patient_time_minute')
+                TextInput::make('patient_time_minute')
                     ->label(__('patient time in minute'))
                     ->numeric()
                     ->required(),
@@ -48,8 +48,20 @@ class ServiceForm
                     ->label(__(' description'))
                     ->required(),
 
+
+                FileUpload::make('image')
+                    ->label(__(' image'))
+                    ->directory('service')
+                    ->required(),
+
+
+
                 Toggle::make('status')
                     ->label(__('status'))
+                    ->required(),
+
+                Toggle::make('is_home')
+                    ->label(__('is home'))
                     ->required(),
 
                 TextInput::make('order')
