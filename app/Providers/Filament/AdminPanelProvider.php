@@ -45,7 +45,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 ModulesPlugin::make(),
-                ])
+            ])
+            ->topNavigation(false)
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
