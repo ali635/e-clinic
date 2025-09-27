@@ -1,3 +1,4 @@
 {
-    "Patient": true
+    "Patient": true,
+    "Service": true
 }

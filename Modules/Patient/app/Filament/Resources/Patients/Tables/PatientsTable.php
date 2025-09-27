@@ -9,7 +9,9 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -20,7 +22,7 @@ class PatientsTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('Name'))
+                    ->label(__('name'))
                     ->searchable(),
 
                 TextColumn::make('email')
@@ -31,6 +33,8 @@ class PatientsTable
                     ->label(__('gender'))
                     ->searchable(),
 
+                ToggleColumn::make('status')
+                    ->label(__('status'))
                 
 
             ])
