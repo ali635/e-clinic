@@ -2,10 +2,13 @@
 
 namespace Modules\Booking\Filament\Resources\Visits\Schemas;
 
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Grid;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Modules\Patient\Models\Patient;
@@ -16,116 +19,205 @@ class VisitForm
 {
     public static function configure(Schema $schema): Schema
     {
-        return
-            $schema
-            ->components([
-                Grid::make()
-                    ->gridContainer()
-                    ->columns([
-                        '@md' => 1,
-                        '@xl' => 1,
-                    ])->schema([
-                        Section::make()
-                            ->columns(3)
-                            ->heading(__('General Information'))
-                            ->schema([
-                                Select::make('patient_id')
-                                    ->label(__('patients'))
-                                    ->relationship('patient', 'name')
-                                    ->searchable()
-                                    ->required(),
+        return $schema->components([
+            // ===== General info (patient, service, price, total) =====
+            Section::make(__('General Information'))
+                ->columns(4)
+                ->schema([
+                    Select::make('patient_id')
+                        ->label(__('patients'))
+                        ->relationship('patient', 'name')
+                        ->searchable()
+                        ->required()
+                        ->columnSpan(2),
 
-                                Select::make('service_id')
-                                    ->label(__('services'))
-                                    ->options(function () {
-                                        return Service::with('translations')
-                                            ->get()
-                                            ->pluck('name', 'id')
-                                            ->toArray();
-                                    })
-                                    ->reactive()
-                                    ->afterStateUpdated(function ($state, callable $set) {
-                                        if ($state) {
-                                            $service = Service::find($state);
-                                            $set('price', $service ? $service->price : 0);
-                                        } else {
-                                            $set('price', 0);
-                                        }
-                                    })
-                                    ->searchable()
-                                    ->required(),
+                    Select::make('service_id')
+                        ->label(__('services'))
+                        ->options(function () {
+                            return Service::with('translations')
+                                ->get()
+                                ->pluck('name', 'id')
+                                ->toArray();
+                        })
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, callable $set, $get) {
+                            // update service price when selecting service
+                            if ($state) {
+                                $service = Service::find($state);
+                                $set('price', $service ? $service->price : 0);
+                            } else {
+                                $set('price', 0);
+                            }
+                            // recalc total
+                            $set('total_price', self::calculateTotal($get));
+                        })
+                        ->searchable()
+                        ->required()
+                        ->columnSpan(1),
 
-                                TextInput::make('price')
-                                    ->label(__('Service price'))
-                                    ->suffixIcon('heroicon-m-currency-dollar')
-                                    ->disabled()
-                                    ->default(0)
-                                    ->numeric()
-                                    ->reactive()
-                                    ->dehydrated(true),
-                            ]),
+                    TextInput::make('price')
+                        ->label(__('Service price'))
+                        ->suffixIcon('heroicon-m-currency-dollar')
+                        ->disabled()
+                        ->default(0)
+                        ->numeric()
+                        ->reactive()
+                        ->dehydrated(true)
+                        ->helperText(__('This is the selected service base price'))
+                        ->columnSpan(1),
 
-                        // Second section: Related service
-                        Section::make()
-                            ->columns(1) // Stack the repeater in a single column to align with the image
-                            ->heading(__('Related service'))
-                            ->schema([
-                                Repeater::make('relatedService') // Renamed to plural to match relationship naming convention
-                                    ->relationship() // Assumes a relationship like 'relatedServices' in the Visit model
-                                    ->collapsible()
-                                    ->addActionLabel(__('Add related service'))
-                                    ->columns(3) // 3 columns for related_service_id, price_related_service, and qty
-                                    ->schema([
-                                        Select::make('related_service_id')
-                                            ->label(__('related services'))
-                                            ->options(function () {
-                                                return RelatedService::with('translations')
-                                                    ->get()
-                                                    ->pluck('name', 'id')
-                                                    ->toArray();
-                                            })
-                                            ->reactive()
-                                            ->afterStateUpdated(function ($state, callable $set, $get) {
-                                                if ($state) {
-                                                    $relatedService = RelatedService::find($state);
-                                                    $price = $relatedService ? $relatedService->price : 0;
-                                                    $qty = $get('qty') ?: 1; // Use current qty or default to 1
-                                                    $set('price_related_service', $price * $qty);
-                                                } else {
-                                                    $set('price_related_service', 0);
-                                                }
-                                            })
-                                            ->searchable()
-                                            ->required(),
+                    TextInput::make('total_price')
+                        ->label(__('Total price'))
+                        ->suffixIcon('heroicon-m-currency-dollar')
+                        ->disabled()
+                        ->default(0)
+                        ->numeric()
+                        ->reactive()
+                        ->dehydrated(true)
+                        ->helperText(__('Auto-calculated: service price + related services'))
+                        ->columnSpan(4),
+                ]),
 
-                                        TextInput::make('price_related_service')
-                                            ->label(__('Related Service price'))
-                                            ->suffixIcon('heroicon-m-currency-dollar')
-                                            ->disabled()
-                                            ->default(0)
-                                            ->numeric()
-                                            ->reactive()
-                                            ->dehydrated(true),
+            // ===== Related services repeater =====
+            Section::make(__('Related service'))
+                ->columns(1)
+                ->schema([
+                    Repeater::make('relatedService')
+                        ->relationship('relatedService')
+                        ->collapsible()
+                        ->addActionLabel(__('Add related service'))
+                        ->columns(3)
+                        ->reactive()
+                        // when the overall repeater (items add/remove) changes, recalc total
+                        ->afterStateUpdated(function ($state, callable $set, $get) {
+                            $set('total_price', self::calculateTotal($get));
+                        })
+                        ->schema([
+                            Select::make('related_service_id')
+                                ->label(__('related services'))
+                                ->options(function () {
+                                    return RelatedService::with('translations')
+                                        ->get()
+                                        ->pluck('name', 'id')
+                                        ->toArray();
+                                })
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $set, $get) {
+                                    // set related service price * current qty
+                                    $relatedService = $state ? RelatedService::find($state) : null;
+                                    $price = $relatedService ? (float) $relatedService->price : 0;
+                                    $qty = (int) ($get('qty') ?: 1);
+                                    $set('price_related_service', $price * $qty);
 
-                                        TextInput::make('qty')
-                                            ->label(__('qty'))
-                                            ->numeric()
-                                            ->default(1) // Default to 1 instead of 0 for multiplication
-                                            ->reactive()
-                                            ->afterStateUpdated(function ($state, callable $set, $get) {
-                                                if ($state) {
-                                                    $relatedService = RelatedService::find($get('related_service_id'));
-                                                    $price = $relatedService ? $relatedService->price : 0;
-                                                    $set('price_related_service', $price * $state);
-                                                } else {
-                                                    $set('price_related_service', 0);
-                                                }
-                                            })
-                                            ->required()
-                                            ->dehydrated(true),
-                                    ]),
-                            ]),
-                    ])
-            ]);
+                                    // recalc total (pass the parent $get)
+                                    $set('total_price', self::calculateTotal($get));
+                                })
+                                ->searchable()
+                                ->required(),
+
+                            TextInput::make('price_related_service')
+                                ->label(__('Related Service price'))
+                                ->suffixIcon('heroicon-m-currency-dollar')
+                                ->disabled()
+                                ->default(0)
+                                ->numeric()
+                                ->reactive()
+                                ->dehydrated(true),
+
+                            TextInput::make('qty')
+                                ->label(__('qty'))
+                                ->numeric()
+                                ->default(0)
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $set, $get) {
+                                    $relatedService = RelatedService::find($get('related_service_id'));
+                                    $price = $relatedService ? (float) $relatedService->price : 0;
+                                    $set('price_related_service', $price * ((int) ($state ?: 1)));
+
+                                    // recalc total (pass the parent $get)
+                                    $set('total_price', self::calculateTotal($get));
+                                })
+                                ->required(),
+                        ]),
+                ]),
+
+            // ===== Attachments & notes (clean, grouped) =====
+            Section::make(__('Attachments'))
+                ->columns(2)
+                ->schema([
+                    FileUpload::make('lab_tests')
+                        ->label(__('lab tests'))
+                        ->multiple()
+                        ->helperText(__('Drag & drop or browse to upload multiple lab tests')),
+
+                    FileUpload::make('x-rays')
+                        ->label(__('x-rays'))
+                        ->multiple()
+                        ->helperText(__('Drag & drop or browse to upload multiple x-rays')),
+                ]),
+
+            Section::make(__('Doctor & Treatment Notes'))
+                ->columns(2)
+                ->schema([
+                    RichEditor::make('doctor_description')
+                        ->label(__('Doctor Description'))
+                        ->required()
+                        ->helperText(__('Clinical notes and observations')),
+
+                    RichEditor::make('treatment')
+                        ->label(__('treatment Description'))
+                        ->required()
+                        ->helperText(__('Treatment plan and instructions')),
+                ]),
+
+            Section::make(__('Secretary & Patient'))
+                ->columns(2)
+                ->schema([
+                    RichEditor::make('secretary_description')
+                        ->label(__('secretary Description'))
+                        ->helperText(__('Administrative notes, reminders')),
+
+                    DateTimePicker::make('arrival_time')
+                        ->label(__('Arrival Time'))
+                        ->helperText(__('Expected / actual arrival time')),
+
+                    Toggle::make('is_arrival')
+                        ->label(__('is arrival ?')),
+
+                    RichEditor::make('note')
+                        ->label(__('Patient Description')),
+
+                    FileUpload::make('attachment')
+                        ->label(__('attachment'))
+                        ->helperText(__('Patient attachments')),
+                ]),
+        ]);
+    }
+
+    /**
+     * Calculate total price using the form $get callable.
+     *
+     * $get will be the Filament callable that returns form state by path, e.g. $get('price') or $get('relatedService').
+     *
+     * @param callable $get
+     * @return float
+     */
+    protected static function calculateTotal(callable $get): float
+    {
+        $servicePrice = (float) ($get('price') ?? 0);
+
+        // relatedService is expected to be an array of items:
+        $relatedItems = $get('relatedService') ?? [];
+        $relatedTotal = 0.0;
+
+        if (is_array($relatedItems)) {
+            foreach ($relatedItems as $item) {
+                // we prefer the computed per-item "price_related_service" (already qty * unitPrice)
+                // fall back to 'price' if that's how your item is named.
+                $relatedTotal += (float) ($item['price_related_service'] ?? $item['price'] ?? 0);
+            }
+        }
+
+        return $servicePrice + $relatedTotal;
     }
 }

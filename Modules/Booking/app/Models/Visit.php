@@ -29,6 +29,14 @@ class Visit extends Model
         'attachment'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'lab_tests' => 'array',
+            'x-rays' => 'array',
+
+        ];
+    }
     public function service()
     {
         return $this->belongsTo(Service::class);
@@ -41,6 +49,6 @@ class Visit extends Model
 
     public function patient()
     {
-        return $this->belongsTo(Patient::class)->where('status',1);
+        return $this->belongsTo(Patient::class)->where('status', 1);
     }
 }
