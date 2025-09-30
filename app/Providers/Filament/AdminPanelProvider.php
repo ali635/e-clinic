@@ -22,6 +22,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
 use Resma\FilamentAwinTheme\FilamentAwinTheme;
+use Z3d0X\FilamentFabricator\FilamentFabricatorPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -48,7 +49,8 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 ModulesPlugin::make(),
                 FilamentAwinTheme::make(),
-                FilamentGeneralSettingsPlugin::make()
+                FilamentGeneralSettingsPlugin::make(),
+                FilamentFabricatorPlugin::make(),
             ])
             ->topNavigation(false)
             ->middleware([
