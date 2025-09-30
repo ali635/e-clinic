@@ -2,5 +2,6 @@
     "Patient": true,
     "Service": true,
     "Booking": true,
-    "Blog": true
+    "Blog": true,
+    "Location": true
 }
