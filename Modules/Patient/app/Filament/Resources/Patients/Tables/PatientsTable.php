@@ -29,13 +29,17 @@ class PatientsTable
                     ->label(__('email'))
                     ->searchable(),
 
+                TextColumn::make('country.name')
+                    ->searchable(),
+                TextColumn::make('city.name')
+                    ->searchable(),
                 TextColumn::make('gender')
                     ->label(__('gender'))
                     ->searchable(),
 
                 ToggleColumn::make('status')
                     ->label(__('status'))
-                
+
 
             ])
             ->filters([

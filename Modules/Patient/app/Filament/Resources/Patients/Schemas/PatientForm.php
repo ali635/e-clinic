@@ -8,6 +8,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Modules\Location\Models\City;
+use Modules\Location\Models\Country;
 use Modules\Patient\Models\Disease;
 
 use function Laravel\Prompts\select;
@@ -26,6 +28,7 @@ class PatientForm
                 TextInput::make('email')
                     ->label(__('email'))
                     ->email()
+                    ->unique()
                     ->maxLength(255)
                     ->required(),
 
@@ -35,10 +38,7 @@ class PatientForm
                     ->maxLength(255)
                     ->required(),
 
-                TextInput::make('address')
-                    ->label(__('address'))
-                    ->maxLength(255)
-                    ->required(),
+
 
                 Select::make('gender')
                     ->label(__('gender'))
@@ -53,9 +53,29 @@ class PatientForm
                     ->required(),
 
                 DatePicker::make('date_of_birth')
-                    ->label(__('date_of_birth'))
+                    ->label(__('date of birth'))
                     ->required(),
+                Select::make('country_id')
+                    ->label(__('countries'))
+                    ->options(function () {
+                        return Country::with('translations')
+                            ->get()
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    }),
 
+                Select::make('city_id')
+                    ->label(__('cities'))
+                    ->options(function () {
+                        return City::with('translations')
+                            ->get()
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    }),
+                TextInput::make('address')
+                    ->label(__('address'))
+                    ->maxLength(255)
+                    ->required(),
 
                 Toggle::make('status')
                     ->label(__('status'))
@@ -64,9 +84,8 @@ class PatientForm
                 Select::make('disease_id')
                     ->label(__('diseases'))
                     ->options(function () {
-                        return Disease::with('translations')                            
+                        return Disease::with('translations')
                             ->get()
-                            ->pluck('name', 'id')
                             ->pluck('name', 'id')
                             ->toArray();
                     })

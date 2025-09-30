@@ -28,6 +28,8 @@ class EditPatient extends EditRecord
                     'address' => $data['address'],
                     'gender' => $data['gender'],
                     'phone' => $data['phone'],
+                    'country_id' => $data['country_id'],
+                    'city_id' => $data['city_id'],
                     'date_of_birth' => $data['date_of_birth'],
                     'status' => $data['status'],
                 ]);

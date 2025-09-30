@@ -4,6 +4,9 @@ namespace Modules\Patient\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Location\Models\City;
+use Modules\Location\Models\Country;
+
 // use Modules\Patient\Database\Factories\PatientFactory;
 
 class Patient extends Model
@@ -21,6 +24,8 @@ class Patient extends Model
         'gender',
         'date_of_birth',
         'address',
+        'country_id',
+        'city_id',
         'status'
     ];
 
@@ -30,6 +35,15 @@ class Patient extends Model
         return $this->hasMany(PatientDisease::class, 'patient_id');
     }
 
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
     // protected static function newFactory(): PatientFactory
     // {
     //     // return PatientFactory::new();
