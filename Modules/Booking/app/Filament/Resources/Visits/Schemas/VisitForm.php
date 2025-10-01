@@ -22,14 +22,15 @@ class VisitForm
         return $schema->components([
             // ===== General info (patient, service, price, total) =====
             Section::make(__('General Information'))
-                ->columns(4)
+                ->columns(3)
+                ->columnSpan(1)
                 ->schema([
                     Select::make('patient_id')
                         ->label(__('patients'))
                         ->relationship('patient', 'name')
                         ->searchable()
                         ->required()
-                        ->columnSpan(2),
+                        ->columnSpan(1),
 
                     Select::make('service_id')
                         ->label(__('services'))
@@ -78,9 +79,21 @@ class VisitForm
                         ->columnSpan(4),
                 ]),
 
+            Section::make(__('Arrival Information '))
+                ->columns(1)
+                ->columnSpan(1)
+                ->schema([
+                    DateTimePicker::make('arrival_time')
+                        ->label(__('Arrival Time'))
+                        ->helperText(__('Expected / actual arrival time')),
+
+                    Toggle::make('is_arrival')
+                        ->label(__('is arrival ?')),
+                ]),
             // ===== Related services repeater =====
             Section::make(__('Related service'))
                 ->columns(1)
+                ->columnSpan(2)
                 ->schema([
                     Repeater::make('relatedService')
                         ->relationship('relatedService')
@@ -144,6 +157,7 @@ class VisitForm
             // ===== Attachments & notes (clean, grouped) =====
             Section::make(__('Attachments'))
                 ->columns(2)
+                ->columnSpan(2)
                 ->schema([
                     FileUpload::make('lab_tests')
                         ->label(__('lab tests'))
@@ -158,6 +172,8 @@ class VisitForm
 
             Section::make(__('Doctor & Treatment Notes'))
                 ->columns(2)
+                ->columnSpan(2)
+
                 ->schema([
                     RichEditor::make('doctor_description')
                         ->label(__('Doctor Description'))
@@ -172,24 +188,23 @@ class VisitForm
 
             Section::make(__('Secretary & Patient'))
                 ->columns(2)
+                ->columnSpan(2)
+
                 ->schema([
                     RichEditor::make('secretary_description')
                         ->label(__('secretary Description'))
                         ->helperText(__('Administrative notes, reminders')),
 
-                    DateTimePicker::make('arrival_time')
-                        ->label(__('Arrival Time'))
-                        ->helperText(__('Expected / actual arrival time')),
 
-                    Toggle::make('is_arrival')
-                        ->label(__('is arrival ?')),
 
                     RichEditor::make('note')
                         ->label(__('Patient Description')),
 
                     FileUpload::make('attachment')
                         ->label(__('attachment'))
+                        ->columnSpanFull()
                         ->helperText(__('Patient attachments')),
+
                 ]),
         ]);
     }
