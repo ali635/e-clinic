@@ -3,5 +3,6 @@
     "Service": true,
     "Booking": true,
     "Blog": true,
-    "Location": true
+    "Location": true,
+    "Slider": true
 }
