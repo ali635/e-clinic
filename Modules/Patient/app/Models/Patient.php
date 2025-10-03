@@ -5,13 +5,17 @@ namespace Modules\Patient\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Location\Models\City;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Modules\Location\Models\Country;
+use Laravel\Passport\Contracts\OAuthenticatable;
+use Laravel\Passport\HasApiTokens;
 
 // use Modules\Patient\Database\Factories\PatientFactory;
 
-class Patient extends Model
+class Patient extends Authenticatable implements OAuthenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
