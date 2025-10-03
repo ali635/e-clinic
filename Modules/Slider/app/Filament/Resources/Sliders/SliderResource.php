@@ -12,7 +12,7 @@ use Modules\Slider\Filament\Resources\Sliders\Pages\EditSlider;
 use Modules\Slider\Filament\Resources\Sliders\Pages\ListSliders;
 use Modules\Slider\Filament\Resources\Sliders\Schemas\SliderForm;
 use Modules\Slider\Filament\Resources\Sliders\Tables\SlidersTable;
-use Slider\Slider;
+use Modules\Slider\Models\Slider;
 
 class SliderResource extends Resource
 {

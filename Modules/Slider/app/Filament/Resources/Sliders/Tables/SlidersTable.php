@@ -21,6 +21,10 @@ class SlidersTable
                     ->label(__('name'))
                     ->searchable(),
 
+                TextColumn::make('link')
+                    ->label(__('link'))
+                    ->searchable(),
+
                 ImageColumn::make('image')
                     ->label(__('image'))
                     ->circular(),
