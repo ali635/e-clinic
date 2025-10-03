@@ -50,7 +50,7 @@ class AdminPanelProvider extends PanelProvider
                 ModulesPlugin::make(),
                 FilamentAwinTheme::make(),
                 FilamentGeneralSettingsPlugin::make(),
-                FilamentFabricatorPlugin::make(),
+                // FilamentFabricatorPlugin::make(),
             ])
             ->topNavigation(false)
             ->middleware([
