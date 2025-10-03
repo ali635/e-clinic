@@ -2,7 +2,9 @@
 @section('content')
     @include('home.banner')
 
-    @include('home.blog')
+    @include('home.counters')
 
     @include('home.services')
+
+    @include('home.blog')
 @endsection
