@@ -5,6 +5,8 @@ namespace Modules\Service\Models;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Booking\Models\Visit;
+
 // use Modules\Service\Database\Factories\ServiceFactory;
 
 class Service extends Model
@@ -25,6 +27,11 @@ class Service extends Model
         'image',
         'is_home'
     ];
+
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
 
     // protected static function newFactory(): ServiceFactory
     // {
