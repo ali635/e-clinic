@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "astrotomic/laravel-translatable": "^11.16",
+        "bezhansalleh/filament-shield": "^4.0",
         "coolsam/modules": "^5.0",
         "filament/filament": "^4.0",
         "joaopaulolndev/filament-general-settings": "2.0",

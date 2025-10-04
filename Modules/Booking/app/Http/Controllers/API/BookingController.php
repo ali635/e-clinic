@@ -3,6 +3,9 @@
 namespace Modules\Booking\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Illuminate\Http\Request;
 use Modules\Booking\Http\Requests\VisitRequest;
 use Modules\Booking\Http\Resources\VisitResource;
@@ -67,6 +70,7 @@ class BookingController extends Controller
         $visit->patient_id = $patient->id;
         $visit->arrival_time = $request->arrival_time;
         $visit->save();
+
 
         return response()->json([
             'status'  => true,

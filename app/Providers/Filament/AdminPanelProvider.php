@@ -52,6 +52,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentGeneralSettingsPlugin::make(),
                 // FilamentFabricatorPlugin::make(),
             ])
+            ->databaseNotifications()
             ->topNavigation(false)
             ->middleware([
                 EncryptCookies::class,
