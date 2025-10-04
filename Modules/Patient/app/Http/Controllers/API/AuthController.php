@@ -17,7 +17,7 @@ class AuthController extends Controller
     public function register(PatientRegisterRequest $request)
     {
         $data = $request->validated();
-        $data['status'] = 0; 
+        $data['status'] = 1;
         $data['password'] = Hash::make($data['password']);
 
         $patient = Patient::create($data);
@@ -26,7 +26,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status'  => true,
-            'message' => 'Registration successful',
+            'message' => __('Registration successful'),
             'data'    => [
                 'patient' => $patient,
                 'token'   => $token,
@@ -46,7 +46,13 @@ class AuthController extends Controller
         if (!$patient || !Hash::check($credentials['password'], $patient->password)) {
             return response()->json([
                 'status'  => false,
-                'message' => 'Invalid email or password',
+                'message' => __('Invalid email or password'),
+            ], 401);
+        }
+        if ($patient->status == 0) {
+            return response()->json([
+                'status'  => false,
+                'message' => __('User Is Disabled'),
             ], 401);
         }
 
@@ -54,7 +60,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status'  => true,
-            'message' => 'Login successful',
+            'message' => __('Login successful'),
             'data'    => [
                 'patient' => $patient,
                 'token'   => $token,
