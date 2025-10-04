@@ -10,4 +10,5 @@ use Modules\Booking\Http\Controllers\API\BookingController;
 Route::middleware(['auth:api'])->prefix('v1/patient')->group(function () {
     Route::get('/visits', [BookingController::class, 'index']);
     Route::get('/visits/{id}', [BookingController::class, 'show']);
+    Route::post('/create/visit', [BookingController::class, 'store']);
 });

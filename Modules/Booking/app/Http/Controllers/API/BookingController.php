@@ -4,8 +4,10 @@ namespace Modules\Booking\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Booking\Http\Requests\VisitRequest;
 use Modules\Booking\Http\Resources\VisitResource;
 use Modules\Booking\Models\Visit;
+use Modules\Service\Models\Service;
 
 class BookingController extends Controller
 {
@@ -44,5 +46,34 @@ class BookingController extends Controller
         }
 
         return new VisitResource($visit);
+    }
+
+
+    public function store(VisitRequest $request)
+    {
+        $patient = auth('api')->user();
+        if (!$patient) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        $service = Service::query()->find($request->service_id);
+
+        if (!$service) {
+            return response()->json(['message' => 'service not found'], 404);
+        }
+
+        $visit = new Visit();
+        $visit->service_id = $request->service_id;
+        $visit->price = $service->price;
+        $visit->patient_id = $patient->id;
+        $visit->arrival_time = $request->arrival_time;
+        $visit->save();
+
+        return response()->json([
+            'status'  => true,
+            'message' => __('Service Registration successful'),
+            'data'    => [
+                'visit' => $visit,
+            ],
+        ], 201);
     }
 }
