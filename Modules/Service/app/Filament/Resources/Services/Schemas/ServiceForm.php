@@ -51,6 +51,7 @@ class ServiceForm
 
                 FileUpload::make('image')
                     ->label(__(' image'))
+                     ->disk('public')
                     ->directory('service')
                     ->required(),
 

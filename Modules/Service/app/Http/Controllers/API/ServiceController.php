@@ -22,7 +22,7 @@ class ServiceController extends Controller
         // Set current language for translatable model
         app()->setLocale($lang);
 
-        $query = Service::query();
+        $query = Service::query()->where('status',1);
 
         if (!is_null($isHome)) {
             $query->where('is_home', (int) $isHome);
