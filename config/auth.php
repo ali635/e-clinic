@@ -69,6 +69,10 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
+        'patients' => [
+            'driver' => 'eloquent',
+            'model' => Modules\Patient\Models\Patient::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
