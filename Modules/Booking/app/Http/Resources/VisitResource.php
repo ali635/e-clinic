@@ -1,0 +1,71 @@
+<?php
+
+namespace Modules\Booking\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class VisitResource extends JsonResource
+{
+    public function toArray($request)
+    {
+        $lang = $request->query('lang', app()->getLocale());
+        app()->setLocale($lang);
+
+        return [
+            'id' => $this->id,
+            'price' => $this->price,
+            'total_price' => $this->total_price,
+            'arrival_time' => $this->arrival_time,
+            'is_arrival' => (bool) $this->is_arrival,
+            'doctor_description' => $this->doctor_description,
+            'treatment' => $this->treatment,
+            'secretary_description' => $this->secretary_description,
+            'notes' => $this->notes,
+
+            // ✅ Service info (translated)
+            'service' => $this->whenLoaded('service', function () use ($lang) {
+                return [
+                    'id' => $this->service->id,
+                    'name' => $this->service->name ?? '',
+                    'price' => $this->service->price,
+                ];
+            }),
+
+            // ✅ Related services (with names & prices)
+            'related_services' => $this->whenLoaded('relatedService', function () use ($lang) {
+                return $this->relatedService->map(function ($related) use ($lang) {
+                    return [
+                        'id' => $related->id,
+                        'related_service_id' => $related->related_service_id,
+                        'name' => $related->relatedService?->name ?? '',
+                        'price' => $related->relatedService?->price ?? 0,
+                        'qty' => $related->qty ?? 1,
+                        'total' => $related->price_related_service ?? 0,
+                    ];
+                });
+            }),
+
+            'lab_tests' => $this->mapFiles($this->lab_tests),
+            'x_rays' => $this->mapFiles($this->{'x-rays'}),
+            'attachment' => $this->mapFiles($this->attachment),
+        ];
+    }
+
+    /**
+     * Map file paths to full URLs.
+     */
+    private function mapFiles($files)
+    {
+        if (empty($files)) {
+            return [];
+        }
+
+        if (is_string($files)) {
+            $files = json_decode($files, true) ?? [$files];
+        }
+
+        return collect($files)->map(function ($path) {
+            return asset('storage/' . $path);
+        })->toArray();
+    }
+}
