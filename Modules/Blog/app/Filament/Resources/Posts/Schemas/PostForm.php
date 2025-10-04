@@ -30,7 +30,8 @@ class PostForm
 
                 FileUpload::make('image')
                     ->label(__(' image'))
-                    ->directory('service')
+                    ->disk('public')
+                    ->directory('blog')
                     ->required(),
 
                 Toggle::make('status')
