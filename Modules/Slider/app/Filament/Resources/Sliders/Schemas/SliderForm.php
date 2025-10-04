@@ -31,19 +31,18 @@ class SliderForm
 
                 FileUpload::make('image')
                     ->label(__(' image'))
-                    ->directory('service')
+                     ->disk('public')
+                    ->directory('slider')
                     ->required(),
 
                 TextInput::make('link')
                     ->label(__(' link'))
                     ->maxLength(255)
                     ->required(),
+
                 Toggle::make('status')
                     ->label(__('status'))
                     ->required(),
-
-
-
 
             ]);
     }

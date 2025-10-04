@@ -22,8 +22,5 @@ class Slider extends Model
         'image',
     ];
 
-    // protected static function newFactory(): SliderFactory
-    // {
-    //     // return SliderFactory::new();
-    // }
+   
 }
