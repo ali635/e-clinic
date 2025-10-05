@@ -1,0 +1,11 @@
+{
+    "name": "AdvancedLanguage",
+    "alias": "advancedlanguage",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AdvancedLanguage\\Providers\\AdvancedLanguageServiceProvider"
+    ],
+    "files": []
+}

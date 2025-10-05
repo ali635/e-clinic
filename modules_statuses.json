@@ -4,5 +4,7 @@
     "Booking": true,
     "Blog": true,
     "Location": true,
-    "Slider": true
+    "Slider": true,
+    "Localization": true,
+    "AdvancedLanguage": true
 }
