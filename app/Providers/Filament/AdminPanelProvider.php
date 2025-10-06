@@ -22,6 +22,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
+use Modules\Patient\Filament\Widgets\Patient;
+use Modules\Patient\Filament\Widgets\PatientDisease;
+use Modules\Service\Filament\Widgets\ServiceVisitsChart;
 use Resma\FilamentAwinTheme\FilamentAwinTheme;
 use Z3d0X\FilamentFabricator\FilamentFabricatorPlugin;
 
@@ -46,6 +49,9 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
+                Patient::class,
+                PatientDisease::class,
+                ServiceVisitsChart::class,
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
