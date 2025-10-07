@@ -10,15 +10,15 @@ use Modules\Patient\Models\Disease;
 
 class FeedbackController extends Controller
 {
-    public function index(Request $request)
-    {
-        $patient = auth('api')->user();
-        $feedback = Feedback::where([
-            ['patient_id', $patient->id],
-            ['visit_id',$request->query('visit_id')]
-        ])->first();
-        return DiseaseResource::collection($feedback);
-    }
+    // public function index(Request $request)
+    // {
+    //     $patient = auth('api')->user();
+    //     $feedback = Feedback::where([
+    //         ['patient_id', $patient->id],
+    //         ['visit_id',$request->query('visit_id')]
+    //     ])->first();
+    //     return DiseaseResource::collection($feedback);
+    // }
 
     public function store(Request $request)
     {
