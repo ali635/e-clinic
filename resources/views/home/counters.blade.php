@@ -1,6 +1,6 @@
 <section class="py-4">
     <div class="container">
-        <h2 class="text-3xl tablet:text-4xl font-bold text-center text-gray-800 mb-4">
+        <h2 class="text-3xl tablet:text-4xl font-bold text-center text-primary mb-4">
             Our Results Numbers
         </h2>
         <p class="text-center text-gray-600 mb-12 text-lg">

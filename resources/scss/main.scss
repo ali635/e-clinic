@@ -7,4 +7,25 @@ body {
     .container {
       @apply mx-auto !w-[92%] max-w-[95%] web:max-w-[1720px] ;
     }
-  }
+}
+
+@layer utilities {
+    .whiteImg {
+        filter: brightness(0) invert(1) !important;
+    }
+}
+
+.embla {
+    overflow: hidden;
+}
+.embla__container {
+    display: flex;
+}
+.embla__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+}
+
+.hero_banners {
+    @apply mb-4 ;
+}
