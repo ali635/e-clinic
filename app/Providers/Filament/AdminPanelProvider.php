@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use Awcodes\Curator\CuratorPlugin;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Coolsam\Modules\ModulesPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -21,6 +22,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
+use Modules\Patient\Filament\Widgets\Patient;
+use Modules\Patient\Filament\Widgets\PatientDisease;
+use Modules\Service\Filament\Widgets\ServiceVisitsChart;
 use Resma\FilamentAwinTheme\FilamentAwinTheme;
 use Z3d0X\FilamentFabricator\FilamentFabricatorPlugin;
 
@@ -44,9 +48,13 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
-                FilamentInfoWidget::class,
+                // FilamentInfoWidget::class,
+                Patient::class,
+                PatientDisease::class,
+                ServiceVisitsChart::class,
             ])
             ->plugins([
+                FilamentShieldPlugin::make(),
                 ModulesPlugin::make(),
                 FilamentAwinTheme::make(),
                 FilamentGeneralSettingsPlugin::make(),

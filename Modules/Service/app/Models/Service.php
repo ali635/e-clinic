@@ -32,9 +32,4 @@ class Service extends Model
     {
         return $this->hasMany(Visit::class);
     }
-
-    // protected static function newFactory(): ServiceFactory
-    // {
-    //     // return ServiceFactory::new();
-    // }
 }

@@ -18,6 +18,12 @@ class PatientDisease extends Model
         'disease_id',
     ];
 
+
+     public function disease()
+    {
+        return $this->belongsTo(Disease::class);
+    }
+
     // protected static function newFactory(): PatientDiseaseFactory
     // {
     //     // return PatientDiseaseFactory::new();
