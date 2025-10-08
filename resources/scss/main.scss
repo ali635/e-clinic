@@ -1,0 +1,10 @@
+
+body {
+    @apply bg-[#EFEFEF];
+}
+
+@layer components {
+    .container {
+      @apply mx-auto !w-[92%] max-w-[95%] web:max-w-[1720px] ;
+    }
+  }
