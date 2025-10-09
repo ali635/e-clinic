@@ -53,6 +53,7 @@ class AdminPanelProvider extends PanelProvider
                 PatientDisease::class,
                 ServiceVisitsChart::class,
             ])
+            ->topbar(false)
             ->plugins([
                 FilamentShieldPlugin::make(),
                 ModulesPlugin::make(),

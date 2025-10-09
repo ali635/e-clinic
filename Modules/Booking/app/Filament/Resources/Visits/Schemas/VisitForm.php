@@ -5,6 +5,7 @@ namespace Modules\Booking\Filament\Resources\Visits\Schemas;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -96,6 +97,13 @@ class VisitForm
                 ->columnSpan(2)
                 ->schema([
                     Repeater::make('relatedService')
+                        ->table([
+                            TableColumn::make('Related Service Name'),
+                            TableColumn::make('Related Service price'),
+                            TableColumn::make('QTY'),
+
+                        ])
+                        
                         ->relationship('relatedService')
                         ->collapsible()
                         ->addActionLabel(__('Add related service'))
