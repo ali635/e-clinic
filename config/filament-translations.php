@@ -43,21 +43,9 @@ return [
             'label' => 'Arabic',
             'flag' => 'eg',
         ],
-        'fr' => [
-            'label' => 'French',
-            'flag' => 'fr',
-        ],
-        'pt_BR' => [
-            'label' => 'Português (Brasil)',
-            'flag' => 'br',
-        ],
-        'my' => [
-            'label' => 'Burmese',
-            'flag' => 'mm',
-        ],
-        'id' => [
-            'label' => 'Indonesia',
-            'flag' => 'id',
+        'ku' => [
+            'label' => 'Kurdish',
+            'flag' => 'iq',
         ],
     ],
 
