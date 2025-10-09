@@ -26,6 +26,7 @@ use Modules\Patient\Filament\Widgets\Patient;
 use Modules\Patient\Filament\Widgets\PatientDisease;
 use Modules\Service\Filament\Widgets\ServiceVisitsChart;
 use Resma\FilamentAwinTheme\FilamentAwinTheme;
+use TomatoPHP\FilamentTranslations\FilamentTranslationsPlugin;
 use Z3d0X\FilamentFabricator\FilamentFabricatorPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -53,12 +54,12 @@ class AdminPanelProvider extends PanelProvider
                 PatientDisease::class,
                 ServiceVisitsChart::class,
             ])
-            ->topbar(false)
             ->plugins([
                 FilamentShieldPlugin::make(),
                 ModulesPlugin::make(),
                 FilamentAwinTheme::make(),
                 FilamentGeneralSettingsPlugin::make(),
+                FilamentTranslationsPlugin::make(),
                 // FilamentFabricatorPlugin::make(),
             ])
             ->databaseNotifications()
