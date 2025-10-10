@@ -18,9 +18,12 @@ class DiseaseResource extends Resource
 {
     protected static ?string $model = disease::class;
 
-    // protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+     protected static ?string $recordTitleAttribute = 'display_name';
 
-    // protected static ?string $recordTitleAttribute = 'disease';
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['translations.name'];
+    }
 
     public static function getNavigationGroup(): ?string
     {

@@ -15,7 +15,7 @@ class Service extends Model
 
     protected $with = ['translations'];
 
-    public $translatedAttributes = ['name','short_description','description'];
+    public $translatedAttributes = ['name', 'short_description', 'description'];
 
     protected $fillable = [
         'price',
@@ -28,8 +28,12 @@ class Service extends Model
         'is_home'
     ];
 
+    public function getDisplayNameAttribute(): ?string
+    {
+        return $this->name; // auto translated
+    }
 
-    
+
 
     public function visits()
     {

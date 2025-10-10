@@ -23,6 +23,11 @@ class Country extends Model
         'order'
     ];
 
+     public function getDisplayNameAttribute(): ?string
+    {
+        return $this->name; // auto translated
+    }
+
     // protected static function newFactory(): CountryFactory
     // {
     //     // return CountryFactory::new();

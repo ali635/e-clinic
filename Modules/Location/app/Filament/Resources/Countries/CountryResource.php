@@ -18,6 +18,13 @@ class CountryResource extends Resource
 {
     protected static ?string $model = Country::class;
 
+     protected static ?string $recordTitleAttribute = 'display_name';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['translations.name'];
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return __('Locations');

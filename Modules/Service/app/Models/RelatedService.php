@@ -22,6 +22,12 @@ class RelatedService extends Model
         'price'
     ];
 
+
+     public function getDisplayNameAttribute(): ?string
+    {
+        return $this->name; // auto translated
+    }
+
     // protected static function newFactory(): RelatedServiceFactory
     // {
     //     // return RelatedServiceFactory::new();

@@ -19,6 +19,13 @@ class RelatedServiceResource extends Resource
 {
     protected static ?string $model = RelatedService::class;
 
+    protected static ?string $recordTitleAttribute = 'display_name';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['translations.name'];
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return __('Group Services');

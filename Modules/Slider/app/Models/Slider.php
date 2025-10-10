@@ -22,5 +22,8 @@ class Slider extends Model
         'image',
     ];
 
-   
+    public function getDisplayNameAttribute(): ?string
+    {
+        return $this->name; // auto translated
+    }
 }

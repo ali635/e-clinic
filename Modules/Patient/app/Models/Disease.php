@@ -14,6 +14,12 @@ class Disease extends Model
 
     public $translatedAttributes = ['name'];
 
+
+     public function getDisplayNameAttribute(): ?string
+    {
+        return $this->name; // auto translated
+    }
+
     public function patients()
     {
         return $this->belongsToMany(Patient::class, 'patient_diseases');

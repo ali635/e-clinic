@@ -24,6 +24,10 @@ class City extends Model
         'country_id'
     ];
 
+     public function getDisplayNameAttribute(): ?string
+    {
+        return $this->name; // auto translated
+    }
     public function country()
     {
         return $this->belongsTo(Country::class);

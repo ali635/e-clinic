@@ -22,6 +22,7 @@ use UnitEnum;
 class PatientResource extends Resource
 {
     protected static ?string $model = Patient::class;
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function getNavigationGroup(): ?string
     {

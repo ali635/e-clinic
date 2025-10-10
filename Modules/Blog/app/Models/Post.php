@@ -25,6 +25,11 @@ class Post extends Model
         'order'
     ];
 
+    public function getDisplayNameAttribute(): ?string
+    {
+        return $this->name; // auto translated
+    }
+
     // protected static function newFactory(): PostFactory
     // {
     //     // return PostFactory::new();
