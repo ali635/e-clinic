@@ -22,7 +22,8 @@ class PatientLoginRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.exists' => 'No account found with this email.',
+            'email.exists' => __('No account found with this email.'),
+            'password.min' => __('Password must be at least 6 characters long.'),
         ];
     }
 }

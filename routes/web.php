@@ -9,6 +9,3 @@ use Modules\Patient\Http\Controllers\AuthController;
 // });
 
 Route::get('/', [HomeController::class, 'index']);
-
-Route::get('/login', [AuthController::class, 'index']);
-Route::get('/register', [AuthController::class, 'create']);
