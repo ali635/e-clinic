@@ -15,8 +15,12 @@ class FeedbackTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('id', 'desc')
             ->columns([
-                 TextColumn::make('patient.name')
+                TextColumn::make('id')
+                    ->label(__('ID'))
+                    ->sortable(),
+                TextColumn::make('patient.name')
                     ->searchable(),
 
                 TextColumn::make('visit.service.name')

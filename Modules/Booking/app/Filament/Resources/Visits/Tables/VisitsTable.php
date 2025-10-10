@@ -8,6 +8,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\BooleanColumn;
+use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Modules\Booking\Filament\Resources\Visits\VisitResource;
@@ -17,7 +18,13 @@ class VisitsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('id', 'desc')
             ->columns([
+
+                TextColumn::make('id')
+                    ->label(__('ID'))
+                    ->sortable(),
+
                 TextColumn::make('patient.name')
                     ->searchable(),
 

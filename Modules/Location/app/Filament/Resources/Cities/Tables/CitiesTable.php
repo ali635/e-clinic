@@ -15,7 +15,11 @@ class CitiesTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('id', 'desc')
             ->columns([
+                TextColumn::make('id')
+                    ->label(__('ID'))
+                    ->sortable(),
                 TextColumn::make('name')
                     ->label(__('name'))
                     ->getStateUsing(fn($record) => $record->name) // use translated accessor

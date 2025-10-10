@@ -13,7 +13,11 @@ class UsersTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('id', 'desc')
             ->columns([
+                TextColumn::make('id')
+                    ->label(__('ID'))
+                    ->sortable(),
                 TextColumn::make('name')
                     ->label(__('name'))
                     ->searchable(),
