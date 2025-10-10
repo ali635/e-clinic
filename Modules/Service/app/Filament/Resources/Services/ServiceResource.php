@@ -80,6 +80,7 @@ class ServiceResource extends Resource
         return [
             'index' => ListServices::route('/'),
             'create' => CreateService::route('/create'),
+            'activities' => Pages\ListServiceActivities::route('/{record}/activities'),
             'view' => ViewService::route('/{record}'),
             'edit' => EditService::route('/{record}/edit'),
         ];

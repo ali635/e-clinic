@@ -74,6 +74,7 @@ class RelatedServiceResource extends Resource
         return [
             'index' => ListRelatedServices::route('/'),
             'create' => CreateRelatedService::route('/create'),
+            'activities' => Pages\ListRelatedServiceActivities::route('/{record}/activities'),
             'edit' => EditRelatedService::route('/{record}/edit'),
         ];
     }

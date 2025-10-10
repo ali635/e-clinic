@@ -2,12 +2,14 @@
 
 namespace Modules\Service\Filament\Resources\RelatedServices\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Modules\Service\Filament\Resources\RelatedServices\RelatedServiceResource;
 
 class RelatedServicesTable
 {
@@ -34,6 +36,7 @@ class RelatedServicesTable
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
+                Action::make('activities')->url(fn($record) => RelatedServiceResource::getUrl('activities', ['record' => $record]))
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
