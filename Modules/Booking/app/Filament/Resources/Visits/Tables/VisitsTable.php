@@ -2,6 +2,7 @@
 
 namespace Modules\Booking\Filament\Resources\Visits\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -9,6 +10,7 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Modules\Booking\Filament\Resources\Visits\VisitResource;
 
 class VisitsTable
 {
@@ -39,6 +41,7 @@ class VisitsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                Action::make('activities')->url(fn($record) => VisitResource::getUrl('activities', ['record' => $record]))
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
