@@ -18,9 +18,34 @@ class CityResource extends Resource
 {
     protected static ?string $model = City::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Locations');
+    }
 
-    protected static ?string $recordTitleAttribute = 'City';
+    public static function getNavigationLabel(): string
+    {
+        return __('Cities');
+    }
+
+    // ✅ TRANSLATABLE plural label (used in list page titles)
+    public static function getPluralLabel(): string
+    {
+        return __('Cities');
+    }
+
+    // ✅ TRANSLATABLE singular label (used in forms)
+    public static function getModelLabel(): string
+    {
+        return __('City');
+    }
+
+    // ✅ TRANSLATABLE breadcrumb (top navigation)
+    public static function getBreadcrumb(): string
+    {
+        return __('Cities');
+    }
+
 
     public static function form(Schema $schema): Schema
     {

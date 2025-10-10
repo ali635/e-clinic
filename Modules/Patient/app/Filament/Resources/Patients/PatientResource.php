@@ -17,14 +17,40 @@ use Modules\Patient\Filament\Resources\Patients\Schemas\PatientForm;
 use Modules\Patient\Filament\Resources\Patients\Schemas\PatientInfolist;
 use Modules\Patient\Filament\Resources\Patients\Tables\PatientsTable;
 use Modules\Patient\Models\Patient;
+use UnitEnum;
 
 class PatientResource extends Resource
 {
     protected static ?string $model = Patient::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Patient Information');
+    }
 
-    protected static ?string $recordTitleAttribute = 'Patient';
+    // ✅ TRANSLATABLE navigation label (sidebar)
+    public static function getNavigationLabel(): string
+    {
+        return __('Patients');
+    }
+
+    // ✅ TRANSLATABLE plural label (used in list page titles)
+    public static function getPluralLabel(): string
+    {
+        return __('Patients');
+    }
+
+    // ✅ TRANSLATABLE singular label (used in forms)
+    public static function getModelLabel(): string
+    {
+        return __('Patient');
+    }
+
+    // ✅ TRANSLATABLE breadcrumb (top navigation)
+    public static function getBreadcrumb(): string
+    {
+        return __('Patients');
+    }
 
     public static function form(Schema $schema): Schema
     {

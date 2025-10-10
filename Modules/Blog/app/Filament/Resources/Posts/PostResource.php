@@ -17,10 +17,34 @@ use Modules\Blog\Models\Post;
 class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Blog');
+    }
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // ✅ TRANSLATABLE navigation label (sidebar)
+    public static function getNavigationLabel(): string
+    {
+        return __('Posts');
+    }
 
-    protected static ?string $recordTitleAttribute = 'Post';
+    // ✅ TRANSLATABLE plural label (used in list page titles)
+    public static function getPluralLabel(): string
+    {
+        return __('Posts');
+    }
+
+    // ✅ TRANSLATABLE singular label (used in forms)
+    public static function getModelLabel(): string
+    {
+        return __('Post');
+    }
+
+    // ✅ TRANSLATABLE breadcrumb (top navigation)
+    public static function getBreadcrumb(): string
+    {
+        return __('Posts');
+    }
 
     public static function form(Schema $schema): Schema
     {

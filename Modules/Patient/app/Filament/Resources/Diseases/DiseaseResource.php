@@ -18,9 +18,37 @@ class DiseaseResource extends Resource
 {
     protected static ?string $model = disease::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'disease';
+    // protected static ?string $recordTitleAttribute = 'disease';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Patient Information');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Diseases');
+    }
+
+    // ✅ TRANSLATABLE plural label (used in list page titles)
+    public static function getPluralLabel(): string
+    {
+        return __('Diseases');
+    }
+
+    // ✅ TRANSLATABLE singular label (used in forms)
+    public static function getModelLabel(): string
+    {
+        return __('Disease');
+    }
+
+    // ✅ TRANSLATABLE breadcrumb (top navigation)
+    public static function getBreadcrumb(): string
+    {
+        return __('Diseases');
+    }
 
     public static function form(Schema $schema): Schema
     {

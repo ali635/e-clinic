@@ -18,9 +18,33 @@ class SliderResource extends Resource
 {
     protected static ?string $model = Slider::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Settings');
+    }
 
-    protected static ?string $recordTitleAttribute = 'Slider';
+    public static function getNavigationLabel(): string
+    {
+        return __('Sliders');
+    }
+
+    // ✅ TRANSLATABLE plural label (used in list page titles)
+    public static function getPluralLabel(): string
+    {
+        return __('Sliders');
+    }
+
+    // ✅ TRANSLATABLE singular label (used in forms)
+    public static function getModelLabel(): string
+    {
+        return __('Slider');
+    }
+
+    // ✅ TRANSLATABLE breadcrumb (top navigation)
+    public static function getBreadcrumb(): string
+    {
+        return __('Sliders');
+    }
 
     public static function form(Schema $schema): Schema
     {

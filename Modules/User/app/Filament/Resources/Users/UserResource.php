@@ -18,9 +18,36 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
-    protected static ?string $recordTitleAttribute = 'User';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Filament Shield');
+    }
+
+    // ✅ TRANSLATABLE navigation label (sidebar)
+    public static function getNavigationLabel(): string
+    {
+        return __('Users');
+    }
+
+    // ✅ TRANSLATABLE plural label (used in list page titles)
+    public static function getPluralLabel(): string
+    {
+        return __('Users');
+    }
+
+    // ✅ TRANSLATABLE singular label (used in forms)
+    public static function getModelLabel(): string
+    {
+        return __('User');
+    }
+
+    // ✅ TRANSLATABLE breadcrumb (top navigation)
+    public static function getBreadcrumb(): string
+    {
+        return __('Users');
+    }
 
     public static function form(Schema $schema): Schema
     {

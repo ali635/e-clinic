@@ -13,15 +13,38 @@ use Modules\Service\Filament\Resources\RelatedServices\Pages\ListRelatedServices
 use Modules\Service\Filament\Resources\RelatedServices\Schemas\RelatedServiceForm;
 use Modules\Service\Filament\Resources\RelatedServices\Tables\RelatedServicesTable;
 use Modules\Service\Models\RelatedService;
+use UnitEnum;
 
 class RelatedServiceResource extends Resource
 {
     protected static ?string $model = RelatedService::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Group Services');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('Related Services');
+    }
 
-    protected static ?string $recordTitleAttribute = 'RelatedService';
+    // ✅ TRANSLATABLE plural label (used in list page titles)
+    public static function getPluralLabel(): string
+    {
+        return __('Related Services');
+    }
 
+    // ✅ TRANSLATABLE singular label (used in forms)
+    public static function getModelLabel(): string
+    {
+        return __('Related Service');
+    }
+
+    // ✅ TRANSLATABLE breadcrumb (top navigation)
+    public static function getBreadcrumb(): string
+    {
+        return __('Related Services');
+    }
     public static function form(Schema $schema): Schema
     {
         return RelatedServiceForm::configure($schema);

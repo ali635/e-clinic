@@ -15,15 +15,40 @@ use Modules\Service\Filament\Resources\Services\Schemas\ServiceForm;
 use Modules\Service\Filament\Resources\Services\Schemas\ServiceInfolist;
 use Modules\Service\Filament\Resources\Services\Tables\ServicesTable;
 use Modules\Service\Models\Service;
+use UnitEnum;
 
 class ServiceResource extends Resource
 {
     protected static ?string $model = Service::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
     protected static ?string $recordTitleAttribute = 'Service';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Group Services');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('Services');
+    }
+
+    // ✅ TRANSLATABLE plural label (used in list page titles)
+    public static function getPluralLabel(): string
+    {
+        return __('Services');
+    }
+
+    // ✅ TRANSLATABLE singular label (used in forms)
+    public static function getModelLabel(): string
+    {
+        return __('Service');
+    }
+
+    // ✅ TRANSLATABLE breadcrumb (top navigation)
+    public static function getBreadcrumb(): string
+    {
+        return __('Services');
+    }
     public static function form(Schema $schema): Schema
     {
         return ServiceForm::configure($schema);

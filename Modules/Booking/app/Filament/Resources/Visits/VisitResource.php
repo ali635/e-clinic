@@ -20,9 +20,35 @@ class VisitResource extends Resource
 {
     protected static ?string $model = Visit::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Patient Information');
+    }
 
-    protected static ?string $recordTitleAttribute = 'Visit';
+    // ✅ TRANSLATABLE navigation label (sidebar)
+    public static function getNavigationLabel(): string
+    {
+        return __('Visits');
+    }
+
+    // ✅ TRANSLATABLE plural label (used in list page titles)
+    public static function getPluralLabel(): string
+    {
+        return __('Visits');
+    }
+
+    // ✅ TRANSLATABLE singular label (used in forms)
+    public static function getModelLabel(): string
+    {
+        return __('Visit');
+    }
+
+    // ✅ TRANSLATABLE breadcrumb (top navigation)
+    public static function getBreadcrumb(): string
+    {
+        return __('Visits');
+    }
+
 
     public static function form(Schema $schema): Schema
     {

@@ -58,7 +58,11 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
                 ModulesPlugin::make(),
                 FilamentAwinTheme::make(),
-                FilamentGeneralSettingsPlugin::make(),
+                FilamentGeneralSettingsPlugin::make()
+                    ->setNavigationGroup('Settings')
+                    ->setIcon('heroicon-o-cog')
+                    ->setTitle(__('General Settings'))
+                    ->setNavigationLabel(__('General Settings')),
                 FilamentTranslationsPlugin::make(),
                 // FilamentFabricatorPlugin::make(),
             ])
