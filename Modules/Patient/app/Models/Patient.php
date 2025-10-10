@@ -37,6 +37,9 @@ class Patient extends Authenticatable implements OAuthenticatable
     protected $casts = [
         'date_of_birth' => 'date',
     ];
+     protected $hidden = [
+        'password',
+    ];
 
 
     protected function age(): Attribute
