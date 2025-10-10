@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
 use Coolsam\Modules\ModulesPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -64,6 +65,7 @@ class AdminPanelProvider extends PanelProvider
                     ->setTitle(__('General Settings'))
                     ->setNavigationLabel(__('General Settings')),
                 FilamentTranslationsPlugin::make(),
+                GlobalSearchModalPlugin::make(),
                 // FilamentFabricatorPlugin::make(),
             ])
             ->databaseNotifications()

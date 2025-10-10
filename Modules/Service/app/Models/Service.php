@@ -28,6 +28,9 @@ class Service extends Model
         'is_home'
     ];
 
+
+    
+
     public function visits()
     {
         return $this->hasMany(Visit::class);

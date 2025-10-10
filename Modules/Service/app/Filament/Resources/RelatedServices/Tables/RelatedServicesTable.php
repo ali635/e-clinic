@@ -17,7 +17,12 @@ class RelatedServicesTable
             ->columns([
                 TextColumn::make('name')
                     ->label(__('name'))
-                    ->searchable(),
+                    ->getStateUsing(fn($record) => $record->name) // use translated accessor
+                    ->searchable(query: function ($query, $search) {
+                        $query->whereHas('translations', function ($q) use ($search) {
+                            $q->where('name', 'like', "%{$search}%");
+                        });
+                    }),
 
                 TextColumn::make('price')
                     ->label(__('price'))

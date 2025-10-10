@@ -21,7 +21,7 @@ class ServiceResource extends Resource
 {
     protected static ?string $model = Service::class;
 
-    protected static ?string $recordTitleAttribute = 'Service';
+    // protected static ?string $recordTitleAttribute = 'name';
 
     public static function getNavigationGroup(): ?string
     {
