@@ -10,7 +10,8 @@ use Illuminate\Notifications\Notifiable;
 use Modules\Location\Models\Country;
 use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Carbon\Carbon;
 // use Modules\Patient\Database\Factories\PatientFactory;
 
 class Patient extends Authenticatable implements OAuthenticatable
@@ -33,12 +34,35 @@ class Patient extends Authenticatable implements OAuthenticatable
         'status'
     ];
 
+    protected $casts = [
+        'date_of_birth' => 'date',
+    ];
+
+
+    protected function age(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->date_of_birth
+                ? $this->date_of_birth->age
+                : null,
+        );
+    }
 
     public function diseases()
     {
         return $this->hasMany(PatientDisease::class, 'patient_id');
     }
 
+
+    public function diseasesMany()
+    {
+        return $this->belongsToMany(
+            Disease::class,
+            'patient_diseases',
+            'patient_id',
+            'disease_id'
+        );
+    }
     public function country()
     {
         return $this->belongsTo(Country::class);
