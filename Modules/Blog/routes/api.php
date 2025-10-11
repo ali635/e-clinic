@@ -10,5 +10,6 @@ use Modules\Blog\Http\Controllers\API\BlogController;
 Route::prefix('v1')->group(function () {
     Route::prefix('posts')->group(function () {
         Route::get('/', [BlogController::class, 'index']);
+        Route::get('/{id}', [BlogController::class, 'show']);
     });
 });

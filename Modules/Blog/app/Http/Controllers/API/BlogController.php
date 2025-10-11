@@ -14,10 +14,41 @@ class BlogController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::where('status', true)
-            ->orderBy('order', 'asc')
+        $lang   = $request->query('lang', app()->getLocale());
+        $isHome = $request->query('is_home');
+
+        app()->setLocale($lang);
+
+        $posts = Post::where('status', true);
+
+        if (!is_null($isHome)) {
+            $posts = $posts->where('is_home', (int) $isHome);
+        }
+
+        $posts =  $posts->orderBy('order', 'asc')
             ->get();
 
-        return PostResource::collection($posts);
+        return response()->json([
+            'status' => true,
+            'message' => 'Posts retrieved successfully',
+            'lang' => $lang,
+            'data' => PostResource::collection($posts),
+        ]);
+    }
+
+    public function show(Request $request, $id)
+    {
+        // set language for translations
+        $lang = $request->query('lang', app()->getLocale());
+        app()->setLocale($lang);
+
+        $post = Post::with('translations')->findOrFail($id);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Post retrieved successfully',
+            'lang' => $lang,
+            'data' => new PostResource($post),
+        ]);
     }
 }

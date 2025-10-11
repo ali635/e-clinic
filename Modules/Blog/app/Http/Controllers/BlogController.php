@@ -4,14 +4,35 @@ namespace Modules\Blog\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Blog\Models\Post;
 
 class BlogController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+          // Optional filters
+        $isHome = $request->query('is_home');
+        $lang   = $request->query('lang', app()->getLocale());
+
+        // Set current language for translatable model
+        app()->setLocale($lang);
+
+        $query = Post::query()->where('status', 1);
+
+        if (!is_null($isHome)) {
+            $query->where('is_home', (int) $isHome);
+        }
+
+        // Fetch services ordered by "order" column
+        $services = $query->orderBy('order', 'asc')->get();
+
+        return view('services.index', [
+            'services' => $services,
+            'lang' => $lang,
+        ]);
         return view('blog::index');
     }
 

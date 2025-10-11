@@ -11,6 +11,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Modules\Service\Models\Service;
+use Illuminate\Support\Str;
+use Filament\Schemas\Components\Utilities\Set;
 
 class ServiceForm
 {
@@ -21,7 +24,23 @@ class ServiceForm
                 TextInput::make('name')
                     ->label(__(' name'))
                     ->maxLength(255)
-                    ->required(),
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (string $operation, $state, Set $set): void {
+                        if ($operation !== 'create') {
+                            return;
+                        }
+
+                        $set('slug', Str::slug($state));
+                    }),
+
+                TextInput::make('slug')
+                    ->label(__(' slug'))
+                    ->disabled()
+                    ->dehydrated()
+                    ->required()
+                    ->maxLength(255)
+                    ->unique(Service::class, 'slug', ignoreRecord: true),
 
                 TextInput::make('price')
                     ->label(__('price'))

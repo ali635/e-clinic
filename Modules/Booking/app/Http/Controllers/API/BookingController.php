@@ -25,8 +25,14 @@ class BookingController extends Controller
         }
 
         $visits = Visit::with(['service', 'relatedService'])
-            ->where('patient_id', $patient->id)
-            ->orderByDesc('created_at')
+            ->where('patient_id', $patient->id);
+
+
+        if ($request->has('is_arrival') && in_array($request->is_arrival, [0, 1])) {
+            $visits = $visits->where('is_arrival', $request->is_arrival);
+        }
+
+        $visits = $visits->orderByDesc('created_at')
             ->get();
 
         return VisitResource::collection($visits);

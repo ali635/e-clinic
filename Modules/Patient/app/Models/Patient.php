@@ -12,6 +12,8 @@ use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
+use Modules\Booking\Models\Visit;
+
 // use Modules\Patient\Database\Factories\PatientFactory;
 
 class Patient extends Authenticatable implements OAuthenticatable
@@ -37,7 +39,7 @@ class Patient extends Authenticatable implements OAuthenticatable
     protected $casts = [
         'date_of_birth' => 'date',
     ];
-     protected $hidden = [
+    protected $hidden = [
         'password',
     ];
 
@@ -75,8 +77,9 @@ class Patient extends Authenticatable implements OAuthenticatable
     {
         return $this->belongsTo(City::class);
     }
-    // protected static function newFactory(): PatientFactory
-    // {
-    //     // return PatientFactory::new();
-    // }
+
+    public function visits()
+    {
+        return $this->hasMany(Visit::class, 'patient_id');
+    }
 }
