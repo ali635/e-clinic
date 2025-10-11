@@ -22,7 +22,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
 use Modules\Patient\Filament\Widgets\Patient;
 use Modules\Patient\Filament\Widgets\PatientDisease;
 use Modules\Service\Filament\Widgets\ServiceVisitsChart;
@@ -59,13 +58,11 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
                 ModulesPlugin::make(),
                 FilamentAwinTheme::make(),
-                FilamentGeneralSettingsPlugin::make()
-                    ->setNavigationGroup('Settings')
-                    ->setIcon('heroicon-o-cog')
-                    ->setTitle(__('General Settings'))
-                    ->setNavigationLabel(__('General Settings')),
                 FilamentTranslationsPlugin::make(),
                 GlobalSearchModalPlugin::make(),
+                \TomatoPHP\FilamentSettingsHub\FilamentSettingsHubPlugin::make()
+                    ->allowSiteSettings()
+                    ->allowSocialMenuSettings()
                 // FilamentFabricatorPlugin::make(),
             ])
             ->databaseNotifications()

@@ -7,6 +7,9 @@ use Illuminate\Support\ServiceProvider;
 use Modules\AdvancedLanguage\Models\Language;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
+use Modules\Slider\Filament\Pages\CounterSettings;
+use TomatoPHP\FilamentSettingsHub\Facades\FilamentSettingsHub;
+use TomatoPHP\FilamentSettingsHub\Services\Contracts\SettingHold;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,5 +49,16 @@ class AppServiceProvider extends ServiceProvider
                 $switch->locales($locales);
             });
         }
+
+        FilamentSettingsHub::register([
+            SettingHold::make()
+                ->order(2)
+                ->label('Site Counter Settings')
+                ->icon('heroicon-o-numbered-list')
+                ->route('filament.admin.pages.counter-settings')
+                ->page(\Modules\Slider\Filament\Pages\CounterSettings::class)
+                ->description('Counter Section in Home Page')
+                ->group('Home Page'),
+        ]);
     }
 }
