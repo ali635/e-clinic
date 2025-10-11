@@ -8,6 +8,7 @@ use Modules\Patient\Http\Requests\PatientLoginRequest;
 use Modules\Patient\Http\Requests\PatientRegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Modules\Location\Models\City;
 use Modules\Patient\Models\Patient;
 
 class AuthController extends Controller
@@ -19,7 +20,8 @@ class AuthController extends Controller
 
     public function create()
     {
-        return view('auth.register');
+        $cities = City::where('status', 1)->orderBy('order', 'desc')->get();
+        return view('auth.register', compact('cities'));
     }
 
     public function login(PatientLoginRequest $request)
@@ -40,9 +42,18 @@ class AuthController extends Controller
     // Handle register
     public function register(PatientRegisterRequest $request)
     {
+        $country_id = City::where('id', $request->city_id)->value('country_id');
+
         $patient = Patient::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
+            'gender' => $request->gender,
+            'date_of_birth' => $request->date_of_birth,
+            'address' => $request->address,
+            'country_id' => $country_id,
+            'city_id' => $request->city_id,
+            'status' =>1,
             'password' => Hash::make($request->password),
         ]);
 

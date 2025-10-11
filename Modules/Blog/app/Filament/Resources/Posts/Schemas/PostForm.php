@@ -42,6 +42,10 @@ class PostForm
                     ->label(__('order'))
                     ->numeric()
                     ->required(),
+
+                Toggle::make('is_home')
+                    ->label(__('is home'))
+                    ->required(),
             ]);
     }
 }

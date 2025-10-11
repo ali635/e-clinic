@@ -26,14 +26,13 @@ class BlogController extends Controller
             $query->where('is_home', (int) $isHome);
         }
 
-        // Fetch services ordered by "order" column
-        $services = $query->orderBy('order', 'asc')->get();
+        // Fetch posts ordered by "order" column
+        $posts = $query->orderBy('order', 'asc')->get();
 
-        return view('services.index', [
-            'services' => $services,
+        return view('blog.index', [
+            'posts' => $posts,
             'lang' => $lang,
         ]);
-        return view('blog::index');
     }
 
     /**
