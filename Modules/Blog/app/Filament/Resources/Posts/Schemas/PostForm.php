@@ -7,6 +7,9 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
+use Filament\Schemas\Components\Utilities\Set;
+use Modules\Blog\Models\Post;
 
 class PostForm
 {
@@ -17,7 +20,23 @@ class PostForm
                 TextInput::make('name')
                     ->label(__(' name'))
                     ->maxLength(255)
-                    ->required(),
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (string $operation, $state, Set $set): void {
+                        if ($operation !== 'create') {
+                            return;
+                        }
+
+                        $set('slug', Str::slug($state));
+                    }),
+
+                TextInput::make('slug')
+                    ->label(__(' slug'))
+                    ->disabled()
+                    ->dehydrated()
+                    ->required()
+                    ->maxLength(255)
+                    ->unique(Post::class, 'slug', ignoreRecord: true),
 
                 TextInput::make('link')
                     ->label(__(' link'))
