@@ -1,4 +1,4 @@
-<section class="py-4">
+<section class="py-12">
     <div class="container">
         <h2 class="text-3xl tablet:text-4xl font-bold text-center text-primary mb-4">
             Our Results Numbers
