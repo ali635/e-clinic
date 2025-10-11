@@ -27,7 +27,8 @@ class Service extends Model
         'status',
         'order',
         'image',
-        'is_home'
+        'is_home',
+        'slug'
     ];
 
     protected $appends = ['display_name'];

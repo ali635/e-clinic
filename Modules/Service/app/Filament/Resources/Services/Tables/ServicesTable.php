@@ -19,10 +19,10 @@ class ServicesTable
     public static function configure(Table $table): Table
     {
         return $table
-                    ->defaultSort('id', 'desc')
+            ->defaultSort('id', 'desc')
 
             ->columns([
-                 TextColumn::make('id')
+                TextColumn::make('id')
                     ->label(__('ID'))
                     ->sortable(),
                 TextColumn::make('name')
@@ -33,6 +33,10 @@ class ServicesTable
                             $q->where('name', 'like', "%{$search}%");
                         });
                     }),
+
+                TextColumn::make('slug')
+                    ->label(__('slug'))
+                    ->searchable(),
 
                 TextColumn::make('price')
                     ->label(__('price'))
