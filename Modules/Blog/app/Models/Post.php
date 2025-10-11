@@ -22,16 +22,13 @@ class Post extends Model
         'link',
         'image',
         'status',
-        'order'
+        'order',
+        'slug',
+        'is_home'
     ];
 
     public function getDisplayNameAttribute(): ?string
     {
         return $this->name; // auto translated
     }
-
-    // protected static function newFactory(): PostFactory
-    // {
-    //     // return PostFactory::new();
-    // }
 }
