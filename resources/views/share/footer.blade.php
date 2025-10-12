@@ -3,12 +3,11 @@
     <div class="grid grid-cols-1 gap-8 web:grid-cols-3">
         <div>
             <div class="flex justify-center text-teal-300 tablet:justify-start">
-                <img class="max-w-[200px] whiteImg" src="{{ asset('images/logo.png') }}" alt="">
+                <img class="max-w-[200px] whiteImg" src="{{ asset('storage/' . setting('site_logo')) }}" alt="">
             </div>
 
             <p class="max-w-md mx-auto mt-6 leading-relaxed text-center text-gray-400 tablet:max-w-xs tablet:mx-0 tablet:text-start">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt
-                consequuntur amet culpa cum itaque neque.
+               {!!  setting('site_description') !!}
             </p>
 
             <ul class="flex justify-center gap-6 mt-8 tablet:gap-8 tablet:justify-start">
@@ -115,13 +114,13 @@
             </div>
     
             <div class="text-center tablet:text-start">
-                <p class="text-lg font-medium text-white">Contact Us</p>
+                <p class="text-lg font-medium text-white">{{__('Contact Us')}}</p>
         
                 <ul class="mt-8 space-y-4 text-sm">
                     <li>
                         <a
                             class="flex items-center justify-center tablet:justify-start gap-1.5 group"
-                            href="mailto:john@doe.com"
+                            href="mailto:{{setting("site_email")}}"
                         >
                             <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +138,7 @@
                             </svg>
             
                             <span class="text-white transition group-hover:text-primary">
-                                john@doe.com
+                                {{setting("site_email")}}
                             </span>
                         </a>
                     </li>
@@ -165,7 +164,7 @@
                             </svg>
             
                             <span class="text-white transition group-hover:text-primary">
-                                0123456789
+                                {{setting("site_phone")}}
                             </span>
                         </a>
                     </li>
