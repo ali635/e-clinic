@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Modules\Blog\Models\Post;
 use Modules\Service\Models\Service;
+use Modules\Slider\Models\Slider;
 
 class HomeController extends Controller
 {
@@ -21,7 +22,11 @@ class HomeController extends Controller
             ->orderBy('order', 'desc')
             ->take(12)
             ->get();
-            
-        return view('home.index', compact('services','posts'));
+
+        $banners = Slider::query()->where('status', 1)
+            ->orderBy('order', 'desc')
+            ->get();
+
+        return view('home.index', compact('services', 'posts', 'banners'));
     }
 }
