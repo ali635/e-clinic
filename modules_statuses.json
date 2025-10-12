@@ -7,5 +7,6 @@
     "Slider": true,
     "Localization": true,
     "AdvancedLanguage": true,
-    "User": true
+    "User": true,
+    "Setting": true
 }
