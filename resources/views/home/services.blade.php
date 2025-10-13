@@ -14,7 +14,7 @@
                 <div class="h-52 tablet:h-64 overflow-hidden">
                     <img 
                         src="{{asset('storage/' . $service->image)}}" 
-                        alt="Red Nike Shoes"
+                        alt="{{$service->name}}"
                         class="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
                     >
                 </div>
@@ -22,9 +22,11 @@
                     <h2 class="text-xl tablet:text-2xl font-bold mb-2 tablet:mb-3 text-gray-800">{{ $service->name}}</h2>
                     <h2 class="text-xl tablet:text-2xl font-bold mb-2 tablet:mb-3 text-gray-800">{{ $service->price}}</h2>
                     <p class="text-sm tablet:text-base text-gray-600 mb-5">{{  $service->short_description }}</p>
-                    <div class="flex justify">
-                        <a href="" class="px-4 py-1 rounded-full hover:bg-primary text-white transition duration-300 ease-in-out bg-primary/60">Book the service</a>
-                    </div>
+                      <div class="flex justify">
+                                <a href="{{ route('service.show') }}"
+                                    class="px-4 py-1 rounded-full hover:bg-primary text-white transition duration-300 ease-in-out bg-primary/60">{{ __('Book
+                                                                        the service') }}</a>
+                            </div>
                 </div>
             </div>
 

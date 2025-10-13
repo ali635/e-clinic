@@ -10,5 +10,5 @@ use Modules\Service\Http\Controllers\ServiceController;
 
 Route::prefix('services')->group(function () {
     Route::get('/', [ServiceController::class, 'index']);
-    Route::get('/{slug}', [ServiceController::class, 'show']);
+    Route::get('/{slug}', [ServiceController::class, 'show'])->name('service.show');
 });

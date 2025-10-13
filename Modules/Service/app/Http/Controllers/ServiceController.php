@@ -24,9 +24,7 @@ class ServiceController extends Controller
 
         $query = Service::query()->where('status', 1);
 
-        if (!is_null($isHome)) {
-            $query->where('is_home', (int) $isHome);
-        }
+        
 
         // Fetch services ordered by "order" column
         $services = $query->orderBy('order', 'asc')->get();
