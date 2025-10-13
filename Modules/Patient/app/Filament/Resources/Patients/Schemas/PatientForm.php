@@ -8,6 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Hash;
 use Modules\Location\Models\City;
 use Modules\Location\Models\Country;
 use Modules\Patient\Models\Disease;
@@ -35,8 +36,9 @@ class PatientForm
                 TextInput::make('password')
                     ->label(__('password'))
                     ->password()
-                    ->maxLength(255)
-                    ->required(),
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required(fn(string $context): bool => $context === 'create'),
 
 
 

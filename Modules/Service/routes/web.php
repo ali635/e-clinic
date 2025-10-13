@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Modules\Service\Http\Controllers\ServiceController;
 
 // Route::middleware(['auth', 'verified'])->group(function () {
@@ -8,7 +9,13 @@ use Modules\Service\Http\Controllers\ServiceController;
 // });
 
 
-Route::prefix('services')->group(function () {
-    Route::get('/', [ServiceController::class, 'index']);
-    Route::get('/{slug}', [ServiceController::class, 'show'])->name('service.show');
+Route::group([
+    'prefix' => LaravelLocalization::setLocale(),
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
+], function () {
+
+    Route::prefix('services')->group(function () {
+        Route::get('/', [ServiceController::class, 'index']);
+        Route::get('/{slug}', [ServiceController::class, 'show'])->name('service.show');
+    });
 });

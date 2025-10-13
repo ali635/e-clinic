@@ -26,6 +26,8 @@ class AuthController extends Controller
 
     public function login(PatientLoginRequest $request)
     {
+        $remember_me = $request->has('remember_me') ? true : false;
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('patient')->attempt($credentials)) {
@@ -53,7 +55,7 @@ class AuthController extends Controller
             'address' => $request->address,
             'country_id' => $country_id,
             'city_id' => $request->city_id,
-            'status' =>1,
+            'status' => 1,
             'password' => Hash::make($request->password),
         ]);
 
@@ -66,10 +68,10 @@ class AuthController extends Controller
     // Handle logout
     public function logout()
     {
+
         Auth::guard('patient')->logout();
         session()->invalidate();
         session()->regenerateToken();
-
         return redirect()->route('patient.login')
             ->with('success', __('You have been logged out.'));
     }
