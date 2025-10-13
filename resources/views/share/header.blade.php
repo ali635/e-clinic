@@ -1,3 +1,8 @@
+@php
+    $locales = Modules\AdvancedLanguage\Models\Language::query()->get();
+
+@endphp
+
 <header>
     <nav class="bg-white py-2 tablet:py-4">
         <div class="container tablet:flex tablet:items-center">
@@ -26,6 +31,15 @@
                     class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300">Blogs</a>
 
 
+                @foreach ($locales as $localeCode => $local)
+                    <a class="dropdown-item" rel="alternate" hreflang="{{ $local->lang_code }}"
+                        href="{{ LaravelLocalization::getLocalizedURL($local->lang_code, null, [], true) }}">
+                        {{ $local->lang_name }}
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+                @endforeach
+
                 @auth('patient')
                     <a href="{{ route('patient.logout') }}"
                         onclick="event.preventDefault();  document.getElementById('logout.form').submit();"
@@ -44,14 +58,14 @@
             </div>
         </div>
     </nav>
- 
 
-<script>
-    let toggleBtn = document.querySelector("#navbar-toggle");
-    let collapse = document.querySelector("#navbar-collapse");
 
-    toggleBtn.onclick = () => {
-        collapse.classList.toggle("hidden");
-        collapse.classList.toggle("flex");
-    };
-</script>
+    <script>
+        let toggleBtn = document.querySelector("#navbar-toggle");
+        let collapse = document.querySelector("#navbar-collapse");
+
+        toggleBtn.onclick = () => {
+            collapse.classList.toggle("hidden");
+            collapse.classList.toggle("flex");
+        };
+    </script>
