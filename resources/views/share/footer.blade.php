@@ -134,7 +134,7 @@
                             </svg>
 
                             <address class="-mt-0.5 not-italic text-white">
-                                {{setting("address")}}
+                                {{ setting("address") }}
                             </address>
                         </li>
                     </ul>
@@ -145,11 +145,11 @@
         <div class="pt-6 mt-12 border-t border-gray-800">
             <div class="text-center tablet:flex tablet:justify-between tablet:text-start">
                 <p class="text-sm text-gray-400">
-                    <span class="block tablet:inline">All rights reserved.</span>
+                    <span class="block tablet:inline">{{__('All rights reserved.')}}</span>
                 </p>
 
                 <p class="mt-4 text-sm text-gray-500 tablet:order-first tablet:mt-0">
-                    &copy; 2022 Dr Azad Hasan
+                    &copy; 2022 {{ setting('site_name') }}
                 </p>
             </div>
         </div>
