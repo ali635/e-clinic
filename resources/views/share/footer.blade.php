@@ -134,7 +134,7 @@
                             </svg>
 
                             <address class="-mt-0.5 not-italic text-white">
-                                213 Lane, London, United Kingdom
+                                {{setting("address")}}
                             </address>
                         </li>
                     </ul>
