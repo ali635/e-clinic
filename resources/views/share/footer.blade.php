@@ -4,7 +4,7 @@
             <div>
                 <div class="flex justify-center text-teal-300 tablet:justify-start">
                     <img class="max-w-[200px] whiteImg" src="{{ asset('storage/' . setting('site_logo')) }}"
-                        alt="">
+                        alt="{{ setting('site_name') }}">
                 </div>
 
                 <p

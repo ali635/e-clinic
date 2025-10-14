@@ -8,7 +8,8 @@
         <div class="container tablet:flex tablet:items-center">
             <div class="flex justify-between items-center">
                 <a href="/" class="font-bold text-xl text-primary">
-                    <img class="max-w-[200px]" src="{{ asset('images/logo.png') }}" alt="">
+                    <img class="max-w-[200px]"  src="{{ asset('storage/' . setting('site_logo')) }}"
+                        alt="{{ setting('site_name') }}">
                 </a>
                 <button
                     class="border border-solid border-primary px-2 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 tablet:hidden"
