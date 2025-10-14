@@ -9,10 +9,10 @@
         <div class="grid grid-cols-1 tablet:grid-cols-2 web:grid-cols-4 gap-4">
             @foreach ($services as $service)
                 <div
-                    class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ease-in-out">
+                    class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out">
                     <div class="h-52 tablet:h-64 overflow-hidden">
                         <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->name }}"
-                            class="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105">
+                            class="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-115">
                     </div>
                     <div class="p-5 tablet:p-6">
                         <h2 class="text-xl tablet:text-2xl font-bold mb-2 tablet:mb-3 text-gray-800">
@@ -21,6 +21,7 @@
                             <div class="flex items-center justify-between">
                                 <h2 class="text-xl tablet:text-2xl font-bold text-gray-800">
                                     {{ $service->price }}
+                                    <span class="text-md tablet:text-lg text-primary">د.ع</span>
                                 </h2>
                                 @if ($service->slug)
                                 <a href="{{ route('service.show', $service->slug) }}"

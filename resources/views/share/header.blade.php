@@ -41,19 +41,24 @@
                 @endforeach
 
                 @auth('patient')
-                    <a href="{{ route('patient.logout') }}"
-                        onclick="event.preventDefault();  document.getElementById('logout.form').submit();"
-                        class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300">{{ __('logout') }}</a>
-                    <form id="logout.form" action="{{ route('patient.logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
+                    <div class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 relative group">
+                        Salem
+                        <ul class="absolute bg-white py-2 w-52 ltr:left-0 rtl:right-0 top-full transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg">
+                            <li class="px-3 text-sm hover:bg-slate-100 leading-8">
+                                <a href="#">Profile</a>
+                            </li>
+                            <li class="px-3 text-sm hover:bg-slate-100 leading-8">
+                                <a href="{{ route('patient.logout') }}" onclick="event.preventDefault();document.getElementById('logout.form').submit();">{{ __('logout') }}</a>
+                                <form id="logout.form" action="{{ route('patient.logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 @else
-                    <a href="{{ route('patient.register') }}"
-                        class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300">{{ __('register') }}</a>
-
-                    <span class="or-text">{{ __('or') }}</span>
-                    <a href="{{ route('patient.login') }}"
-                        class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300">{{ __('sign in') }}</a>
+                    <a href="{{ route('patient.login') }}" class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300">
+                        {{ __('sign in') }}
+                    </a>
                 @endauth
             </div>
         </div>

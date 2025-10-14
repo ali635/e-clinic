@@ -33,6 +33,9 @@ body {
 .hero_banners {
     @apply mb-4 ;
     .slide_content {
-        @apply absolute top-1/2 ltr:left-[20px] web:ltr:left-[60px] rtl:right-[20px] web:rtl:right-[60px] ;
+        @apply absolute top-1/2 -translate-y-1/2 ltr:left-[20px] web:ltr:left-[60px] rtl:right-[20px] web:rtl:right-[60px] z-[2] ;
+        .slideTitle, .slideDescription {
+            @apply text-white ;
+        }
     }
 }
