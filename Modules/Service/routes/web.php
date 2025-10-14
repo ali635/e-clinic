@@ -15,7 +15,7 @@ Route::group([
 ], function () {
 
     Route::prefix('services')->group(function () {
-        Route::get('/', [ServiceController::class, 'index']);
+        Route::get('/', [ServiceController::class, 'index'])->name('services');
         Route::get('/{slug}', [ServiceController::class, 'show'])->name('service.show');
     });
 });

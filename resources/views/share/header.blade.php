@@ -7,7 +7,7 @@
     <nav class="bg-white py-2 tablet:py-4">
         <div class="container tablet:flex tablet:items-center">
             <div class="flex justify-between items-center">
-                <a href="#" class="font-bold text-xl text-primary">
+                <a href="/" class="font-bold text-xl text-primary">
                     <img class="max-w-[200px]" src="{{ asset('images/logo.png') }}" alt="">
                 </a>
                 <button
@@ -22,13 +22,14 @@
 
             <div class="hidden tablet:flex flex-col tablet:flex-row tablet:ml-auto mt-3 tablet:mt-0"
                 id="navbar-collapse">
-                <a href="#" class="p-2 web:px-4 tablet:mx-2 text-white rounded bg-primary">Home</a>
-                <a href="#"
-                    class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300">About</a>
-                <a href="#"
-                    class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300">Services</a>
-                <a href="#"
-                    class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300">Blogs</a>
+                <a href="/"
+                    class="p-2 web:px-4 tablet:mx-2  @if (Route::currentRouteName() == 'home') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif">{{ __('Home') }}</a>
+                {{-- <a href="{{ route('about') }}"
+                    class="p-2 web:px-4 tablet:mx-2 @if (Route::currentRouteName() == 'about') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif ">{{ __('About') }}</a> --}}
+                <a href="{{ route('services') }}"
+                    class="p-2 web:px-4 tablet:mx-2 @if (Route::currentRouteName() == 'services') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif">{{ __('Services') }}</a>
+                <a href="{{ route('posts') }}"
+                    class="p-2 web:px-4 tablet:mx-2 @if (Route::currentRouteName() == 'posts') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif">{{ __('Blogs') }}</a>
 
 
                 @foreach ($locales as $localeCode => $local)
