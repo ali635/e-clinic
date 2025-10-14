@@ -4,6 +4,7 @@ namespace Modules\Setting\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Setting\Filament\Pages\AboutSetting;
 use Modules\Setting\Filament\Pages\FooterSocialSetting;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -31,15 +32,36 @@ class SettingServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
 
+        FilamentSettingsHub::register([
+            SettingHold::make()
+                ->order(2)
+                ->label('Site Counter Settings')
+                ->icon('heroicon-o-numbered-list')
+                ->route('filament.admin.pages.counter-settings')
+                ->page(\Modules\Slider\Filament\Pages\CounterSettings::class)
+                ->description('Counter Section in Home Page')
+                ->group('Home Page'),
+        ]);
 
-         FilamentSettingsHub::register([
+        FilamentSettingsHub::register([
             SettingHold::make()
                 ->order(2)
                 ->label(__('Footer Social settings'))
-                ->icon('heroicon-o-numbered-list')
+                ->icon('heroicon-o-puzzle-piece')
                 ->route('filament.admin.pages.footer-social-setting')
                 ->page(FooterSocialSetting::class)
-                ->description(__('Footer Social facebook , youtube , x , instagram '))
+                ->description(__('facebook , youtube , x , instagram '))
+                ->group('Home Page'),
+        ]);
+
+        FilamentSettingsHub::register([
+            SettingHold::make()
+                ->order(2)
+                ->label(__('About Us settings'))
+                ->icon('heroicon-o-home')
+                ->route('filament.admin.pages.about-setting')
+                ->page(AboutSetting::class)
+                ->description(__('About Us and Address'))
                 ->group('Home Page'),
         ]);
     }
@@ -77,7 +99,7 @@ class SettingServiceProvider extends ServiceProvider
      */
     public function registerTranslations(): void
     {
-        $langPath = resource_path('lang/modules/'.$this->nameLower);
+        $langPath = resource_path('lang/modules/' . $this->nameLower);
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, $this->nameLower);
@@ -100,9 +122,9 @@ class SettingServiceProvider extends ServiceProvider
 
             foreach ($iterator as $file) {
                 if ($file->isFile() && $file->getExtension() === 'php') {
-                    $config = str_replace($configPath.DIRECTORY_SEPARATOR, '', $file->getPathname());
+                    $config = str_replace($configPath . DIRECTORY_SEPARATOR, '', $file->getPathname());
                     $config_key = str_replace([DIRECTORY_SEPARATOR, '.php'], ['.', ''], $config);
-                    $segments = explode('.', $this->nameLower.'.'.$config_key);
+                    $segments = explode('.', $this->nameLower . '.' . $config_key);
 
                     // Remove duplicated adjacent segments
                     $normalized = [];
@@ -137,14 +159,14 @@ class SettingServiceProvider extends ServiceProvider
      */
     public function registerViews(): void
     {
-        $viewPath = resource_path('views/modules/'.$this->nameLower);
+        $viewPath = resource_path('views/modules/' . $this->nameLower);
         $sourcePath = module_path($this->name, 'resources/views');
 
-        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower.'-module-views']);
+        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower . '-module-views']);
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->nameLower);
 
-        Blade::componentNamespace(config('modules.namespace').'\\' . $this->name . '\\View\\Components', $this->nameLower);
+        Blade::componentNamespace(config('modules.namespace') . '\\' . $this->name . '\\View\\Components', $this->nameLower);
     }
 
     /**
@@ -159,8 +181,8 @@ class SettingServiceProvider extends ServiceProvider
     {
         $paths = [];
         foreach (config('view.paths') as $path) {
-            if (is_dir($path.'/modules/'.$this->nameLower)) {
-                $paths[] = $path.'/modules/'.$this->nameLower;
+            if (is_dir($path . '/modules/' . $this->nameLower)) {
+                $paths[] = $path . '/modules/' . $this->nameLower;
             }
         }
 

@@ -13,7 +13,7 @@ Route::group([
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
 ], function () {
     Route::prefix('posts')->group(function () {
-        Route::get('/', [BlogController::class, 'index']);
-        Route::get('/{slug}', [BlogController::class, 'show']);
+        Route::get('/', [BlogController::class, 'index'])->name('posts');
+        Route::get('/{slug}', [BlogController::class, 'show'])->name('post.show');
     });
 });

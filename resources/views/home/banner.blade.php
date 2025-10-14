@@ -10,9 +10,9 @@
                         <h2 class="slideTitle text-xl tablet:text-2xl font-bold mb-2 tablet:mb-3 text-gray-800">
                             {{ $banner->name }}
                         </h2>
-                        <p class="slideDescription text-sm tablet:text-base text-gray-600 mb-5 pe-[10px]">{{ strip_tags($banner->description) }}</p>
+                        <div class="slideDescription text-sm tablet:text-base text-gray-600 mb-5">{!!  $banner->description !!}</div>
     
-                        <a class="p-2 text-white rounded bg-primary transition-colors hover:opacity-80" href="{{ $banner->link }}">btton link</a>
+                        <a class="p-2 text-white rounded bg-primary transition-colors hover:opacity-80" href="{{ $banner->link }}">{{__('Explore')}}</a>
                     </div>    
 
                 </div>

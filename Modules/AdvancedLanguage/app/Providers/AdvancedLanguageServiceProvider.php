@@ -3,11 +3,14 @@
 namespace Modules\AdvancedLanguage\Providers;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Modules\AdvancedLanguage\Models\Language;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-
+use BezhanSalleh\LanguageSwitch\LanguageSwitch;
+use Illuminate\Support\Facades\Config;
 class AdvancedLanguageServiceProvider extends ServiceProvider
 {
     use PathNamespace;
@@ -27,6 +30,30 @@ class AdvancedLanguageServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
+         if (Schema::hasTable('languages')) {
+
+            $locales_translations = Language::get()
+                ->mapWithKeys(function ($locale) {
+                    return [
+                        $locale->lang_code => [
+                            'label' => $locale->lang_name,
+                            'flag' => $locale->lang_flag,
+                        ],
+                    ];
+                })
+                ->toArray();
+
+
+            // Override the filament-translations.locals config
+            Config::set('filament-translations.locals', $locales_translations);
+
+            $locales = Language::query()->pluck('lang_code')->toArray();
+            // dd($locales);
+            LanguageSwitch::configureUsing(function (LanguageSwitch $switch) use ($locales) {
+                $switch->locales($locales);
+            });
+        }
     }
 
     /**
