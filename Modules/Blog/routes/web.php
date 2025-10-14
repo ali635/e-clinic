@@ -14,6 +14,6 @@ Route::group([
 ], function () {
     Route::prefix('posts')->group(function () {
         Route::get('/', [BlogController::class, 'index']);
-        Route::get('/{slug}', [BlogController::class, 'show']);
+        Route::get('/{slug}', [BlogController::class, 'show'])->name('post.show');
     });
 });

@@ -35,10 +35,6 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function serviceHome() {
-        
-    }
-
     public function show(Request $request, $slug)
     {
 

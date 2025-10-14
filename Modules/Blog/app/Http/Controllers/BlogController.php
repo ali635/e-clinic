@@ -14,17 +14,12 @@ class BlogController extends Controller
     public function index(Request $request)
     {
           // Optional filters
-        $isHome = $request->query('is_home');
         $lang   = $request->query('lang', app()->getLocale());
 
         // Set current language for translatable model
         app()->setLocale($lang);
 
         $query = Post::query()->where('status', 1);
-
-        if (!is_null($isHome)) {
-            $query->where('is_home', (int) $isHome);
-        }
 
         // Fetch posts ordered by "order" column
         $posts = $query->orderBy('order', 'asc')->get();
@@ -51,9 +46,18 @@ class BlogController extends Controller
     /**
      * Show the specified resource.
      */
-    public function show($id)
+    public function show(Request $request,$slug)
     {
-        return view('blog::show');
+         $post = Post::with('translations')->where('slug', $slug)->firstOrFail();
+
+        // set language for translations
+        $lang = $request->query('lang', app()->getLocale());
+        app()->setLocale($lang);
+
+         return view('blog.show', [
+            'post'        => $post,
+            'lang'           => $lang,
+        ]);
     }
 
     /**
