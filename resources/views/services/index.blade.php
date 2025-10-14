@@ -19,18 +19,17 @@
                         <div class="p-5 tablet:p-6">
                             <h2 class="text-xl tablet:text-2xl font-bold mb-2 tablet:mb-3 text-gray-800">
                                 {{ $service->name }}</h2>
-                            <h2 class="text-xl tablet:text-2xl font-bold mb-2 tablet:mb-3 text-gray-800">
-                                {{ $service->price }}</h2>
                             <p class="text-sm tablet:text-base text-gray-600 mb-5">{{ $service->short_description }}</p>
-                            @if ($service->slug)
-                            
-                            
-                            <div class="flex justify">
-                                <a href="{{ route('service.show',$service->slug) }}"
-                                    class="px-4 py-1 rounded-full hover:bg-primary text-white transition duration-300 ease-in-out bg-primary/60">{{ __('Book
-                                                                        the service') }}</a>
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-xl tablet:text-2xl font-bold text-gray-800">
+                                    {{ $service->price }}
+                                </h2>
+                                @if ($service->slug)
+                                <a href="{{ route('service.show', $service->slug) }}"
+                                    class="px-4 py-1 rounded-full hover:bg-primary text-white transition duration-300 ease-in-out bg-primary/60">{{ __('Book the service') }}
+                                </a>
+                                @endif
                             </div>
-                            @endif
                         </div>
                     </div>
                 @endforeach
