@@ -19,7 +19,7 @@
                         <div class="p-5 tablet:p-6">
                             <h2 class="text-xl tablet:text-2xl font-bold mb-2 tablet:mb-3 text-gray-800">
                                 {{ $service->name }}</h2>
-                            <p class="text-sm tablet:text-base text-gray-600 mb-5">{{ $service->short_description }}</p>
+                            <p class="text-sm tablet:text-base text-gray-600 mb-5">{!! $service->short_description !!}</p>
                             <div class="flex items-center justify-between">
                                 <h2 class="text-xl tablet:text-2xl font-bold text-gray-800">
                                     {{ $service->price }}

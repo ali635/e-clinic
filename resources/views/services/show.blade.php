@@ -13,7 +13,7 @@
                     <h2 class="text-xl tablet:text-2xl font-bold mb-2 tablet:mb-3 text-gray-800">
                         {{ $service->name }}</h2>
                     <p class="text-sm tablet:text-base text-gray-600 mb-5">
-                        {{ $service->description }}
+                        {!! $service->description !!}
                     </p>
                 </div>
             </div>
