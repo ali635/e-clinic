@@ -29,6 +29,7 @@ Route::group([
             Route::get('/dashboard', [PatientController::class, 'statistical'])->name('dashboard');
             Route::get('/visits', [PatientController::class, 'visits'])->name('visits');
             Route::get('/visits/{id}', [PatientController::class, 'showVisit'])->name('visits.show');
+            Route::get('/history', [PatientController::class, 'history'])->name('history');
         });
     });
 });
