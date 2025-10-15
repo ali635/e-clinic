@@ -4,6 +4,7 @@ namespace Modules\Patient\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Booking\Models\Visit;
 
 class PatientController extends Controller
 {
@@ -12,45 +13,49 @@ class PatientController extends Controller
      */
     public function index()
     {
-        return view('patient::index');
+        $patient = auth('patient')->user();
+        return view('patient.profile.edit', compact('patient'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function statistical()
     {
-        return view('patient::create');
+        $patient = auth('patient')->user();
+
+        $completedVisits = $patient->visits()->where('is_arrival', true)->count();
+        $notCompletedVisits = $patient->visits()->where('is_arrival', false)->count();
+
+        return view('patient.statistical.index', compact('patient', 'completedVisits', 'notCompletedVisits'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+    public function visits()
     {
-        return view('patient::show');
+        $patient = auth('patient')->user();
+        $visits = Visit::with(['service', 'relatedService'])
+            ->where('patient_id', $patient->id)->orderByDesc('created_at')
+            ->get();
+        return view('patient.visits.index', compact('patient', 'visits'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function showVisit($id)
     {
-        return view('patient::edit');
+        $patient = auth('patient')->user();
+        $visit = Visit::with(['service', 'relatedService'])
+            ->where('patient_id', $patient->id)
+            ->find($id);
+
+        if (!$visit) {
+            return redirect()->route('patient.visits');
+        }
+        return view('patient.visits.show', compact('patient', 'visit'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
+    public function history()
+    {
+        $patient = auth('patient')->user();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
+        $histories = Visit::select('doctor_description',  'created_at')
+            ->where('patient_id', $patient->id)->orderByDesc('created_at')
+            ->get();
+        return view('patient.visits.history', compact('patient','histories'));
+    }
 }
