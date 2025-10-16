@@ -5,7 +5,7 @@
 
 <header>
     <nav class="bg-white py-2 tablet:py-4">
-        <div class="container tablet:flex tablet:items-center">
+        <div class="container tablet:flex tablet:items-center tablet:justify-between">
             <div class="flex justify-between items-center">
                 <a href="/" class="font-bold text-xl text-primary">
                     <img class="max-w-[200px]"  src="{{ asset('storage/' . setting('site_logo')) }}"
@@ -21,7 +21,7 @@
                 </button>
             </div>
 
-            <div class="hidden tablet:flex flex-col tablet:flex-row tablet:ml-auto mt-3 tablet:mt-0"
+            <div class="hidden tablet:flex flex-col tablet:flex-row mt-3 tablet:mt-0"
                 id="navbar-collapse">
                 <a href="/"
                     class="p-2 web:px-4 tablet:mx-2  @if (Route::currentRouteName() == 'home') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif">{{ __('Home') }}</a>
@@ -31,26 +31,33 @@
                     class="p-2 web:px-4 tablet:mx-2 @if (Route::currentRouteName() == 'services') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif">{{ __('Services') }}</a>
                 <a href="{{ route('posts') }}"
                     class="p-2 web:px-4 tablet:mx-2 @if (Route::currentRouteName() == 'posts') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif">{{ __('Blogs') }}</a>
-
-
-                @foreach ($locales as $localeCode => $local)
-                    <a class="dropdown-item" rel="alternate" hreflang="{{ $local->lang_code }}"
-                        href="{{ LaravelLocalization::getLocalizedURL($local->lang_code, null, [], true) }}">
-                        {{ $local->lang_name }}
-                    </a>
-
-                    <div class="dropdown-divider"></div>
-                @endforeach
+                
+                <div class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 relative group border border-gray-200">
+                    <span class="capitalize">{{ App::getLocale() == 'ar' ? 'العربية' : ($locales->where('lang_code', App::getLocale())->first()->lang_name ?? App::getLocale()) }}</span>
+                    <ul class="absolute bg-white py-2 w-52 ltr:right-0 rtl:left-0 top-full transform scale-0 group-hover:scale-100 hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg z-[9]">
+                        @foreach ($locales as $localeCode => $local)
+                        <li>
+                            <a class="px-3 text-sm hover:bg-slate-100 leading-8 flex items-center gap-2" href="{{ LaravelLocalization::getLocalizedURL($local->lang_code, null, [], true) }}">
+                                <img width="25px" src="{{ asset('images/eg.png') }}" />
+                                {{ $local->lang_name }}
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
 
                 @auth('patient')
                     <div class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 relative group">
-                        Salem
-                        <ul class="absolute bg-white py-2 w-52 ltr:left-0 rtl:right-0 top-full transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg">
-                            <li class="px-3 text-sm hover:bg-slate-100 leading-8">
-                                <a href="#">Profile</a>
+                        <span class="flex items-center gap-1">
+                            <svg width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13Z"></path></svg>
+                            <span>Salem</span>
+                        </span>
+                        <ul class="absolute bg-white py-2 w-52 ltr:right-0 rtl:left-0 top-full transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg z-[1]">
+                            <li>
+                                <a class="px-3 text-sm hover:bg-slate-100 leading-8 block" href="#">Profile</a>
                             </li>
-                            <li class="px-3 text-sm hover:bg-slate-100 leading-8">
-                                <a href="{{ route('patient.logout') }}" onclick="event.preventDefault();document.getElementById('logout.form').submit();">{{ __('logout') }}</a>
+                            <li>
+                                <a class="px-3 text-sm hover:bg-slate-100 leading-8 block" href="{{ route('patient.logout') }}" onclick="event.preventDefault();document.getElementById('logout.form').submit();">{{ __('logout') }}</a>
                                 <form id="logout.form" action="{{ route('patient.logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>

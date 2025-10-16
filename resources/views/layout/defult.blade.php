@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="">
+<body class="" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
     @include('share.header')
 

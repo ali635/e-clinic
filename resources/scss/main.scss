@@ -32,10 +32,120 @@ body {
 
 .hero_banners {
     @apply mb-4 ;
+    .embla__slide {
+        @apply relative after:absolute after:inset-0 after:w-full after:h-full after:bg-black/50 after:z-[1] ;
+    }
     .slide_content {
         @apply absolute top-1/2 -translate-y-1/2 ltr:left-[20px] web:ltr:left-[60px] rtl:right-[20px] web:rtl:right-[60px] z-[2] ;
         .slideTitle, .slideDescription {
             @apply text-white ;
         }
     }
+
+    .embla__dots {
+        @apply flex justify-center items-center gap-3 mt-3 ;
+
+        .embla__dot {
+            @apply flex justify-center items-center w-[20px] h-[20px] cursor-pointer rounded-full border-none outline-0 bg-black/60 p-0 m-0 transition ;
+            
+            &:not(.embla__dot--selected) {
+                @apply hover:bg-primary/50 ;
+            }
+            &.embla__dot--selected {
+                @apply bg-primary ;
+            }
+        }
+    }
 }
+
+/* Service Details Page Enhancements */
+.service-hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.service-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);
+    z-index: 1;
+}
+
+.service-card {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Blog Details Page Enhancements */
+.blog-hero {
+    position: relative;
+    overflow: hidden;
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.3) 100%);
+        z-index: 1;
+    }
+    .blog-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .blog-meta-card {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+    }
+}
+
+
