@@ -5,9 +5,9 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Modules\Patient\Http\Controllers\AuthController;
 use Modules\Patient\Http\Controllers\PatientController;
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('patients', PatientController::class)->names('patient');
-});
+// Route::middleware(['auth', 'verified'])->group(function () {
+//     Route::resource('patients', PatientController::class)->names('patient');
+// });
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
@@ -24,8 +24,12 @@ Route::group([
         });
 
         Route::middleware('auth:patient')->group(function () {
-            Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
             Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+            Route::get('/profile', [PatientController::class, 'index'])->name('profile');
+            Route::get('/dashboard', [PatientController::class, 'statistical'])->name('dashboard');
+            Route::get('/visits', [PatientController::class, 'visits'])->name('visits');
+            Route::get('/visits/{id}', [PatientController::class, 'showVisit'])->name('visits.show');
+            Route::get('/history', [PatientController::class, 'history'])->name('history');
         });
     });
 });
