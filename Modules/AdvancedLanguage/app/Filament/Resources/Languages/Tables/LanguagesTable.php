@@ -20,10 +20,17 @@ class LanguagesTable
                     ->searchable(),
                     TextColumn::make('lang_flag')->label(__('lang flag'))
                     ->searchable(),
+
+                TextColumn::make('is_default')->label(__('is default'))
+                    ->boolean(),
+                TextColumn::make('dir')->label(__('dir'))
+                    ->searchable(),
+                    
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()

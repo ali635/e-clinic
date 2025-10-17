@@ -53,6 +53,13 @@ class AdvancedLanguageServiceProvider extends ServiceProvider
             LanguageSwitch::configureUsing(function (LanguageSwitch $switch) use ($locales) {
                 $switch->locales($locales);
             });
+
+            $default_lang = Language::query()->where('is_default', true)->first();
+            if ($default_lang) {
+                Config::set('app.locale', $default_lang->lang_code);
+                Config::set('app.direction', $default_lang->dir ?? 'ltr');
+
+            }
         }
     }
 

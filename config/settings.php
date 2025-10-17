@@ -1,6 +1,5 @@
 <?php
 
-use Modules\Slider\Settings\CounterSettings;
 
 return [
 
@@ -9,7 +8,6 @@ return [
      * put them (manually) here.
      */
     'settings' => [
-        CounterSettings::class,
     ],
 
     /*

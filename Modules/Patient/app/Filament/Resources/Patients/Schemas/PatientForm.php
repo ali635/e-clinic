@@ -42,6 +42,7 @@ class PatientForm
 
 
 
+
                 Select::make('gender')
                     ->label(__('gender'))
                     ->options([
@@ -53,6 +54,13 @@ class PatientForm
                     ->label(__('phone'))
                     ->maxLength(255)
                     ->required(),
+
+                TextInput::make('hear_about_us')
+                    ->label(__('hear about us'))
+                    ->maxLength(255)
+                    ->required(),
+
+
 
                 DatePicker::make('date_of_birth')
                     ->label(__('date of birth'))

@@ -20,7 +20,10 @@
             "Modules\\AdvancedLanguage\\": "app/",
             "Modules\\AdvancedLanguage\\Database\\Factories\\": "database/factories/",
             "Modules\\AdvancedLanguage\\Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

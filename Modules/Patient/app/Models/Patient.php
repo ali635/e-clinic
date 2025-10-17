@@ -33,7 +33,8 @@ class Patient extends Authenticatable implements OAuthenticatable
         'address',
         'country_id',
         'city_id',
-        'status'
+        'status',
+        'hear_about_us'
     ];
 
     protected $casts = [

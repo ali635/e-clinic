@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ getDirection() }}" >
 
 <head>
     <meta charset="utf-8">
@@ -20,7 +20,8 @@
 
 </head>
 
-<body class="" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+
+<body class="" dir="{{ getDirection() }}">
 
     @include('share.header')
 

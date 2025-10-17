@@ -95,7 +95,7 @@
                         {{ __('City') }}
                     </label>
                     <select id="city" name="city_id" class="form-input">
-                        <option value="">Select your city</option>
+                        <option value="">{{__('Select your city')}}</option>
                         @foreach ($cities as $city)
                             <option value="{{ $city->id }}">{{ $city->name }}</option>
                         @endforeach
@@ -115,6 +115,20 @@
                     <input id="street" name="address" required class="form-input"
                         placeholder="{{ __('Enter your address') }}" value="{{ old('address') }}">
                     @error('address')
+                        <div class="text-red-600 text-sm mt-1 ">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <!-- Street Field -->
+                <div class="space-y-2">
+                    <label for="street" class="block text-sm font-medium text-gray-700">
+                        {{ __('Where did you hear about us ?') }}
+                    </label>
+                    <input id="street" name="hear_about_us" required class="form-input"
+                        placeholder="{{ __('Enter Where did you hear about us ?') }}" value="{{ old('hear_about_us') }}">
+                    @error('hear_about_us')
                         <div class="text-red-600 text-sm mt-1 ">
                             {{ $message }}
                         </div>

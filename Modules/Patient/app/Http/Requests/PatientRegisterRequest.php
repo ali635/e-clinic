@@ -23,6 +23,7 @@ class PatientRegisterRequest extends FormRequest
             'address'       => 'required|string|max:255',
             'country_id'    => 'nullable|integer|exists:countries,id',
             'city_id'       => 'required|integer|exists:cities,id',
+            'hear_about_us' => 'required|string|max:255',
         ];
     }
 

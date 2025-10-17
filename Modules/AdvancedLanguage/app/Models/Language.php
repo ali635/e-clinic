@@ -17,7 +17,9 @@ class Language extends Model
         'id',
         'lang_code',
         'lang_flag',
-        'lang_name'
+        'lang_name',
+        'is_default',
+        'dir',
     ];
     // protected static function newFactory(): LanguageFactory
     // {

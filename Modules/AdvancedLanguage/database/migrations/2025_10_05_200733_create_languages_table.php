@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('lang_code')->nullable();
             $table->string('lang_flag')->nullable();
             $table->string('lang_name')->nullable();
+           
             $table->timestamps();
         });
     }

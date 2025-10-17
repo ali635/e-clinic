@@ -21,6 +21,17 @@ class LanguageForm
                     ->maxLength(255),
                 TextInput::make('lang_name')->label(__('lang name'))
                     ->maxLength(255),
+
+                Select::make('is_default')->label(__('is default'))
+                    ->options([
+                        1 => __('yes'),
+                        0 => __('no'),
+                    ]),
+                Select::make('dir')->label(__('dir'))
+                    ->options([
+                        'rtl' => __('rtl'),
+                        'ltr' => __('ltr'),
+                    ]),
             ]);
     }
 }
