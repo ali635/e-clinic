@@ -47,7 +47,7 @@
                         @if($service->price)
                         <div class="flex items-center justify-between py-3 border-b border-primary/20">
                             <span class="text-gray-600 font-medium">{{ __('Price') }}</span>
-                            <span class="text-xl font-bold text-primary">{{ $service->price }} د.ع</span>
+                            <span class="text-xl font-bold text-primary">{{ $service->price }} {{ __('IQD') }}</span>
                         </div>
                         @endif
 

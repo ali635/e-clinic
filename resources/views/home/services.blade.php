@@ -21,7 +21,7 @@
                             <div class="flex items-center justify-between">
                                 <h2 class="text-xl tablet:text-2xl font-bold text-gray-800">
                                     {{ $service->price }}
-                                    <span class="text-md tablet:text-lg text-primary">د.ع</span>
+                                    <span class="text-md tablet:text-lg text-primary">{{ __('IQD') }}</span>
                                 </h2>
                                 @if ($service->slug)
                                 <a href="{{ route('service.show', $service->slug) }}"
