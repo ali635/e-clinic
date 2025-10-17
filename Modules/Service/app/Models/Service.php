@@ -5,6 +5,7 @@ namespace Modules\Service\Models;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\App;
 use Modules\Booking\Models\Visit;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
@@ -52,7 +53,7 @@ class Service extends Model
             ->useLogName('service')
             ->setDescriptionForEvent(function (string $eventName) {
                 return __('Service ":name" has been :event.', [
-                    'name' => $this->getTranslation('name', app()->getLocale()),
+                    'name' => $this->getTranslation('name', App::getLocale()),
                     'event' => $eventName,
                 ]);
             })
@@ -64,15 +65,42 @@ class Service extends Model
     {
         $properties = $activity->properties->toArray();
         $attributes = $properties['attributes'] ?? [];
-        $nameTrans = $this->getTranslation('name', app()->getLocale());
-        $shortDescriptionTrans = $this->getTranslation('short_description', app()->getLocale());
-        $descriptionTrans = $this->getTranslation('description', app()->getLocale());
+
+        // Extract the name from the Livewire/Filament request payload
+        $name = $short_description = $description = null;
+        $requestData = request()->all();
+
+        // Check for nested Livewire component data
+        if (isset($requestData['components']) && is_array($requestData['components'])) {
+            foreach ($requestData['components'] as $component) {
+                if (isset($component['snapshot'])) {
+                    $snapshot = json_decode($component['snapshot'], true);
+                    if (isset($snapshot['data']['name'])) {
+                        $name = $snapshot['data']['name'];
+                        $short_description = $snapshot['data']['short_description'] ?? null;
+                        $description = $snapshot['data']['description'] ?? null;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Fallback to direct request input
+        $name = $name ?: request()->input('name');
+        $short_description = $short_description ?: request()->input('short_description');
+        $description = $description ?: request()->input('description');
+
+        // Get current translations
+        $nameTrans = $this->getTranslation('name', App::getLocale());
+        $shortDescriptionTrans = $this->getTranslation('short_description', App::getLocale());
+        $descriptionTrans = $this->getTranslation('description', App::getLocale());
 
         $attributes = array_merge($attributes, [
-            'name' => $nameTrans->name,
-            'short_description' => $shortDescriptionTrans->short_description,
-            'description' => $descriptionTrans->description,
+            'name' => $name ?: $nameTrans,
+            'short_description' => $short_description ?: $shortDescriptionTrans,
+            'description' => $description ?: $descriptionTrans,
         ]);
+
         $properties['attributes'] = $attributes;
         $activity->properties = $properties;
     }

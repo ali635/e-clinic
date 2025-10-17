@@ -13,7 +13,9 @@ class ServiceTranslation extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [
+    protected $table = 'service_translations';
+
+     protected $fillable = [
         'name',
         'locale',
         'service_id',

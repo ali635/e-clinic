@@ -20,4 +20,5 @@ if (!function_exists('getDirection')) {
         // Return its direction or default to 'ltr'
         return $lang?->dir ?? 'ltr';
     }
+    
 }
