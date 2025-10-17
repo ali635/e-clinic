@@ -38,7 +38,7 @@
                         @foreach ($locales as $localeCode => $local)
                         <li>
                             <a class="px-3 text-sm hover:bg-slate-100 leading-8 flex items-center gap-2" href="{{ LaravelLocalization::getLocalizedURL($local->lang_code, null, [], true) }}">
-                                <img width="25px" src="{{ asset('images/eg.png') }}" />
+                                <img width="25px" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$local->lang_flag}}.svg" />
                                 {{ $local->lang_name }}
                             </a>
                         </li>
