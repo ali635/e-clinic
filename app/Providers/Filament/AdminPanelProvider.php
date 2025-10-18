@@ -62,7 +62,8 @@ class AdminPanelProvider extends PanelProvider
                 GlobalSearchModalPlugin::make(),
                 \TomatoPHP\FilamentSettingsHub\FilamentSettingsHubPlugin::make()
                     ->allowSiteSettings()
-                    ->allowSocialMenuSettings(false)
+                    ->allowSocialMenuSettings(false),
+                \TomatoPHP\FilamentTranslationsGoogle\FilamentTranslationsGooglePlugin::make()
                 // FilamentFabricatorPlugin::make(),
             ])
             ->databaseNotifications()
