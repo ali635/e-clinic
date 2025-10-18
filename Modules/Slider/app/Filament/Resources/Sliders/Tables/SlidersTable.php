@@ -34,10 +34,7 @@ class SlidersTable
                     ->label(__('link'))
                     ->searchable(),
 
-                ImageColumn::make('image')
-                    ->label(__('image'))
-                    ->circular(),
-
+               
                 ToggleColumn::make('status')
                     ->label(__('status')),
             ])

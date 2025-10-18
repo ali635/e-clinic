@@ -29,9 +29,10 @@ class SliderForm
                     ->required(),
 
 
+
                 FileUpload::make('image')
                     ->label(__(' image'))
-                     ->disk('public')
+                    ->disk('public')
                     ->directory('slider')
                     ->required(),
 
