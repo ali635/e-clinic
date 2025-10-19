@@ -109,7 +109,7 @@
             {{ __('Get started today and experience our professional service with guaranteed quality and care.') }}
         </p>
         <div class="flex flex-col tablet:flex-row gap-4 justify-center items-center">
-            <button class="bg-white text-primary font-bold py-4 px-8 rounded-full text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 flex items-center cursor-pointer">
+            <button data-modal-target="book-modal" data-modal-toggle="book-modal" class="bg-white text-primary font-bold py-4 px-8 rounded-full text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 flex items-center cursor-pointer">
                 <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
                 </svg>
@@ -122,4 +122,109 @@
     </div>
 </section>
 
+<div id="book-modal" tabindex="-1" aria-hidden="true" class="bookModalWrapper hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-sm p-4">
+            <!-- Modal body -->
+            <form class="space-y-6" method="POST" action="">
+                <div class="flex justify-end !mb-0">
+                    <button type="button" class="cursor-pointer text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="book-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 gap-3">
+                    <!-- Services Field -->
+                    <div class="space-y-2">
+                        <label for="services" class="block text-sm font-medium text-gray-700">
+                            {{ __('services') }}
+                        </label>
+                        <select id="services" name="services" class="form-input">
+                            <option value="">{{__('Select Service')}}</option>
+                            <option value="1">Service 1</option>
+                            <option value="2">Service 2</option>
+                        </select>
+                        @error('gender')
+                            <div class="text-red-600 text-sm mt-1 ">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+    
+                    <!-- Date Field -->
+                    <!-- <div class="space-y-2">
+                        <label for="date" class="block text-sm font-medium text-gray-700">
+                            {{ __('Date of Birth') }}
+                        </label>
+                        <input id="date" name="date_of_birth" type="date" value="{{ old('date_of_birth') }}"
+                            class="form-input">
+                        @error('date_of_birth')
+                            <div class="text-red-600 text-sm mt-1 ">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div> -->
+    
+                    <!-- Time Slots Select Field -->
+                    <div class="space-y-2 relative">
+                        <label class="block text-sm font-medium text-gray-700">
+                            {{ __('Time Slot') }}
+                        </label>
+                        <input type="hidden" name="timeSlots">
+                        <button id="slots-button" data-dropdown-toggle="timeSlots" class="form-input text-start" type="button">
+                            {{__('Select Time Slot')}}
+                        </button>
+                        <div id="timeSlots" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-[90%] !mx-4 border border-primary overflow-hidden !translate-x-0">
+                            <ul class="timeSlotsUl text-sm text-gray-700" aria-labelledby="slots-button">
+                                <li data-slot-id="1" class="timeSlotItem before:bg-red-500 disabled">
+                                    5:00-5:30
+                                </li>
+                                <li data-slot-id="2" class="timeSlotItem before:bg-green-500">
+                                    5:30-6:00
+                                </li>
+                                <li data-slot-id="3" class="timeSlotItem before:bg-gray-500 disabled">
+                                    6:00-6:30
+                                </li>
+                            </ul>
+                        </div>
+                        @error('gender')
+                            <div class="text-red-600 text-sm mt-1 ">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    <button type="submit"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200 cursor-pointer max-w-sm mx-auto">
+                        {{ __('Book Now') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const timeSlotItems = document.querySelectorAll('.timeSlotItem:not(.disabled)');
+        const slotsButton = document.getElementById('slots-button');
+        const slotsInput = document.querySelector('input[name="timeSlots"]');
+        timeSlotItems.forEach(function(item) {
+            item.addEventListener('click', function() {
+                const slotId = item.getAttribute('data-slot-id');
+                slotsButton.textContent = this.textContent;
+                if(slotId && slotsInput){
+                    slotsInput.value = slotId;
+                }
+                slotsButton.click();
+            });
+        });
+    });
+</script>

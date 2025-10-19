@@ -62,17 +62,16 @@ body {
 .service-hero {
     position: relative;
     overflow: hidden;
-}
-
-.service-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);
-    z-index: 1;
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);
+        z-index: 1;
+    }
 }
 
 .service-card {
@@ -117,6 +116,20 @@ body {
     }
 }
 
+.bookModalWrapper {
+    .timeSlotsUl {
+        .timeSlotItem {
+            @apply before:inline-block before:w-[5px] before:h-[5px] before:rounded-full before:relative before:top-1/2 before:-translate-y-1/2 text-gray-700 py-2 cursor-pointer px-2 ;
+            &:not(.disabled){
+                @apply hover:bg-gray-300/60 ;
+            }
+            &.disabled {
+                @apply after:pointer-events-none after:absolute after:w-full after:h-full cursor-no-drop after:z-[9] grayscale ;
+            }
+        }
+    }
+}
+
 /* Blog Details Page Enhancements */
 .blog-hero {
     position: relative;
@@ -147,5 +160,4 @@ body {
         }
     }
 }
-
 
