@@ -12,7 +12,9 @@ import Autoplay from 'embla-carousel-autoplay'
 const plugins = [Autoplay()]
 import { addDotBtnsAndClickHandlers } from './EmblaCarouselDotButton'
 
-const OPTIONS = { loop: true }
+const direction = document.body.getAttribute('dir') || 'rtl';
+
+const OPTIONS = { loop: true, direction: direction }
 
 const emblaNode = document.querySelector('.embla')
 const viewportNode = emblaNode.querySelector('.embla__viewport')
