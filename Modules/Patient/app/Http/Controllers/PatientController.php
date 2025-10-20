@@ -24,7 +24,9 @@ class PatientController extends Controller
         $completedVisits = $patient->visits()->where('is_arrival', true)->count();
         $notCompletedVisits = $patient->visits()->where('is_arrival', false)->count();
 
-        return view('patient.statistical.index', compact('patient', 'completedVisits', 'notCompletedVisits'));
+        $date_of_last_visit = $patient->visits()->orderByDesc('created_at')->first()?->created_at?->format('d-m-Y') ?? '-';
+
+        return view('patient.statistical.index', compact('patient', 'completedVisits', 'notCompletedVisits', 'date_of_last_visit'));
     }
 
     public function visits()
@@ -38,15 +40,15 @@ class PatientController extends Controller
 
     public function showVisit($id)
     {
-        $patient = auth('patient')->user();
-        $visit = Visit::with(['service', 'relatedService'])
-            ->where('patient_id', $patient->id)
-            ->find($id);
+        // $patient = auth('patient')->user();
+        // $visit = Visit::with(['service', 'relatedService'])
+        //     ->where('patient_id', $patient->id)
+        //     ->find($id);
 
-        if (!$visit) {
-            return redirect()->route('patient.visits');
-        }
-        return view('patient.visits.show', compact('patient', 'visit'));
+        // if (!$visit) {
+        //     return redirect()->route('patient.visits');
+        // }
+        return view('patient.visits.show');
     }
 
     public function history()
@@ -56,6 +58,6 @@ class PatientController extends Controller
         $histories = Visit::select('doctor_description',  'created_at')
             ->where('patient_id', $patient->id)->orderByDesc('created_at')
             ->get();
-        return view('patient.visits.history', compact('patient','histories'));
+        return view('patient.visits.history', compact('patient', 'histories'));
     }
 }

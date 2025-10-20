@@ -10,27 +10,27 @@
             <nav>
                 <ul class="space-y-4">
                     <li>
-                        <a href="#" class="flex items-center text-primary font-semibold py-1 rounded px-2 hover:bg-primary/10">
+                        <a href="{{ route('patient.profile') }}" class="flex items-center text-primary font-semibold py-1 rounded px-2 hover:bg-primary/10">
                             <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13Z"></path></svg>
-                            Profile
+                            {{__('Profile')}}
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center text-primary font-semibold py-1 rounded px-2 hover:bg-primary/10 bg-primary/40">
+                        <a href="{{ route('patient.dashboard') }}" class="flex items-center text-primary font-semibold py-1 rounded px-2 hover:bg-primary/10 bg-primary/40">
                         <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3V19H21V21H3V3H5ZM20.2929 6.29289L21.7071 7.70711L16 13.4142L13 10.415L8.70711 14.7071L7.29289 13.2929L13 7.58579L16 10.585L20.2929 6.29289Z"></path></svg>
-                            Stats
+                            {{__('Stats')}}
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center text-primary font-semibold py-1 rounded px-2 hover:bg-primary/10">
+                        <a href="{{ route('patient.visits') }}" class="flex items-center text-primary font-semibold py-1 rounded px-2 hover:bg-primary/10">
                             <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z"></path></svg>
-                            Visits
+                            {{__('Visits')}}
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center text-primary font-semibold py-1 rounded px-2 hover:bg-primary/10">
+                        <a href="{{ route('patient.history') }}" class="flex items-center text-primary font-semibold py-1 rounded px-2 hover:bg-primary/10">
                             <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z"></path></svg>
-                            History
+                            {{__('History')}}
                         </a>
                     </li>
                 </ul>
