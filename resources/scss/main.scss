@@ -130,6 +130,20 @@ body {
     }
 }
 
+.profile_layout {
+    .sidebarToggleBtn {
+        @apply flex items-center justify-center md:hidden absolute top-[60px] ltr:left-full rtl:right-full z-30 bg-primary text-white rounded p-2 shadow focus:outline-none transition-all duration-[400ms] ;
+        
+    }
+
+    .sidebarMenu {
+        @apply w-[220px] bg-white p-3 z-20 md:block max-tablet:ltr:-translate-x-full max-tablet:rtl:translate-x-full fixed md:static top-0 left-0 h-full md:h-auto transition-all;
+        &.menuOpened {
+            @apply translate-x-0;
+        }
+    }
+}
+
 /* Blog Details Page Enhancements */
 .blog-hero {
     position: relative;

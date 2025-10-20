@@ -1,4 +1,4 @@
-@extends('layout.defult')
+@extends('patient.share.sidbar')
 @section('patient_content')
 
 
