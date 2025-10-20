@@ -52,18 +52,6 @@
     // Close sidebar when clicking outside of it on mobile
     const aside = document.getElementById('sidebarMenu');
     const btn = document.getElementById('sidebarToggleBtn');
-    document.addEventListener('click', function(e){
-        if (
-            window.innerWidth < 768 &&
-            aside &&
-            btn &&
-            !aside.classList.contains('hidden') &&
-            !aside.contains(e.target) &&
-            !btn.contains(e.target)
-        ) {
-            aside.classList.add('hidden');
-        }
-    });
 
     btn.addEventListener('click', function(e){
         btn.classList.toggle('menuShown')
