@@ -27,7 +27,7 @@ class PostResource extends Resource
     
     public static function getNavigationGroup(): ?string
     {
-        return __('Blog');
+        return __('Blogs');
     }
 
     // ✅ TRANSLATABLE navigation label (sidebar)
