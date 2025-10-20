@@ -132,7 +132,7 @@ body {
 
 .profile_layout {
     .sidebarToggleBtn {
-        @apply flex items-center justify-center md:hidden absolute top-[60px] ltr:left-full rtl:right-full z-30 bg-primary text-white rounded p-2 shadow focus:outline-none transition-all duration-[400ms] ;
+        @apply flex items-center justify-center md:hidden absolute top-[60px] ltr:left-full rtl:right-full z-30 bg-primary text-white rounded p-2 shadow focus:outline-none transition-all duration-[400ms] opacity-50 hover:opacity-100;
         
     }
 
