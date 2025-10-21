@@ -1,11 +1,11 @@
 <section class="py-12 bg-white">
     <div class="container">
-        <h2 class="text-3xl tablet:text-4xl font-bold text-center text-primary mb-4">
-            {{ __('Our Services') }}
-        </h2>
-        <p class="text-center text-gray-600 mb-12 text-lg">
-            {{ __('Here are our services choose from them') }}
-        </p>
+        <div class="flex flex-col tablet:flex-row tablet:justify-between tablet:items-center gap-2 mb-8">
+            <h2 class="text-3xl tablet:text-4xl font-bold text-primary">
+                {{ __('Our Services') }}
+            </h2>
+            <a href="{{ route('services') }}" class="text-primary self-end tablet:self-center border border-primary text-center px-3 py-1.5 rounded-lg hover:bg-primary hover:text-white transition duration-300 ease-in-out">{{ __('All Services') }}</a>
+        </div>
         <div class="grid grid-cols-1 tablet:grid-cols-2 web:grid-cols-4 gap-4">
             @foreach ($services as $service)
                 <div

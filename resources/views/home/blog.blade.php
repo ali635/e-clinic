@@ -1,8 +1,11 @@
 <section class="py-12">
     <div class="container">
-        <h2 class="text-3xl tablet:text-4xl font-bold text-center text-primary mb-12">
-            {{ __('Blogs') }}
-        </h2>
+        <div class="flex flex-col tablet:flex-row tablet:justify-between tablet:items-center gap-2 mb-8">
+            <h2 class="text-3xl tablet:text-4xl font-bold text-primary">
+                {{ __('Blogs') }}
+            </h2>
+            <a href="{{ route('posts') }}" class="text-primary self-end tablet:self-center border border-primary text-center px-3 py-1.5 rounded-lg hover:bg-primary hover:text-white transition duration-300 ease-in-out">{{ __('All Blogs') }}</a>
+        </div>
         <div class="grid grid-cols-1 tablet:grid-cols-2 web:grid-cols-4 gap-4">
             @foreach ($posts as $post)
                 <a href="{{ route('post.show', $post->slug) }}"
