@@ -66,7 +66,7 @@ class PatientController extends Controller
     {
         $patient = auth('patient')->user();
 
-        $feedbacks = Feedback::query()->where('patient_id', $patient->id)->get();
+        $feedbacks = Feedback::query()->where('patient_id', $patient->id)->with(['visit', 'visit.service'])->get();
 
         return view('patient.feedback.index', compact('feedbacks'));
     }
