@@ -149,11 +149,9 @@
                 </p>
 
                 <p class="mt-4 text-sm text-gray-500 tablet:order-first tablet:mt-0">
-                    {{-- &copy; {{ date('Y') }} {{ setting('site_name') }} --}}
+                    &copy; {{ date('Y') }} {{ setting('site_name') }}
                 </p>
             </div>
         </div>
     </div>
 </footer>
-
-feedbacks list 

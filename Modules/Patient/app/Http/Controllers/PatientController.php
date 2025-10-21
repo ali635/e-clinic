@@ -4,6 +4,7 @@ namespace Modules\Patient\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Booking\Models\Feedback;
 use Modules\Booking\Models\Visit;
 
 class PatientController extends Controller
@@ -59,5 +60,14 @@ class PatientController extends Controller
             ->where('patient_id', $patient->id)->orderByDesc('created_at')
             ->get();
         return view('patient.visits.history', compact('patient', 'histories'));
+    }
+
+    public function feedback()
+    {
+        $patient = auth('patient')->user();
+
+        $feedbacks = Feedback::query()->where('patient_id', $patient->id)->get();
+
+        return view('patient.feedback.index', compact('feedbacks'));
     }
 }
