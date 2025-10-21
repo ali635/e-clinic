@@ -22,8 +22,6 @@ class Service extends Model
 
     protected $fillable = [
         'price',
-        'start',
-        'end',
         'patient_time_minute',
         'status',
         'order',
@@ -103,5 +101,10 @@ class Service extends Model
 
         $properties['attributes'] = $attributes;
         $activity->properties = $properties;
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(ServiceSchedule::class);
     }
 }

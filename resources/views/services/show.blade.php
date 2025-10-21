@@ -142,34 +142,16 @@
                         <label for="services" class="block text-sm font-medium text-gray-700">
                             {{ __('services') }}
                         </label>
-                        <select id="services" name="services" class="form-input">
-                            <option value="">{{__('Select Service')}}</option>
-                            <option value="1">Service 1</option>
-                            <option value="2">Service 2</option>
-                        </select>
-                        @error('gender')
-                            <div class="text-red-600 text-sm mt-1 ">
-                                {{ $message }}
-                            </div>
-                        @enderror
+                        <input id="services" name="services" type="hidden" class="form-input" value="{{ $service->id }}">
                     </div>
     
-                    <!-- Date Field -->
-                    <!-- <div class="space-y-2">
-                        <label for="date" class="block text-sm font-medium text-gray-700">
-                            {{ __('Date of Birth') }}
-                        </label>
-                        <input id="date" name="date_of_birth" type="date" value="{{ old('date_of_birth') }}"
-                            class="form-input">
-                        @error('date_of_birth')
-                            <div class="text-red-600 text-sm mt-1 ">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div> -->
-    
+                    append days of week -
+
+                    and append active
+
+
                     <!-- Time Slots Select Field -->
-                    <div class="space-y-2 relative">
+                    {{-- <div class="space-y-2 relative">
                         <label class="block text-sm font-medium text-gray-700">
                             {{ __('Time Slot') }}
                         </label>
@@ -195,7 +177,7 @@
                                 {{ $message }}
                             </div>
                         @enderror
-                    </div>
+                    </div> --}}
                 </div>
 
                 <!-- Submit Button -->

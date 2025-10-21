@@ -5,15 +5,19 @@ namespace Modules\Service\Filament\Resources\Services\Schemas;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Modules\Service\Models\Service;
 use Illuminate\Support\Str;
 use Filament\Schemas\Components\Utilities\Set;
+use Modules\Service\Enums\DayOfWeek;
 
 class ServiceForm
 {
@@ -47,13 +51,7 @@ class ServiceForm
                     ->numeric()
                     ->required(),
 
-                TimePicker::make('start')
-                    ->label(__('start'))
-                    ->required(),
 
-                TimePicker::make('end')
-                    ->label(__('end'))
-                    ->required(),
                 TextInput::make('patient_time_minute')
                     ->label(__('patient time in minute'))
                     ->numeric()
@@ -75,7 +73,10 @@ class ServiceForm
                     ->required(),
 
 
-
+                TextInput::make('order')
+                    ->label(__('order'))
+                    ->numeric()
+                    ->required(),
                 Toggle::make('status')
                     ->label(__('status'))
                     ->required(),
@@ -84,10 +85,25 @@ class ServiceForm
                     ->label(__('is home'))
                     ->required(),
 
-                TextInput::make('order')
-                    ->label(__('order'))
-                    ->numeric()
-                    ->required(),
+
+
+                Section::make(__('Available Time and Label Days'))
+                    ->columns(1)
+                    ->columnSpan(2)
+                    ->schema([
+                        Repeater::make('schedules')
+                            ->relationship()
+                            ->schema([
+                                Select::make('day_of_week')
+                                    ->options(DayOfWeek::options())
+                                    ->required(),
+                                TimePicker::make('start_time')->required(),
+                                TimePicker::make('end_time')->required(),
+                                Toggle::make('is_active')->default(true),
+                            ])
+                            ->columns(4)
+                            ->collapsible(),
+                    ])
             ]);
     }
 }

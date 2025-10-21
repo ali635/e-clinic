@@ -7,7 +7,10 @@ use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
+use Modules\Service\Enums\DayOfWeek;
 use Modules\Service\Filament\Resources\Services\ServiceResource;
+use Modules\Service\Models\Service;
 
 class EditService extends EditRecord
 {
@@ -35,21 +38,21 @@ class EditService extends EditRecord
         ];
 
         // Check if translation exists
-        $exists = \DB::table('service_translations')
+        $exists = DB::table('service_translations')
             ->where('service_id', $serviceId)
             ->where('locale', $locale)
             ->exists();
 
         if ($exists) {
             // Update existing translation
-            \DB::table('service_translations')
+            DB::table('service_translations')
                 ->where('service_id', $serviceId)
                 ->where('locale', $locale)
                 ->update($translationData);
         } else {
             // Insert new translation
             $translationData['service_id'] = $serviceId;
-            \DB::table('service_translations')->insert($translationData);
+            DB::table('service_translations')->insert($translationData);
         }
 
         // Update main service record (excluding translation fields)
@@ -58,7 +61,36 @@ class EditService extends EditRecord
             $record->update($serviceData);
         }
 
-        return $record;
+
+        if (isset($data['schedules']) && is_array($data['schedules'])) {
+            // Remove existing schedules
+            DB::table('service_schedules')->where('service_id', $serviceId)->delete();
+
+            // Insert new schedules
+            foreach ($data['schedules'] as $schedule) {
+                $dayValue = is_string($schedule['day_of_week'])
+                    ? $schedule['day_of_week']
+                    : ($schedule['day_of_week'] instanceof DayOfWeek
+                        ? $schedule['day_of_week']->value
+                        : null);
+
+                if (!$dayValue || !in_array($dayValue, array_column(DayOfWeek::cases(), 'value'))) {
+                    continue; // skip invalid day
+                }
+
+                DB::table('service_schedules')->insert([
+                    'service_id' => $serviceId,
+                    'day_of_week' => $dayValue,
+                    'start_time'  => $schedule['start_time'] ?? null,
+                    'end_time'    => $schedule['end_time'] ?? null,
+                    'is_active'   => $schedule['is_active'] ?? true,
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
+                ]);
+            }
+        }
+
+        return Service::with('schedules')->find($serviceId);
     }
 
     protected function getHeaderActions(): array
