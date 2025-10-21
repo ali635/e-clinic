@@ -10,6 +10,8 @@ use Filament\Pages\SettingsPage;
 use Modules\Setting\Settings\AboutSettings;
 use TomatoPHP\FilamentSettingsHub\Traits\UseShield;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 
 class AboutSetting extends SettingsPage
@@ -49,18 +51,46 @@ class AboutSetting extends SettingsPage
                 Section::make(__('About Us Setting'))
                     ->description(__('About Us Setting'))
                     ->schema([
-                        RichEditor::make('about_us')
-                            ->required()
-                            ->label(__('About US'))
-                            ->columnSpan(2)
-                            ->hint(config('filament-settings-hub.show_hint') ? 'setting("about_us")' : null),
+                        Tabs::make('Translations')
+                            ->schema([
+                                Tab::make('en')
+                                    ->label(__('English'))
+                                    ->schema([
+                                        RichEditor::make('about_us.en')
+                                            ->required()
+                                            ->label(__('About Us (English)'))
+                                            ->columnSpan(2),
+                                        TextInput::make('address.en')
+                                            ->required()
+                                            ->label(__('Address (English)'))
+                                            ->columnSpan(2),
+                                    ]),
+                                Tab::make('ar')
+                                    ->label(__('Arabic'))
+                                    ->schema([
+                                        RichEditor::make('about_us.ar')
+                                            ->required()
+                                            ->label(__('About Us (Arabic)'))
+                                            ->columnSpan(2),
+                                        TextInput::make('address.ar')
+                                            ->required()
+                                            ->label(__('Address (Arabic)'))
+                                            ->columnSpan(2),
+                                    ]),
 
-                        TextInput::make('address')
-                            ->required()
-                            ->label(__('Address'))
-                            ->columnSpan(2)
-                            ->hint(config('filament-settings-hub.show_hint') ? 'setting("address")' : null),
-
+                                Tab::make('ku')
+                                    ->label(__('Kurdish'))
+                                    ->schema([
+                                        RichEditor::make('about_us.ku')
+                                            ->required()
+                                            ->label(__('About Us (Kurdish)'))
+                                            ->columnSpan(2),
+                                        TextInput::make('address.ku')
+                                            ->required()
+                                            ->label(__('Address (Kurdish)'))
+                                            ->columnSpan(2),
+                                    ]),
+                            ]),
                     ]),
             ])->columns(1);
     }

@@ -29,10 +29,9 @@ class ServiceDetailResource extends JsonResource
             'description'          => $this->description,
             'price'                => $this->price,
             'patient_time_minute'  => (int) $this->patient_time_minute,
-            'start'                => $this->start,
-            'end'                  => $this->end,
             'image'                => $imageUrl,
             'is_home'              => (bool) $this->is_home,
+            'schedules'            => ScheduleResource::collection($this->schedules),
         ];
     }
 }
