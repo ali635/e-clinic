@@ -31,7 +31,8 @@ class Visit extends Model
         'secretary_description',
         'total_price',
         'notes',
-        'attachment'
+        'attachment',
+        'patient_description'
     ];
 
     protected function casts(): array
