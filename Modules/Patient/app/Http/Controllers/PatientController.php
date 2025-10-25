@@ -41,15 +41,15 @@ class PatientController extends Controller
 
     public function showVisit($id)
     {
-        // $patient = auth('patient')->user();
-        // $visit = Visit::with(['service', 'relatedService'])
-        //     ->where('patient_id', $patient->id)
-        //     ->find($id);
+        $patient = auth('patient')->user();
+        $visit = Visit::with(['service', 'relatedService'])
+            ->where('patient_id', $patient->id)
+            ->find($id);
 
-        // if (!$visit) {
-        //     return redirect()->route('patient.visits');
-        // }
-        return view('patient.visits.show');
+        if (!$visit) {
+            return redirect()->route('patient.visits');
+        }
+        return view('patient.visits.show',compact('patient','visit'));
     }
 
     public function history()

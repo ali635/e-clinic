@@ -172,7 +172,7 @@ class VisitForm
                         ->multiple()
                         ->helperText(__('Drag & drop or browse to upload multiple lab tests')),
 
-                    FileUpload::make('x-rays')
+                    FileUpload::make('x_rays')
                         ->label(__('x-rays'))
                         ->multiple()
                         ->helperText(__('Drag & drop or browse to upload multiple x-rays')),

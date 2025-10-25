@@ -25,7 +25,7 @@ class Visit extends Model
         'is_arrival',
         'arrival_time',
         'lab_tests',
-        'x-rays',
+        'x_rays',
         'treatment',
         'doctor_description',
         'secretary_description',
@@ -39,7 +39,7 @@ class Visit extends Model
     {
         return [
             'lab_tests' => 'array',
-            'x-rays' => 'array',
+            'x_rays' => 'array',
 
         ];
     }

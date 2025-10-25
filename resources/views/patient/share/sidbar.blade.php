@@ -7,7 +7,7 @@
                 <nav>
                     <ul class="space-y-6">
                         <li>
-                            <a href="{{ route('patient.profile') }}" class="sidebarMenu_item">
+                            <a href="{{ route('patient.profile') }}" class="sidebarMenu_item  @if (Route::currentRouteName() == 'patient.profile') active @endif">
                                 <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     fill="currentColor">
                                     <path
@@ -18,7 +18,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('patient.dashboard') }}" class="sidebarMenu_item active">
+                            <a href="{{ route('patient.dashboard') }}" class="sidebarMenu_item @if (Route::currentRouteName() == 'patient.dashboard') active @endif">
                                 <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     fill="currentColor">
                                     <path
@@ -29,7 +29,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('patient.visits') }}" class="sidebarMenu_item">
+                            <a href="{{ route('patient.visits') }}" class="sidebarMenu_item @if (Route::currentRouteName() == 'patient.visits' || Route::currentRouteName() == 'patient.visits.show') active @endif">
                                 <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     fill="currentColor">
                                     <path
@@ -40,7 +40,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('patient.history') }}" class="sidebarMenu_item">
+                            <a href="{{ route('patient.history') }}" class="sidebarMenu_item @if (Route::currentRouteName() == 'patient.history') active @endif">
                                 <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     fill="currentColor">
                                     <path
@@ -51,7 +51,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('patient.feedback') }}" class="sidebarMenu_item">
+                            <a href="{{ route('patient.feedback') }}" class="sidebarMenu_item @if (Route::currentRouteName() == 'patient.feedback') active @endif">
                                 <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     fill="currentColor">
                                     <path
