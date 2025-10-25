@@ -43,8 +43,6 @@ class BookingController extends Controller
             'visitCompleted' => $visitCompleted,
             'visitNotCompleted' => $visitNotCompleted,
         ]);
-
-        return VisitResource::collection($visits);
     }
 
     public function show($id)
