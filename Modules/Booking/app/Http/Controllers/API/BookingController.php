@@ -24,24 +24,20 @@ class BookingController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        // Count completed and not completed visits
         $completedVisits = $patient->visits()->where('is_arrival', true)->count();
         $notCompletedVisits = $patient->visits()->where('is_arrival', false)->count();
 
-        $visits = Visit::with(['service', 'relatedService'])
-            ->where('patient_id', $patient->id);
 
+        $visitCompleted = $patient->visits()->where('is_arrival', true)->with(['service', 'relatedService'])->get();
 
+        $visitNotCompleted = $patient->visits()->where('is_arrival', false)->with(['service', 'relatedService'])->get();
 
-        $visitCompleted = $visits->where('is_arrival', true)->get();
-
-        $visitNotCompleted = $visits->where('is_arrival', false)->get();
-
+        
         return response()->json([
             'completed_visits' => $completedVisits ?? 0,
             'not_completed_visits' => $notCompletedVisits ?? 0,
-            'visitCompleted' => $visitCompleted,
-            'visitNotCompleted' => $visitNotCompleted,
+            'visitCompleted' =>  VisitResource::collection($visitCompleted),
+            'visitNotCompleted' =>  VisitResource::collection($visitNotCompleted),
         ]);
     }
 
