@@ -28,7 +28,7 @@ class ServiceController extends Controller
 
         $query = Service::query()->where('status', 1);
 
-        if (!is_null($isHome)) {
+        if (!is_null($isHome) && $isHome == 1) {
             $query->where('is_home', (int) $isHome);
         }
 
