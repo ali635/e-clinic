@@ -18,7 +18,6 @@ class EditService extends EditRecord
 
     protected function mutateFormDataBeforeSave($data): array
     {
-
         $data['locale'] = App::getLocale();
         return $data;
     }

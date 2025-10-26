@@ -113,13 +113,13 @@
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">{{ __('Examination Result') }}</label>
                     <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                        {{ $visit->doctor_description }}
+                        {!! $visit->doctor_description !!}
                     </div>
                 </div>
                 <div>
                     <label class="block text-gray-700 font-semibold mb-2">{{ __('Medicines') }}</label>
                     <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                        {{ $visit->treatment }}
+                        {!! $visit->treatment !!}
                     </div>
                 </div>
             </section>
@@ -139,14 +139,14 @@
                     <div class="mb-4">
                         <label class="block text-gray-700 font-semibold mb-2">{{ __('Secretary Note to Patient') }}</label>
                         <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                            {{ $visit->secretary_description }}
+                            {!! $visit->secretary_description !!}
                         </div>
                     </div>
                 @endif
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">{{ __('Patient Comment / Description') }}</label>
                     <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                        {{ $visit->patient_description }}
+                        {!! $visit->patient_description !!}
                     </div>
                 </div>
                 @if ($visit->attachment)
