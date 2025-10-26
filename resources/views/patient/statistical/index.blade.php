@@ -2,7 +2,7 @@
 @section('patient_content')
 <!-- Main Content -->
 <main class="flex-1 px-4 py-8 md:ml-0 ml-0">
-    <h2 class="text-xl font-bold mb-6">Statistics</h2>
+    <h2 class="text-xl font-bold mb-6">{{__('Statistics')}}</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Card 1: Number of Visits -->
         <div class="bg-white rounded-xl shadow p-6 flex items-center space-x-4 animate-fade-in">

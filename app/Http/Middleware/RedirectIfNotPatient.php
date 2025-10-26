@@ -14,8 +14,10 @@ class RedirectIfNotPatient
     public function handle(Request $request, Closure $next)
     {
         // If the user is not authenticated as patient
-        if($request->routeIs('patient.*')) {                
-            return  redirect()->route('patient.login');
+        if($request->routeIs('patient.*')) {
+            if(!Auth::guard('patient')->check()) {
+                return redirect()->route('patient.login');
+            }                
         }
         return $next($request);
     }
