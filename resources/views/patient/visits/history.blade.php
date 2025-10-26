@@ -2,7 +2,7 @@
 @section('patient_content')
     <!-- Main Content -->
     <main class="flex-1 px-4 py-8 md:ml-0 ml-0">
-        <h2 class="text-xl font-bold mb-6">{{ __(' History') }}</h2>
+        <h2 class="text-xl font-bold mb-6">{{ __('History') }}</h2>
         <ol class="relative border-s border-primary">
             @foreach ($histories as $history)
                 @if ($history->doctor_description)
@@ -15,7 +15,6 @@
                     </li>
                 @endif
             @endforeach
-
         </ol>
     </main>
 @endsection
