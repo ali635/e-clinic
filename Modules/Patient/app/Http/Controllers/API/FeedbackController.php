@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Booking\Models\Feedback;
 use Modules\Patient\Http\Requests\StoreFeedbackRequest;
 use Modules\Patient\Http\Resources\DiseaseResource;
+use Modules\Patient\Http\Resources\FeedbackResource;
 use Modules\Patient\Models\Disease;
 
 class FeedbackController extends Controller
@@ -15,7 +16,7 @@ class FeedbackController extends Controller
     {
          $patient = auth('api')->user();
 
-        $query = Feedback::query()->where('patient_id', $patient->id);
+        $query = Feedback::query()->where('patient_id', $patient->id)->with(['visit', 'visit.service']);
 
         // If visit_id is passed, filter by it
         if ($request->has('visit_id')) {

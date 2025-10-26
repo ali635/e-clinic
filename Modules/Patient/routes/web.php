@@ -26,10 +26,12 @@ Route::group([
         Route::middleware('auth:patient')->group(function () {
             Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
             Route::get('/profile', [PatientController::class, 'index'])->name('profile');
+            Route::post('/update/profile', [PatientController::class, 'updateProfile'])->name('update.profile');
             Route::get('/dashboard', [PatientController::class, 'statistical'])->name('dashboard');
             Route::get('/visits', [PatientController::class, 'visits'])->name('visits');
             Route::get('/visits/{id}', [PatientController::class, 'showVisit'])->name('visits.show');
             Route::get('/history', [PatientController::class, 'history'])->name('history');
+            Route::get('/feedback', [PatientController::class, 'feedback'])->name('feedback');
         });
     });
 });

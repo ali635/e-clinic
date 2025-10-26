@@ -2,7 +2,7 @@
 @section('patient_content')
     <!-- Main Content -->
     <main class="flex-1 px-4 py-8 md:ml-0 ml-0 overflow-x-auto">
-        <h2 class="text-xl font-bold mb-6">{{ __('Visits lisit') }}</h2>
+        <h2 class="text-xl font-bold mb-6">{{ __('Visits list') }}</h2>
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">

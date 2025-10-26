@@ -9,6 +9,7 @@ use Spatie\Translatable\HasTranslations;
 class FooterSettings extends Settings
 {
     use HasTranslations;
+
     public ?string $facebook_url = '';
     public ?string $instagram_url = '';
     public ?string $x_url = '';

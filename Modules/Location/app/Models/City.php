@@ -32,9 +32,4 @@ class City extends Model
     {
         return $this->belongsTo(Country::class);
     }
-
-    // protected static function newFactory(): CityFactory
-    // {
-    //     // return CityFactory::new();
-    // }
 }

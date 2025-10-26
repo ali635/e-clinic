@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Setting\Filament\Pages\AboutSetting;
 use Modules\Setting\Filament\Pages\FooterSocialSetting;
+use Modules\Setting\Filament\Pages\CounterSettings;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -38,7 +39,7 @@ class SettingServiceProvider extends ServiceProvider
                 ->label('Site Counter Settings')
                 ->icon('heroicon-o-numbered-list')
                 ->route('filament.admin.pages.counter-settings')
-                ->page(\Modules\Slider\Filament\Pages\CounterSettings::class)
+                ->page(CounterSettings::class)
                 ->description('Counter Section in Home Page')
                 ->group('Home Page'),
         ]);

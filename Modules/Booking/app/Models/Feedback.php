@@ -29,7 +29,7 @@ class Feedback extends Model
     }
     public function visit()
     {
-        return $this->belongsTo(Visit::class);
+        return $this->belongsTo(Visit::class)->with(['service']);
     }
 
     // protected static function newFactory(): FeedbackFactory

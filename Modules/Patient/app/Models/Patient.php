@@ -13,6 +13,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
 use Modules\Booking\Models\Visit;
+use Modules\Location\Models\Area;
 
 // use Modules\Patient\Database\Factories\PatientFactory;
 
@@ -34,7 +35,9 @@ class Patient extends Authenticatable implements OAuthenticatable
         'country_id',
         'city_id',
         'status',
-        'hear_about_us'
+        'hear_about_us',
+        'other_phone',
+        'area_id',
     ];
 
     protected $casts = [
@@ -42,8 +45,8 @@ class Patient extends Authenticatable implements OAuthenticatable
     ];
     protected $hidden = [
         'password',
+        'remember_token',
     ];
-
 
     protected function age(): Attribute
     {
@@ -77,6 +80,11 @@ class Patient extends Authenticatable implements OAuthenticatable
     public function city()
     {
         return $this->belongsTo(City::class);
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
     }
 
     public function visits()

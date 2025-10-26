@@ -18,7 +18,7 @@ class CityResource extends Resource
 {
     protected static ?string $model = City::class;
 
-     protected static ?string $recordTitleAttribute = 'display_name';
+    protected static ?string $recordTitleAttribute = 'display_name';
 
     public static function getGloballySearchableAttributes(): array
     {

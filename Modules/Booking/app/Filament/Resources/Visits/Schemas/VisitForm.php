@@ -5,7 +5,6 @@ namespace Modules\Booking\Filament\Resources\Visits\Schemas;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -26,6 +25,7 @@ class VisitForm
                 ->columns(3)
                 ->columnSpan(1)
                 ->schema([
+                    // Patient select
                     Select::make('patient_id')
                         ->label(__('patients'))
                         ->relationship('patient', 'name')
@@ -33,23 +33,23 @@ class VisitForm
                         ->required()
                         ->columnSpan(1),
 
+                    // Service select
                     Select::make('service_id')
                         ->label(__('services'))
                         ->options(function () {
                             return Service::with('translations')
                                 ->get()
-                                ->pluck('name', 'id')
+                                ->mapWithKeys(function ($service) {
+                                    // Fallback for null name
+                                    return [$service->id => $service->name ?? __('Unnamed Service')];
+                                })
                                 ->toArray();
                         })
                         ->reactive()
                         ->afterStateUpdated(function ($state, callable $set, $get) {
                             // update service price when selecting service
-                            if ($state) {
-                                $service = Service::find($state);
-                                $set('price', $service ? $service->price : 0);
-                            } else {
-                                $set('price', 0);
-                            }
+                            $service = $state ? Service::find($state) : null;
+                            $set('price', $service?->price ?? 0);
                             // recalc total
                             $set('total_price', self::calculateTotal($get));
                         })
@@ -80,7 +80,8 @@ class VisitForm
                         ->columnSpan(4),
                 ]),
 
-            Section::make(__('Arrival Information '))
+            // ===== Arrival info =====
+            Section::make(__('Arrival Information'))
                 ->columns(1)
                 ->columnSpan(1)
                 ->schema([
@@ -89,55 +90,47 @@ class VisitForm
                         ->helperText(__('Expected / actual arrival time')),
 
                     Toggle::make('is_arrival')
-                        ->label(__('is arrival ?')),
+                        ->label(__('Is arrival?')),
                 ]),
+
             // ===== Related services repeater =====
-            Section::make(__('Related service'))
+            Section::make(__('Related Services'))
                 ->columns(1)
                 ->columnSpan(2)
                 ->schema([
                     Repeater::make('relatedService')
-                        ->table([
-                            TableColumn::make('Related Service Name'),
-                            TableColumn::make('Related Service price'),
-                            TableColumn::make('QTY'),
-
-                        ])
-                        
                         ->relationship('relatedService')
                         ->collapsible()
                         ->addActionLabel(__('Add related service'))
                         ->columns(3)
                         ->reactive()
-                        // when the overall repeater (items add/remove) changes, recalc total
                         ->afterStateUpdated(function ($state, callable $set, $get) {
                             $set('total_price', self::calculateTotal($get));
                         })
                         ->schema([
                             Select::make('related_service_id')
-                                ->label(__('related services'))
+                                ->label(__('Related services'))
                                 ->options(function () {
                                     return RelatedService::with('translations')
                                         ->get()
-                                        ->pluck('name', 'id')
+                                        ->mapWithKeys(function ($relatedService) {
+                                            return [$relatedService->id => $relatedService->name ?? __('Unnamed Related Service')];
+                                        })
                                         ->toArray();
                                 })
                                 ->reactive()
                                 ->afterStateUpdated(function ($state, callable $set, $get) {
-                                    // set related service price * current qty
                                     $relatedService = $state ? RelatedService::find($state) : null;
-                                    $price = $relatedService ? (float) $relatedService->price : 0;
+                                    $price = (float) ($relatedService?->price ?? 0);
                                     $qty = (int) ($get('qty') ?: 1);
                                     $set('price_related_service', $price * $qty);
-
-                                    // recalc total (pass the parent $get)
                                     $set('total_price', self::calculateTotal($get));
                                 })
                                 ->searchable()
                                 ->required(),
 
                             TextInput::make('price_related_service')
-                                ->label(__('Related Service price'))
+                                ->label(__('Related Service Price'))
                                 ->suffixIcon('heroicon-m-currency-dollar')
                                 ->disabled()
                                 ->default(0)
@@ -146,42 +139,44 @@ class VisitForm
                                 ->dehydrated(true),
 
                             TextInput::make('qty')
-                                ->label(__('qty'))
+                                ->label(__('Quantity'))
                                 ->numeric()
-                                ->default(0)
+                                ->default(1)
                                 ->reactive()
                                 ->afterStateUpdated(function ($state, callable $set, $get) {
                                     $relatedService = RelatedService::find($get('related_service_id'));
-                                    $price = $relatedService ? (float) $relatedService->price : 0;
-                                    $set('price_related_service', $price * ((int) ($state ?: 1)));
-
-                                    // recalc total (pass the parent $get)
+                                    $price = (float) ($relatedService?->price ?? 0);
+                                    $set('price_related_service', $price * max((int) $state, 1));
                                     $set('total_price', self::calculateTotal($get));
                                 })
                                 ->required(),
                         ]),
                 ]),
 
-            // ===== Attachments & notes (clean, grouped) =====
+            // ===== Attachments =====
             Section::make(__('Attachments'))
                 ->columns(2)
                 ->columnSpan(2)
                 ->schema([
                     FileUpload::make('lab_tests')
-                        ->label(__('lab tests'))
+                        ->label(__('Lab tests'))
+                        ->disk('public')
+                        ->directory('visit')
                         ->multiple()
                         ->helperText(__('Drag & drop or browse to upload multiple lab tests')),
 
-                    FileUpload::make('x-rays')
-                        ->label(__('x-rays'))
+                    FileUpload::make('x_rays')
+                        ->label(__('X-rays'))
+                        ->disk('public')
+                        ->directory('visit')
                         ->multiple()
                         ->helperText(__('Drag & drop or browse to upload multiple x-rays')),
                 ]),
 
+            // ===== Doctor & Treatment Notes =====
             Section::make(__('Doctor & Treatment Notes'))
                 ->columns(2)
                 ->columnSpan(2)
-
                 ->schema([
                     RichEditor::make('doctor_description')
                         ->label(__('Doctor Description'))
@@ -189,54 +184,44 @@ class VisitForm
                         ->helperText(__('Clinical notes and observations')),
 
                     RichEditor::make('treatment')
-                        ->label(__('treatment Description'))
+                        ->label(__('Treatment Description'))
                         ->required()
                         ->helperText(__('Treatment plan and instructions')),
                 ]),
 
+            // ===== Secretary & Patient Notes =====
             Section::make(__('Secretary & Patient'))
                 ->columns(2)
                 ->columnSpan(2)
-
                 ->schema([
                     RichEditor::make('secretary_description')
-                        ->label(__('secretary Description'))
+                        ->label(__('Secretary Description'))
                         ->helperText(__('Administrative notes, reminders')),
 
-
-
                     RichEditor::make('note')
-                        ->label(__('Patient Description')),
+                        ->label(__('Patient Notes')),
 
                     FileUpload::make('attachment')
-                        ->label(__('attachment'))
+                        ->label(__('Attachment'))
+                        ->disk('public')
+                        ->directory('visit')
                         ->columnSpanFull()
                         ->helperText(__('Patient attachments')),
-
                 ]),
         ]);
     }
 
     /**
      * Calculate total price using the form $get callable.
-     *
-     * $get will be the Filament callable that returns form state by path, e.g. $get('price') or $get('relatedService').
-     *
-     * @param callable $get
-     * @return float
      */
     protected static function calculateTotal(callable $get): float
     {
         $servicePrice = (float) ($get('price') ?? 0);
-
-        // relatedService is expected to be an array of items:
         $relatedItems = $get('relatedService') ?? [];
         $relatedTotal = 0.0;
 
         if (is_array($relatedItems)) {
             foreach ($relatedItems as $item) {
-                // we prefer the computed per-item "price_related_service" (already qty * unitPrice)
-                // fall back to 'price' if that's how your item is named.
                 $relatedTotal += (float) ($item['price_related_service'] ?? $item['price'] ?? 0);
             }
         }

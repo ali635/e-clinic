@@ -54,7 +54,7 @@
                         </span>
                         <ul class="absolute bg-white py-2 w-52 ltr:right-0 rtl:left-0 top-full transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg z-[1]">
                             <li>
-                                <a class="px-3 text-sm hover:bg-slate-100 leading-8 block" href="#">Profile</a>
+                                <a class="px-3 text-sm hover:bg-slate-100 leading-8 block" href="{{ route('patient.dashboard') }}"> {{__('Profile')}} </a>
                             </li>
                             <li>
                                 <a class="px-3 text-sm hover:bg-slate-100 leading-8 block" href="{{ route('patient.logout') }}" onclick="event.preventDefault();document.getElementById('logout.form').submit();">{{ __('logout') }}</a>

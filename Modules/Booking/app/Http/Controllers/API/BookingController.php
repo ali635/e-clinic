@@ -24,18 +24,21 @@ class BookingController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $visits = Visit::with(['service', 'relatedService'])
-            ->where('patient_id', $patient->id);
+        $completedVisits = $patient->visits()->where('is_arrival', true)->count();
+        $notCompletedVisits = $patient->visits()->where('is_arrival', false)->count();
 
 
-        if ($request->has('is_arrival') && in_array($request->is_arrival, [0, 1])) {
-            $visits = $visits->where('is_arrival', $request->is_arrival);
-        }
+        $visitCompleted = $patient->visits()->where('is_arrival', true)->with(['service', 'relatedService'])->get();
 
-        $visits = $visits->orderByDesc('created_at')
-            ->get();
+        $visitNotCompleted = $patient->visits()->where('is_arrival', false)->with(['service', 'relatedService'])->get();
 
-        return VisitResource::collection($visits);
+        
+        return response()->json([
+            'completed_visits' => $completedVisits ?? 0,
+            'not_completed_visits' => $notCompletedVisits ?? 0,
+            'visitCompleted' =>  VisitResource::collection($visitCompleted),
+            'visitNotCompleted' =>  VisitResource::collection($visitNotCompleted),
+        ]);
     }
 
     public function show($id)
@@ -75,6 +78,7 @@ class BookingController extends Controller
         $visit->price = $service->price;
         $visit->patient_id = $patient->id;
         $visit->arrival_time = $request->arrival_time;
+        $visit->patient_description = $request->patient_description;
         $visit->save();
 
 

@@ -21,7 +21,7 @@ class BlogController extends Controller
 
         $posts = Post::where('status', true);
 
-        if (!is_null($isHome)) {
+        if (!is_null($isHome) && $isHome == 1) {
             $posts = $posts->where('is_home', (int) $isHome);
         }
 

@@ -7,11 +7,11 @@
            {{ __('Numbers that speak for themselves') }}
         </p>
 
-        @if (setting('counter_settings'))
+        @if (setting_lang('counter_settings'))
 
             <div id="funFactsSection" class="grid grid-cols-1 tablet:grid-cols-2 web:grid-cols-4 gap-6 tablet:gap-8">
                 <!-- Fact 1 -->
-                @foreach (setting('counter_settings') as $counter)
+                @foreach (setting_lang('counter_settings') as $counter)
                     <div
                         class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 text-center">
                         <div class="flex items-center justify-center gap-2 mb-4">

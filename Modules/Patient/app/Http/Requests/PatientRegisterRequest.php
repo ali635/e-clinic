@@ -18,12 +18,16 @@ class PatientRegisterRequest extends FormRequest
             'email'         => 'required|email|unique:patients,email',
             'password'      => 'required|string|min:6|confirmed',
             'phone'         => 'required|string|max:20|unique:patients,phone',
+            'other_phone'   => 'nullable|string|max:20|unique:patients,other_phone',
             'gender'        => 'required|in:male,female',
             'date_of_birth' => 'required|date',
             'address'       => 'required|string|max:255',
             'country_id'    => 'nullable|integer|exists:countries,id',
             'city_id'       => 'required|integer|exists:cities,id',
             'hear_about_us' => 'required|string|max:255',
+            'area_id'       => 'nullable|integer|exists:areas,id',
+            // 'diseases'      => 'nullable|array|exists:diseases,id',
+
         ];
     }
 
@@ -52,6 +56,11 @@ class PatientRegisterRequest extends FormRequest
             'phone.max'      => __('The phone number may not be greater than 20 characters.'),
             'phone.unique'   => __('This phone number is already registered.'),
 
+            // other_phone
+            'other_phone.string' => __('The other phone number must be a valid string.'),
+            'other_phone.max'    => __('The other phone number may not be greater than 20 characters.'),
+            'other_phone.unique' => __('This other phone number is already registered.'),
+
             // gender
             'gender.required' => __('The gender field is required.'),
             'gender.in'       => __('The selected gender is invalid.'),
@@ -73,6 +82,16 @@ class PatientRegisterRequest extends FormRequest
             'city_id.required' => __('The city field is required.'),
             'city_id.integer'  => __('The selected city is invalid.'),
             'city_id.exists'   => __('The selected city does not exist.'),
+
+            // area_id
+            'area_id.required' => __('The area field is required.'),
+            'area_id.integer' => __('The selected area is invalid.'),
+            'area_id.exists'  => __('The selected area does not exist.'),
+
+            // hear_about_us
+            'hear_about_us.required' => __('The hear about us field is required.'),
+            'hear_about_us.string'   => __('The hear about us must be a valid string.'),
+            'hear_about_us.max'      => __('The hear about us may not be greater than 255 characters.'),
         ];
     }
 }

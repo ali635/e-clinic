@@ -9,7 +9,7 @@
 
                 <p
                     class="max-w-md mx-auto mt-6 leading-relaxed text-center text-gray-400 tablet:max-w-xs tablet:mx-0 tablet:text-start">
-                    {!! setting('site_description') !!}
+                    {!! setting_lang("about_us") !!}
                 </p>
 
                 <ul class="flex justify-center gap-6 mt-8 tablet:gap-8 tablet:justify-start">
@@ -57,33 +57,23 @@
 
             <div class="grid grid-cols-1 gap-8 tablet:grid-cols-2 web:col-span-2">
                 <div class="text-center tablet:text-start">
-                    <p class="text-lg font-medium text-white">About Us</p>
+                    <p class="text-lg font-medium text-white">{{__('About Us')}}</p>
 
                     <nav class="mt-8">
                         <ul class="space-y-4 text-sm">
                             <li>
-                                <a class="text-white transition hover:text-primary" href="/">
-                                    Company History
+                                <a class="text-white transition hover:text-primary" href="{{ route('services') }}">
+                                    {{__('Services')}}
                                 </a>
                             </li>
 
                             <li>
-                                <a class="text-white transition hover:text-primary" href="/">
-                                    Meet the Team
+                                <a class="text-white transition hover:text-primary" href="{{ route('posts') }}">
+                                    {{ __('Blogs') }}
                                 </a>
                             </li>
 
-                            <li>
-                                <a class="text-white transition hover:text-primary" href="/">
-                                    Employee Handbook
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="text-white transition hover:text-primary" href="/">
-                                    Careers
-                                </a>
-                            </li>
+                            
                         </ul>
                     </nav>
                 </div>
@@ -149,11 +139,9 @@
                 </p>
 
                 <p class="mt-4 text-sm text-gray-500 tablet:order-first tablet:mt-0">
-                    {{-- &copy; {{ date('Y') }} {{ setting('site_name') }} --}}
+                    &copy; {{ date('Y') }} {{ setting('site_name') }}
                 </p>
             </div>
         </div>
     </div>
 </footer>
-
-feedbacks list 
