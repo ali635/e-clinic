@@ -1,39 +1,39 @@
 <?php
 
-namespace Modules\Location\Filament\Resources\Cities\Pages;
+namespace Modules\Location\Filament\Resources\Areas\Pages;
 
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use Modules\Location\Filament\Resources\Cities\CityResource;
-use Modules\Location\Models\City;
+use Modules\Location\Filament\Resources\Areas\AreaResource;
+use Modules\Location\Models\Area;
 
-class CreateCity extends CreateRecord
+class CreateArea extends CreateRecord
 {
-    protected static string $resource = CityResource::class;
+    protected static string $resource = AreaResource::class;
 
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
 
         return DB::transaction(function () use ($data) {
-            // Insert into cities table
-            $cityId = DB::table('cities')->insertGetId([
+            // Insert into areas table
+            $areaId = DB::table('areas')->insertGetId([
                 'status' => $data['status'] ?? true,
                 'order'    => $data['order']   ?? 0,
-                'country_id' => $data['country_id'],
+                'city_id' => $data['city_id'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
 
-            // Insert into city_translations table
-            DB::table('city_translations')->insert([
-                'city_id'  => $cityId,
+            // Insert into area_translations table
+            DB::table('area_translations')->insert([
+                'area_id'  => $areaId,
                 'locale'      => App::getLocale(),
                 'name'        => $data['name'],
 
             ]);
             // Return a fresh model instance
-            return City::find($cityId);
+            return Area::find($areaId);
         });
     }
 }

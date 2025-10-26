@@ -1,23 +1,22 @@
 <?php
 
-namespace Modules\Location\Filament\Resources\Cities\Pages;
+namespace Modules\Location\Filament\Resources\Areas\Pages;
 
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use Modules\Location\Filament\Resources\Cities\CityResource;
+use Modules\Location\Filament\Resources\Areas\AreaResource;
 
-class EditCity extends EditRecord
+class EditArea extends EditRecord
 {
-    protected static string $resource = CityResource::class;
-
+    protected static string $resource = AreaResource::class;
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         // Update or insert translation
-        $cityId = $record->id;
+        $areaId = $record->id;
         $locale    = $data['locale'] ?? App::getLocale();
 
         // Prepare translation data
@@ -27,27 +26,27 @@ class EditCity extends EditRecord
         ];
 
         // Check if translation exists
-        $exists = DB::table('city_translations')
-            ->where('city_id', $cityId)
+        $exists = DB::table('area_translations')
+            ->where('area_id', $areaId)
             ->where('locale', $locale)
             ->exists();
 
         if ($exists) {
             // Update existing translation
-            DB::table('city_translations')
-                ->where('city_id', $cityId)
+            DB::table('area_translations')
+                ->where('area_id', $areaId)
                 ->where('locale', $locale)
                 ->update($translationData);
         } else {
             // Insert new translation
-            $translationData['city_id'] = $cityId;
-            DB::table('city_translations')->insert($translationData);
+            $translationData['area_id'] = $areaId;
+            DB::table('area_translations')->insert($translationData);
         }
 
         // Update main post record (excluding translation fields)
-        $countryData = array_diff_key($data, array_flip(['name', 'locale']));
-        if ($countryData) {
-            $record->update($countryData);
+        $areaData = array_diff_key($data, array_flip(['name', 'locale']));
+        if ($areaData) {
+            $record->update($areaData);
         }
 
         return $record;

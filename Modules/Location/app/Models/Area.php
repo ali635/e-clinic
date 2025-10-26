@@ -5,11 +5,11 @@ namespace Modules\Location\Models;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Location\Database\Factories\CityFactory;
+// use Modules\Location\Database\Factories\AreaFactory;
 
-class City extends Model
+class Area extends Model
 {
-    use HasFactory, Translatable;
+  use HasFactory, Translatable;
 
     protected $with = ['translations'];
 
@@ -21,15 +21,15 @@ class City extends Model
     protected $fillable = [
         'status',
         'order',
-        'country_id'
+        'city_id'
     ];
 
      public function getDisplayNameAttribute(): ?string
     {
         return $this->name; // auto translated
     }
-    public function country()
+    public function city()
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(City::class);
     }
 }

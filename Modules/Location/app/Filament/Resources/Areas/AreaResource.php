@@ -1,23 +1,22 @@
 <?php
 
-namespace Modules\Location\Filament\Resources\Cities;
+namespace Modules\Location\Filament\Resources\Areas;
 
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Modules\Location\Filament\Resources\Cities\Pages\CreateCity;
-use Modules\Location\Filament\Resources\Cities\Pages\EditCity;
-use Modules\Location\Filament\Resources\Cities\Pages\ListCities;
-use Modules\Location\Filament\Resources\Cities\Schemas\CityForm;
-use Modules\Location\Filament\Resources\Cities\Tables\CitiesTable;
-use Modules\Location\Models\City;
+use Modules\Location\Filament\Resources\Areas\Pages\CreateArea;
+use Modules\Location\Filament\Resources\Areas\Pages\EditArea;
+use Modules\Location\Filament\Resources\Areas\Pages\ListAreas;
+use Modules\Location\Filament\Resources\Areas\Schemas\AreaForm;
+use Modules\Location\Filament\Resources\Areas\Tables\AreasTable;
+use Modules\Location\Models\Area;
 
-class CityResource extends Resource
+class AreaResource extends Resource
 {
-    protected static ?string $model = City::class;
-
+    protected static ?string $model = Area::class;
     protected static ?string $recordTitleAttribute = 'display_name';
 
     public static function getGloballySearchableAttributes(): array
@@ -32,36 +31,35 @@ class CityResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('Cities');
+        return __('Areas');
     }
 
     // ✅ TRANSLATABLE plural label (used in list page titles)
     public static function getPluralLabel(): string
     {
-        return __('Cities');
+        return __('Areas');
     }
 
     // ✅ TRANSLATABLE singular label (used in forms)
     public static function getModelLabel(): string
     {
-        return __('City');
+        return __('Area');
     }
 
     // ✅ TRANSLATABLE breadcrumb (top navigation)
     public static function getBreadcrumb(): string
     {
-        return __('Cities');
+        return __('Areas');
     }
-
 
     public static function form(Schema $schema): Schema
     {
-        return CityForm::configure($schema);
+        return AreaForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return CitiesTable::configure($table);
+        return AreasTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -74,9 +72,9 @@ class CityResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListCities::route('/'),
-            'create' => CreateCity::route('/create'),
-            'edit' => EditCity::route('/{record}/edit'),
+            'index' => ListAreas::route('/'),
+            'create' => CreateArea::route('/create'),
+            'edit' => EditArea::route('/{record}/edit'),
         ];
     }
 }
