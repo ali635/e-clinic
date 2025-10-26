@@ -11,6 +11,8 @@ use Modules\Location\Http\Controllers\API\LocationController;
 Route::prefix('v1')->group(function () {
     Route::prefix('countries')->group(function () {
         Route::get('/', [LocationController::class, 'countries']);
-        Route::get('/{country}/cities', [LocationController::class, 'cities']);
+        Route::get('/cities', [LocationController::class, 'cities']);
+        Route::get('/{city}/areas', [LocationController::class, 'areas']);
+
     });
 });
