@@ -22,15 +22,9 @@
 
 
 <body class="" dir="{{ getDirection() }}">
-
     @include('share.header')
-
     @yield('content')
-
-
     @include('share.footer')
-
-
 </body>
 
 </html>

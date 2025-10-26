@@ -60,7 +60,7 @@
                         id="remember" 
                         name="remember" 
                         type="checkbox" 
-                        class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                        class="h-4 w-4 accent-primary text-primary focus:ring-primary border-gray-300 rounded"
                         {{ old('remember') ? 'checked' : '' }}
                     >
                     <label for="remember" class="ml-2 block text-sm text-gray-900">
