@@ -9,6 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
+use Modules\Location\Models\Area;
 use Modules\Location\Models\City;
 use Modules\Location\Models\Country;
 use Modules\Patient\Models\Disease;
@@ -55,6 +56,11 @@ class PatientForm
                     ->maxLength(255)
                     ->required(),
 
+                TextInput::make('other_phone')
+                    ->label(__('other phone'))
+                    ->maxLength(255)
+                    ->required(),
+
                 TextInput::make('hear_about_us')
                     ->label(__('hear about us'))
                     ->maxLength(255)
@@ -82,6 +88,15 @@ class PatientForm
                             ->pluck('name', 'id')
                             ->toArray();
                     }),
+                Select::make('area_id')
+                    ->label(__('areas'))
+                    ->options(function () {
+                        return Area::with('translations')
+                            ->get()
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    }),
+
                 TextInput::make('address')
                     ->label(__('address'))
                     ->maxLength(255)

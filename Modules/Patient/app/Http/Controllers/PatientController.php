@@ -4,8 +4,13 @@ namespace Modules\Patient\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Modules\Booking\Models\Feedback;
 use Modules\Booking\Models\Visit;
+use Modules\Location\Models\Area;
+use Modules\Location\Models\City;
+use Modules\Patient\Http\Requests\UpdatePatientProfileRequest;
+use Modules\Patient\Models\Disease;
 
 class PatientController extends Controller
 {
@@ -15,7 +20,13 @@ class PatientController extends Controller
     public function index()
     {
         $patient = auth('patient')->user();
-        return view('patient.profile.edit', compact('patient'));
+        
+        $patient->load('city', 'area', 'diseasesMany');
+
+        $cities = City::where('status', 1)->orderBy('order', 'desc')->get();
+        $areas = Area::where('status', 1)->orderBy('order', 'desc')->get();
+        $diseases = Disease::get();
+        return view('patient.profile.edit', compact('patient','cities', 'areas', 'diseases'));
     }
 
     public function statistical()
@@ -49,7 +60,7 @@ class PatientController extends Controller
         if (!$visit) {
             return redirect()->route('patient.visits');
         }
-        return view('patient.visits.show',compact('patient','visit'));
+        return view('patient.visits.show', compact('patient', 'visit'));
     }
 
     public function history()
@@ -69,5 +80,29 @@ class PatientController extends Controller
         $feedbacks = Feedback::query()->where('patient_id', $patient->id)->with(['visit', 'visit.service'])->get();
 
         return view('patient.feedback.index', compact('feedbacks'));
+    }
+
+    public function updateProfile(UpdatePatientProfileRequest $request)
+    {
+        $patient = auth('patient')->user();
+
+        $data = $request->validated();
+
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $diseaseIds = $data['diseases'] ?? null;
+        unset($data['diseases']);
+
+
+        $patient->update($request->all());
+
+        if (!empty($diseaseIds) && is_array($diseaseIds)) {
+            $patient->diseasesMany()->sync($diseaseIds);
+        }
+        return redirect()->route('patient.profile')->with('success', __('Profile updated successfully'));
     }
 }

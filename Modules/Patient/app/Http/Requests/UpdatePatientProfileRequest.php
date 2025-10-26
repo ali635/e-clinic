@@ -9,16 +9,21 @@ class UpdatePatientProfileRequest extends FormRequest
     public function authorize(): bool
     {
         // Only allow authenticated patients
-        return auth('api')->check();
+        return true;
     }
 
     public function rules(): array
     {
+        if (auth('api')->id() == null) {
+            $id = auth('patient')->user()->id;
+        } else {
+            $id = auth('api')->id();
+        }
         return [
             'name'          => ['sometimes', 'string', 'max:255'],
-            'email'         => ['sometimes', 'email', 'unique:patients,email,' . auth('api')->id()],
-            'phone'         => ['sometimes', 'string', 'max:20', 'unique:patients,phone,' . auth('api')->id()],
-            'other_phone'   => ['sometimes', 'string', 'max:20', 'unique:patients,phone,' . auth('api')->id()],
+            'email'         => ['sometimes', 'email', 'unique:patients,email,' . $id],
+            'phone'         => ['sometimes', 'string', 'max:20', 'unique:patients,phone,' . $id],
+            'other_phone'   => ['sometimes', 'string', 'max:20', 'unique:patients,phone,' . $id],
             'gender'        => ['sometimes', 'in:male,female'],
             'date_of_birth' => ['sometimes', 'date'],
             'address'       => ['sometimes', 'string', 'max:500'],
