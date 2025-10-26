@@ -1,6 +1,42 @@
 @extends('layout.defult')
 @section('content')
-
+@php
+$service_details = [
+    "service" => [
+        "id" => 14,
+        "name" => "Dental Cleaning",
+        "short_description" => "Professional teeth cleaning to maintain oral hygiene.",
+        "description" => "<p>Includes removal of plaque, tartar, and stains from teeth to prevent decay and gum disease.</p>",
+        "price" => "50",
+        "patient_time_minute" => 30,
+        "start" => null,
+        "end" => null,
+        "image" => "http://e-clinic.test/storage/service/01K7SG4M94H24SZHZ1DXAJ2BA5.jpg",
+        "is_home" => true,
+        "schedules" => [
+            [
+                "id" => 3,
+                "start_time" => "16:00:00",
+                "end_time" => "18:00:00",
+                "day_of_week" => "thursday",
+                "date_of_day" => "2025-10-23",
+                "service_id" => 14
+            ],
+            [
+                "id" => 4,
+                "start_time" => "18:00:00",
+                "end_time" => "20:00:00",
+                "day_of_week" => "friday",
+                "date_of_day" => "2025-10-24",
+                "service_id" => 14
+            ]
+        ]
+    ],
+    "booked_times" => [
+        "2025-10-21 17:00:00"
+    ]
+];
+@endphp
 <!-- Hero Section with Service Image -->
 <section class="service-hero relative h-[60vh] min-h-[400px] overflow-hidden">
     <img src="{{ asset('storage/' . $service->image) }}" 
@@ -144,43 +180,13 @@
                         </label>
                         <input id="services" name="services" type="hidden" class="form-input" value="{{ $service->id }}">
                     </div>
-    
-                    append days of week -
-
-                    and append active
-
-
-                    <!-- Time Slots Select Field -->
-                    {{-- <div class="space-y-2 relative">
-                        <label class="block text-sm font-medium text-gray-700">
-                            {{ __('Time Slot') }}
-                        </label>
-                        <input type="hidden" name="timeSlots">
-                        <button id="slots-button" data-dropdown-toggle="timeSlots" class="form-input text-start" type="button">
-                            {{__('Select Time Slot')}}
-                        </button>
-                        <div id="timeSlots" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-[90%] !mx-4 border border-primary overflow-hidden !translate-x-0">
-                            <ul class="timeSlotsUl text-sm text-gray-700" aria-labelledby="slots-button">
-                                <li data-slot-id="1" class="timeSlotItem before:bg-red-500 disabled">
-                                    5:00-5:30
-                                </li>
-                                <li data-slot-id="2" class="timeSlotItem before:bg-green-500">
-                                    5:30-6:00
-                                </li>
-                                <li data-slot-id="3" class="timeSlotItem before:bg-gray-500 disabled">
-                                    6:00-6:30
-                                </li>
-                            </ul>
-                        </div>
-                        @error('gender')
-                            <div class="text-red-600 text-sm mt-1 ">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div> --}}
                 </div>
 
                 <!-- Submit Button -->
+                <div id="vue-app">
+                    <book-service data-obj='@json($service_details)'></book-service>
+                </div>
+
                 <div>
                     <button type="submit"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200 cursor-pointer max-w-sm mx-auto">
@@ -192,21 +198,3 @@
     </div>
 </div>
 @endsection
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const timeSlotItems = document.querySelectorAll('.timeSlotItem:not(.disabled)');
-        const slotsButton = document.getElementById('slots-button');
-        const slotsInput = document.querySelector('input[name="timeSlots"]');
-        timeSlotItems.forEach(function(item) {
-            item.addEventListener('click', function() {
-                const slotId = item.getAttribute('data-slot-id');
-                slotsButton.textContent = this.textContent;
-                if(slotId && slotsInput){
-                    slotsInput.value = slotId;
-                }
-                slotsButton.click();
-            });
-        });
-    });
-</script>
