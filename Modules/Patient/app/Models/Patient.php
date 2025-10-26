@@ -34,7 +34,10 @@ class Patient extends Authenticatable implements OAuthenticatable
         'country_id',
         'city_id',
         'status',
-        'hear_about_us'
+        'hear_about_us',
+        'other_phone',
+        'area_id',
+        ''
     ];
 
     protected $casts = [
@@ -42,8 +45,8 @@ class Patient extends Authenticatable implements OAuthenticatable
     ];
     protected $hidden = [
         'password',
+        'remember_token',
     ];
-
 
     protected function age(): Attribute
     {
