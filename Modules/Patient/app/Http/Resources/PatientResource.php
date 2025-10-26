@@ -18,7 +18,7 @@ class PatientResource extends JsonResource
             'age'            => $this->age,
             'address'        => $this->address,
             'status'         => $this->status,
-            
+
             'country' => $this->country ? [
                 'id' => $this->country->id,
                 'name' => $this->country->getTranslation('name', app()->getLocale())->name,
@@ -27,6 +27,12 @@ class PatientResource extends JsonResource
             'city' => $this->city ? [
                 'id' => $this->city->id,
                 'name' => $this->city->getTranslation('name', app()->getLocale())->name,
+            ] : null,
+
+
+            'area' => $this->area ? [
+                'id' => $this->area->id,
+                'name' => $this->area->getTranslation('name', app()->getLocale())->name,
             ] : null,
 
             'diseases' => $this->diseasesMany->map(function ($disease) {

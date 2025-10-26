@@ -42,7 +42,7 @@ class PatientController extends Controller
             'stats' => [
                 'completed_visits' => $completedVisits ?? 0,
                 'not_completed_visits' => $notCompletedVisits ?? 0,
-                'reward_rating' => $rating ,
+                'reward_rating' => $rating,
             ],
         ]);
     }
@@ -50,25 +50,36 @@ class PatientController extends Controller
     public function update(UpdatePatientProfileRequest $request)
     {
         $patient = auth('api')->user();
-
         if (!$patient) {
             return response()->json(['message' => __('Unauthorized')], 401);
         }
 
         $data = $request->validated();
-
-        // Handle password update
         if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']);
         }
 
+        $diseaseIds = $data['diseases'] ?? null;
+        unset($data['diseases']); 
+
         $patient->update($data);
+        
+        if (!empty($diseaseIds) && is_array($diseaseIds)) {
+            $patient->diseasesMany()->sync($diseaseIds);
+        }
 
         return response()->json([
             'message' => __('Profile updated successfully'),
-            'data'    => new PatientResource($patient->fresh(['country.translations', 'city.translations', 'diseasesMany.translations']))
+            'data'    => new PatientResource(
+                $patient->fresh([
+                    'country.translations',
+                    'city.translations',
+                    'area.translations',
+                    'diseasesMany.translations'
+                ])
+            )
         ]);
     }
 }

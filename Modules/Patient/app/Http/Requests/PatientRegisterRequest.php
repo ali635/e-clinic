@@ -18,12 +18,16 @@ class PatientRegisterRequest extends FormRequest
             'email'         => 'required|email|unique:patients,email',
             'password'      => 'required|string|min:6|confirmed',
             'phone'         => 'required|string|max:20|unique:patients,phone',
+            'other_phone'   => 'nullable|string|max:20|unique:patients,other_phone',
             'gender'        => 'required|in:male,female',
             'date_of_birth' => 'required|date',
             'address'       => 'required|string|max:255',
             'country_id'    => 'nullable|integer|exists:countries,id',
             'city_id'       => 'required|integer|exists:cities,id',
             'hear_about_us' => 'required|string|max:255',
+            'area_id'       => 'nullable|integer|exists:areas,id',
+            // 'diseases'      => 'nullable|array|exists:diseases,id',
+
         ];
     }
 
