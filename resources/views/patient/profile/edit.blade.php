@@ -1,5 +1,7 @@
 @extends('patient.share.sidbar')
 @section('patient_content')
+    <link rel="stylesheet" href="{{ asset('css/intelTelInput.css') }}">
+
     <!-- Main Content -->
     <main class="flex-1 px-4 py-8 md:ml-0 ml-0">
         <div class="flex items-center justify-between mb-6">
@@ -25,6 +27,10 @@
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('Phone') }}:</dt>
                         <dd class="text-end">{{ $patient->phone ?? '-' }}</dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="font-medium">{{ __('Other Phone') }}:</dt>
+                        <dd class="text-end">{{ $patient->other_phone ?? '-' }}</dd>
                     </div>
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('Date of Birth') }}:</dt>
@@ -62,8 +68,8 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">{{ __('Phone') }}</label>
-                    <input type="text" name="phone" value="{{ $patient->phone }}" class="form-input w-full">
+                    <label for="phone" class="block text-sm font-medium mb-1">{{ __('Phone') }}</label>
+                    <input type="tel" id="phone" name="phone" value="{{ $patient->phone }}" class="form-input w-full">
                     @error('phone')
                         <div class="text-red-600 text-sm mt-1">
                             {{ $message }}
@@ -71,8 +77,8 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">{{ __('Other Phone') }}</label>
-                    <input type="text" name="other_phone" value="{{ $patient->other_phone }}" class="form-input w-full">
+                    <label for="other_phone" class="block text-sm font-medium mb-1">{{ __('Other Phone') }}</label>
+                    <input type="tel" id="other_phone" name="other_phone" value="{{ $patient->other_phone }}" class="form-input w-full">
                     @error('other_phone')
                         <div class="text-red-600 text-sm mt-1">
                             {{ $message }}
@@ -105,8 +111,8 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">{{ __('City') }}</label>
-                    <select name="city" class="form-input w-full">
+                    <label for="city" class="block text-sm font-medium mb-1">{{ __('City') }}</label>
+                    <select id="city" name="city" class="form-input w-full">
                         <option value="">{{ __('Select') }}</option>
                         @foreach ($cities as $city)
                             <option value="{{ $city->id }}" @if ($patient->city_id == $city->id) selected @endif>
@@ -120,9 +126,9 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">{{ __('Area') }}</label>
-                    <select name="area" class="form-input w-full">
-                        <option value="">{{ __('Select') }}</option>
+                    <label for="area" class="block text-sm font-medium mb-1">{{ __('Area') }}</label>
+                    <select id="area" name="area" class="form-input w-full">
+                        <option value="">{{ __('Select your area') }}</option>
                         @foreach ($areas as $area)
                             <option value="{{ $area->id }}" @if ($patient->area_id == $area->id) selected @endif>
                                 {{ $area->name }}</option>
@@ -178,6 +184,7 @@
                 </div>
             </form>
         </div>
+        <script src="{{ asset('js/intelTelInput.js') }}"></script>
         <script>
             const editProfileBtn = document.querySelector('#editProfileBtn');
             const cancelEditProfileBtn = document.querySelector('#cancelEditProfileBtn');
@@ -191,6 +198,36 @@
             }
             editProfileBtn.addEventListener('click', toggleEditProfile);
             cancelEditProfileBtn.addEventListener('click', toggleEditProfile);
+
+
+            const input = document.querySelector("#phone");
+            window.intlTelInput(input, {
+                loadUtils: () => import("{{ asset('js/intelUtilities.js') }}"),
+            });
+
+            const input2 = document.querySelector("#other_phone");
+            window.intlTelInput(input2, {
+                loadUtils: () => import("{{ asset('js/intelUtilities.js') }}"),
+            });
+
+            const city = document.querySelector("#city");
+            city.addEventListener("change", function() {
+                const cityId = this.value;
+                const area = document.querySelector("#area");
+                let optionsStr = `<option value="">{{ __('Select your area') }}</option>`;
+                area.innerHTML = optionsStr;
+                if(cityId){
+                    fetch(`/api/v1/countries/${cityId}/areas`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const areas = data?.data || [];
+                            areas.forEach(area => {
+                                optionsStr += `<option value="${area.id}">${area.name}</option>`;
+                            });
+                            area.innerHTML = optionsStr;
+                        });
+                }
+            });
         </script>
     </main>
 @endsection

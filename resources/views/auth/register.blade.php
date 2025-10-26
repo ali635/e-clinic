@@ -55,6 +55,20 @@
                             </div>
                         @enderror
                     </div>
+
+                    <!-- Another Phone Number Field -->
+                    <div class="space-y-2">
+                        <label for="phone" class="block text-sm font-medium text-gray-700">
+                            {{ __('Another Phone Number') }}
+                        </label>
+                        <input id="another_phone" name="another_phone" type="tel" class="form-input"
+                            placeholder="Enter your another phone number" value="{{ old('another_phone') }}">
+                        @error('another_phone')
+                            <div class="text-red-600 text-sm mt-1 ">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
     
                     <!-- Date Field -->
                     <div class="space-y-2">
@@ -107,6 +121,21 @@
                             </div>
                         @enderror
                     </div>
+
+                    <!-- Area Select Field -->
+                    <div class="space-y-2">
+                        <label for="area" class="block text-sm font-medium text-gray-700">
+                            {{ __('Area') }}
+                        </label>
+                        <select id="area" name="area_id" class="form-input">
+                            <option value="">{{__('Select your area')}}</option>
+                        </select>
+                        @error('area_id')
+                            <div class="text-red-600 text-sm mt-1 ">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
     
                     <!-- Street Field -->
                     <div class="space-y-2">
@@ -121,8 +150,8 @@
                             </div>
                         @enderror
                     </div>
-    
-                    <!-- Street Field -->
+
+                    <!-- Where did you hear about us Field -->
                     <div class="space-y-2">
                         <label for="street" class="block text-sm font-medium text-gray-700">
                             {{ __('Where did you hear about us ?') }}
@@ -188,10 +217,30 @@
         window.intlTelInput(input, {
             loadUtils: () => import("{{ asset('js/intelUtilities.js') }}"),
         });
+
+        const input2 = document.querySelector("#another_phone");
+        window.intlTelInput(input2, {
+            loadUtils: () => import("{{ asset('js/intelUtilities.js') }}"),
+        });
+
+
+        const city = document.querySelector("#city");
+        city.addEventListener("change", function() {
+            const cityId = this.value;
+            const area = document.querySelector("#area");
+            let optionsStr = `<option value="">{{ __('Select your area') }}</option>`;
+            area.innerHTML = optionsStr;
+            if(cityId){
+                fetch(`/api/v1/countries/${cityId}/areas`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const areas = data?.data || [];
+                        areas.forEach(area => {
+                            optionsStr += `<option value="${area.id}">${area.name}</option>`;
+                        });
+                        area.innerHTML = optionsStr;
+                    });
+            }
+        });
     </script>
-    <style>
-        .iti {
-            width: 100%;
-        }
-    </style>
 @endsection
