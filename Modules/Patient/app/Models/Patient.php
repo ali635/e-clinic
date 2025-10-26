@@ -37,7 +37,6 @@ class Patient extends Authenticatable implements OAuthenticatable
         'hear_about_us',
         'other_phone',
         'area_id',
-        ''
     ];
 
     protected $casts = [
