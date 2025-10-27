@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isLoading = true;
             const submitBtn = form.querySelector('[type="submit"]');
             if (!submitBtn) return;
-            button.classList.add('btn-loading');
+            submitBtn.classList.add('btn-loading');
             form.submit();
         });
     });

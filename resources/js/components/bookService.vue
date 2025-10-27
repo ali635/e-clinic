@@ -21,6 +21,7 @@
           auto-apply
           :disabled-dates="isDisabled"
           :enable-time-picker="false"
+          :month-change-on-scroll="false"
         ></VueDatePicker>
       </div>
       
@@ -221,8 +222,17 @@ export default {
 .slots_wrapper {
   .dp__today {
     border: 0 !important;
-    // @apply border-0 #{!important};
   }
+
+  .dp__main {
+    & > div:last-child {
+      width: 100% !important;
+      .dp__cell_inner {
+        margin-inline: auto !important;
+      }
+    }
+  }
+
   .slot_day {
     border: 1px solid #1f2937; 
     padding: 1rem; /* p-4 */
