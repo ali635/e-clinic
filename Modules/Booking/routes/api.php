@@ -12,3 +12,7 @@ Route::middleware(['auth:api'])->prefix('v1/patient')->group(function () {
     Route::get('/visits/{id}', [BookingController::class, 'show']);
     Route::post('/create/visit', [BookingController::class, 'store']);
 });
+
+Route::prefix('v1/patient')->group(function () {
+    Route::post('/create/visit/web', [BookingController::class, 'storeWeb']);
+});

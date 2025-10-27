@@ -28,11 +28,11 @@ class BookingController extends Controller
         $notCompletedVisits = $patient->visits()->where('is_arrival', false)->count();
 
 
-        $visitCompleted = $patient->visits()->where('is_arrival', true)->with(['service', 'relatedService', 'relatedService.relatedService' ,'feedback'])->get();
+        $visitCompleted = $patient->visits()->where('is_arrival', true)->with(['service', 'relatedService', 'relatedService.relatedService', 'feedback'])->get();
 
-        $visitNotCompleted = $patient->visits()->where('is_arrival', false)->with(['service', 'relatedService','relatedService.relatedService','feedback'])->get();
+        $visitNotCompleted = $patient->visits()->where('is_arrival', false)->with(['service', 'relatedService', 'relatedService.relatedService', 'feedback'])->get();
 
-        
+
         return response()->json([
             'completed_visits' => $completedVisits ?? 0,
             'not_completed_visits' => $notCompletedVisits ?? 0,
@@ -49,7 +49,7 @@ class BookingController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $visit = Visit::with(['service', 'relatedService','relatedService.relatedService','feedback'])
+        $visit = Visit::with(['service', 'relatedService', 'relatedService.relatedService', 'feedback'])
             ->where('patient_id', $patient->id)
             ->find($id);
 
@@ -77,6 +77,37 @@ class BookingController extends Controller
         $visit->service_id = $request->service_id;
         $visit->price = $service->price;
         $visit->patient_id = $patient->id;
+        $visit->arrival_time = $request->arrival_time;
+        $visit->patient_description = $request->patient_description;
+        $visit->total_price = $service->price;
+        $visit->save();
+
+
+        return response()->json([
+            'status'  => true,
+            'message' => __('Service Registration successful'),
+            'data'    => [
+                'visit' => $visit,
+            ],
+        ], 201);
+    }
+    public function storeWeb(VisitRequest $request)
+    {
+        $patientId = $request->patient_id;
+
+        if (!$patientId) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        $service = Service::query()->find($request->service_id);
+
+        if (!$service) {
+            return response()->json(['message' => 'service not found'], 404);
+        }
+
+        $visit = new Visit();
+        $visit->service_id = $request->service_id;
+        $visit->price = $service->price;
+        $visit->patient_id = $patientId;
         $visit->arrival_time = $request->arrival_time;
         $visit->patient_description = $request->patient_description;
         $visit->total_price = $service->price;
