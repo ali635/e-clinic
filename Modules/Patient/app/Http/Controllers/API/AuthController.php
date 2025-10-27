@@ -25,6 +25,8 @@ class AuthController extends Controller
 
         $patient = Patient::create($data);
 
+        $request->session()->regenerate();
+
         $token = $patient->createToken('PatientAuthToken')->accessToken;
 
         return response()->json([
@@ -32,6 +34,7 @@ class AuthController extends Controller
             'message' => __('Registration successful'),
             'data'    => [
                 'patient' => $patient,
+                'redirect_url' => route('patient.dashboard'),
                 'token'   => $token,
             ],
         ], 201);
@@ -58,6 +61,7 @@ class AuthController extends Controller
                 'message' => __('User Is Disabled'),
             ], 401);
         }
+        $request->session()->regenerate();
 
         $token = $patient->createToken('PatientAuthToken')->accessToken;
 
@@ -66,8 +70,10 @@ class AuthController extends Controller
             'message' => __('Login successful'),
             'data'    => [
                 'patient' => $patient,
+                'redirect_url' => route('patient.dashboard'),
                 'token'   => $token,
             ],
         ]);
     }
+    
 }

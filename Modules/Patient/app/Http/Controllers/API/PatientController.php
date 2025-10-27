@@ -19,6 +19,22 @@ class PatientController extends Controller
         }
 
         // Count completed and not completed visits
+        
+
+        // Load relationships for full details
+        $patient->load(['country.translations', 'city.translations', 'diseasesMany.translations']);
+
+        return response()->json([
+            'patient' => new PatientResource($patient),
+        ]);
+    }
+
+    public function loyalty()
+    {
+        $patient = auth('api')->user();
+        if (!$patient) {
+            return response()->json(['message' => __('Unauthorized')], 401);
+        }
         $completedVisits = $patient->visits()->where('is_arrival', true)->count();
         $notCompletedVisits = $patient->visits()->where('is_arrival', false)->count();
 
@@ -34,11 +50,7 @@ class PatientController extends Controller
             $rating = 1;
         }
 
-        // Load relationships for full details
-        $patient->load(['country.translations', 'city.translations', 'diseasesMany.translations']);
-
-        return response()->json([
-            'patient' => new PatientResource($patient),
+         return response()->json([
             'stats' => [
                 'completed_visits' => $completedVisits ?? 0,
                 'not_completed_visits' => $notCompletedVisits ?? 0,
