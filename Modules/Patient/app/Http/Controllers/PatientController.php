@@ -21,13 +21,29 @@ class PatientController extends Controller
     public function index()
     {
         $patient = auth('patient')->user();
-        
+
         $patient->load('city', 'area', 'diseasesMany');
 
         $cities = City::where('status', 1)->orderBy('order', 'desc')->get();
         $areas = Area::where('status', 1)->orderBy('order', 'desc')->get();
         $diseases = Disease::get();
-        return view('patient.profile.edit', compact('patient','cities', 'areas', 'diseases'));
+
+
+        $visits = $patient->visits ?? collect(); // ensure collection
+        $totalVisits = $visits->count();
+
+        // Determine stars based on visits
+        $stars = 0;
+        if ($totalVisits >= 15) {
+            $stars = 4;
+        } elseif ($totalVisits >= 10) {
+            $stars = 3;
+        } elseif ($totalVisits >= 5) {
+            $stars = 2;
+        } elseif ($totalVisits >= 3) {
+            $stars = 1;
+        }
+        return view('patient.profile.edit', compact('patient', 'cities', 'areas', 'diseases', 'stars', 'totalVisits'));
     }
 
     public function statistical()
@@ -45,16 +61,37 @@ class PatientController extends Controller
     public function visits()
     {
         $patient = auth('patient')->user();
-        $visits = Visit::with(['service', 'relatedService','feedback'])
+        $visits = Visit::with(['service', 'relatedService', 'feedback'])
             ->where('patient_id', $patient->id)->orderByDesc('created_at')
             ->get();
-        return view('patient.visits.index', compact('patient', 'visits'));
+
+        $totalVisits = $visits->count();
+
+        // Determine stars based on number of visits
+        $stars = 0;
+        $nextGoal = null;
+
+        if ($totalVisits >= 15) {
+            $stars = 4;
+        } elseif ($totalVisits >= 10) {
+            $stars = 3;
+            $nextGoal = 15;
+        } elseif ($totalVisits >= 5) {
+            $stars = 2;
+            $nextGoal = 10;
+        } elseif ($totalVisits >= 3) {
+            $stars = 1;
+            $nextGoal = 5;
+        } else {
+            $nextGoal = 3;
+        }
+        return view('patient.visits.index', compact('patient', 'visits', 'stars', 'nextGoal', 'totalVisits'));
     }
 
     public function showVisit($id)
     {
         $patient = auth('patient')->user();
-        $visit = Visit::with(['service', 'relatedService','relatedService.relatedService'])
+        $visit = Visit::with(['service', 'relatedService', 'relatedService.relatedService'])
             ->where('patient_id', $patient->id)
             ->find($id);
 

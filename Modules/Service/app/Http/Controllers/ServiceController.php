@@ -38,7 +38,7 @@ class ServiceController extends Controller
     public function show(Request $request, $slug)
     {
 
-        $service = Service::with('translations')->where('slug', $slug)->firstOrFail();
+        $service = Service::with('translations')->where('slug', $slug)->with('schedules')->firstOrFail();
 
         // set language for translations
         $lang = $request->query('lang', app()->getLocale());

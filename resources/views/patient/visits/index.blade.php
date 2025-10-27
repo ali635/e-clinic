@@ -2,7 +2,29 @@
 @section('patient_content')
     <!-- Main Content -->
     <main class="flex-1 px-4 py-8 md:ml-0 ml-0 overflow-x-auto">
-        <p class="px-4 py-2 bg-green-200 mb-4">Complete 1 more visit to earn your next <span>star <span class="text-[#ffd700] text-2xl">★</span></span></p>
+        <p class="px-4 py-2 bg-green-200 mb-4 flex items-center justify-between">
+            <span>
+                @if ($stars > 0)
+                    <span class="font-semibold">{{__('Your Reward Level')}}:</span>
+                    @for ($i = 0; $i < $stars; $i++)
+                        <span class="text-[#ffd700] text-2xl">★</span>
+                    @endfor
+                @else
+                    <span>{{__('You haven’t earned a star yet.')}}</span>
+                @endif
+            </span>
+
+            @if ($nextGoal)
+                <span>
+                    {{__('Complete')}} <strong>{{ $nextGoal - $totalVisits }}</strong> {{__('more
+                    visit')}}{{ $nextGoal - $totalVisits > 1 ? 's' : '' }}
+                    {{__('to earn your next')}}
+                    <span class="text-[#ffd700] text-2xl">★</span>
+                </span>
+            @else
+                <span class="text-green-700 font-semibold">🎉 {{__('You reached the top level (4 stars)!')}}</span>
+            @endif
+        </p>
         <h2 class="text-xl font-bold mb-6">{{ __('Visits list') }}</h2>
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -57,9 +79,15 @@
                                             </svg>
                                         </a>
                                         @if ($visit->is_arrival && $visit->feedback == null)
-                                            <a data-visit-id="{{ $visit->id }}" data-modal-target="feedback-modal" data-modal-toggle="feedback-modal" href="javascript:;"
+                                            <a data-visit-id="{{ $visit->id }}" data-modal-target="feedback-modal"
+                                                data-modal-toggle="feedback-modal" href="javascript:;"
                                                 class="showFeedbackModalBtn font-medium text-primary hover:opacity-60">
-                                                <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM11 13V15H13V13H11ZM11 7V12H13V7H11Z"></path></svg>
+                                                <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                    fill="currentColor">
+                                                    <path
+                                                        d="M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM11 13V15H13V13H11ZM11 7V12H13V7H11Z">
+                                                    </path>
+                                                </svg>
                                             </a>
                                         @endif
                                     </span>
@@ -81,20 +109,25 @@
                     @endif
                 </tbody>
             </table>
-            <div id="feedback-modal" tabindex="-1" aria-hidden="true" class="feedbackModalWrapper hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div id="feedback-modal" tabindex="-1" aria-hidden="true"
+                class="feedbackModalWrapper hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                 <div class="relative p-4 w-full max-w-2xl max-h-full">
                     <!-- Modal content -->
                     <div class="relative bg-white rounded-lg shadow-sm p-4">
-                        <h3 class="text-xl text-primary">{{__('Rate the Visit')}}</h3>
+                        <h3 class="text-xl text-primary">{{ __('Rate the Visit') }}</h3>
                         <!-- Modal body -->
-                        <form class="space-y-6 genericForm ajaxForm" method="POST" action="/api/v1/patient/feedback/store">
-                            
+                        <form class="space-y-6" method="POST" action="{{ route('patient.feedback.store') }}">
+                            @csrf
                             <div class="flex justify-end !mb-0">
-                                <button type="button" class="cursor-pointer text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="feedback-modal">
-                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                <button type="button"
+                                    class="cursor-pointer text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                    data-modal-hide="feedback-modal">
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                     </svg>
-                                    <span class="sr-only">{{__('Close modal')}}</span>
+                                    <span class="sr-only">{{ __('Close modal') }}</span>
                                 </button>
                             </div>
                             <div class="grid grid-cols-1 gap-3">
@@ -114,7 +147,8 @@
                                     <label for="feedback" class="block text-sm font-medium text-gray-700">
                                         {{ __('Feedback') }}
                                     </label>
-                                    <textarea class="form-input" placeholder="{{__('Write Your Feedback')}}" name="comments" id="feedback" rows="4"></textarea>
+                                    <textarea class="form-input" placeholder="{{ __('Write Your Feedback') }}" name="comments" id="feedback"
+                                        rows="4"></textarea>
                                 </div>
                             </div>
 
@@ -136,13 +170,13 @@
 @endsection
 
 <script>
-    document.addEventListener('DOMContentLoaded', function(){
+    document.addEventListener('DOMContentLoaded', function() {
         const ratingItems = document.querySelectorAll('.rating-item');
         const ratingInput = document.querySelector('#rating');
         const visitIdInput = document.querySelector('#visitId');
         const showFeedbackModal = document.querySelectorAll('.showFeedbackModalBtn');
         let selectedRating = 0;
-    
+
         ratingItems.forEach((item, index) => {
             item.addEventListener('click', () => {
                 selectedRating = index + 1;
@@ -151,13 +185,13 @@
                     star.classList.toggle('active', idx < selectedRating);
                 });
             });
-    
+
             item.addEventListener('mouseover', () => {
                 ratingItems.forEach((star, idx) => {
                     star.classList.toggle('active', idx <= index);
                 });
             });
-    
+
             item.addEventListener('mouseout', () => {
                 ratingItems.forEach((star, idx) => {
                     star.classList.toggle('active', idx < selectedRating);
@@ -166,7 +200,7 @@
         });
 
         showFeedbackModal.forEach(item => {
-            item.addEventListener('click', function(){
+            item.addEventListener('click', function() {
                 const visitId = this.getAttribute('data-visit-id');
                 visitIdInput.value = visitId;
             })

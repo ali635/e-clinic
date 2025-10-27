@@ -5,8 +5,16 @@
     <!-- Main Content -->
     <main class="flex-1 px-4 py-8 md:ml-0 ml-0">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold">{{ __('Profile') }} (2 <span class="text-[#ffd700] text-2xl">★</span> Stars Member)</h2>
-            <button id="editProfileBtn"
+<h2 class="text-xl font-bold flex items-center gap-2">
+    {{ __('Profile') }}
+    <span class="text-gray-600 text-sm">
+        ({{ $stars }} 
+        @for ($i = 0; $i < $stars; $i++)
+            <span class="text-[#ffd700] text-2xl">★</span>
+        @endfor
+        {{__('Stars Member')}})
+    </span>
+</h2>            <button id="editProfileBtn"
                 class="inline-flex items-center px-4 py-2 bg-primary text-white text-sm font-medium rounded hover:bg-primary/80 focus:outline-none">
                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
