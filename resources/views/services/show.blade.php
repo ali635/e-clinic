@@ -36,10 +36,10 @@
     ];
 
     $book_service_data = [
-        'patient_id' => '2',
-        'patient_description' => 'Patient Description',
-        'book_now' => 'Book Now',
-        'missing_data' => 'Missing Data'
+        'patient_id' => auth('patient')->user()?->id,
+        'patient_description' => __('What are you suffering from ?'),
+        'book_now' => __('Book Now'),
+        'missing_data' => __('Missing Data')
     ]
 @endphp
 
