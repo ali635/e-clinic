@@ -9,6 +9,7 @@ use Modules\Booking\Models\Feedback;
 use Modules\Booking\Models\Visit;
 use Modules\Location\Models\Area;
 use Modules\Location\Models\City;
+use Modules\Patient\Http\Requests\FeedbackRequest;
 use Modules\Patient\Http\Requests\UpdatePatientProfileRequest;
 use Modules\Patient\Models\Disease;
 
@@ -81,6 +82,16 @@ class PatientController extends Controller
 
         return view('patient.feedback.index', compact('feedbacks'));
     }
+
+    public function storeFeedback(FeedbackRequest $request)
+    {
+        $patient = auth('patient')->user();
+        $data = $request->validated();
+        $data['patient_id'] = $patient->id;
+        Feedback::create($data);
+        return redirect()->route('patient.feedback')->with('success', __('Feedback sent successfully'));
+    }
+
 
     public function updateProfile(UpdatePatientProfileRequest $request)
     {

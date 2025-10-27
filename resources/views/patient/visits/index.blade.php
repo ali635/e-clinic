@@ -84,20 +84,21 @@
                 <div class="relative p-4 w-full max-w-2xl max-h-full">
                     <!-- Modal content -->
                     <div class="relative bg-white rounded-lg shadow-sm p-4">
-                        <h3 class="text-xl text-primary">Rate the Visit</h3>
+                        <h3 class="text-xl text-primary">{{__('Rate the Visit')}}</h3>
                         <!-- Modal body -->
-                        <form class="space-y-6" method="POST" action="">
+                        <form class="space-y-6" method="POST" action="{{ route('patient.feedback.store') }}">
+                            @csrf
                             <div class="flex justify-end !mb-0">
                                 <button type="button" class="cursor-pointer text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="feedback-modal">
                                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                     </svg>
-                                    <span class="sr-only">Close modal</span>
+                                    <span class="sr-only">{{__('Close modal')}}</span>
                                 </button>
                             </div>
                             <div class="grid grid-cols-1 gap-3">
                                 <!-- Services Field -->
-                                <input id="visitId" name="visitId" type="hidden" class="form-input" value="">
+                                <input id="visitId" name="visit_id" type="hidden" class="form-input" value="">
                                 <input id="rating" name="rating" type="hidden" class="form-input" value="">
                                 <div class="space-y-2">
                                     <div class="rating">
@@ -112,7 +113,7 @@
                                     <label for="feedback" class="block text-sm font-medium text-gray-700">
                                         {{ __('Feedback') }}
                                     </label>
-                                    <textarea class="form-input" placeholder="Write Your Feedback" name="feedback" id="feedback" rows="4"></textarea>
+                                    <textarea class="form-input" placeholder="{{__('Write Your Feedback')}}" name="comments" id="feedback" rows="4"></textarea>
                                 </div>
                             </div>
 
