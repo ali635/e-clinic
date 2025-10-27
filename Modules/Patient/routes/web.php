@@ -32,6 +32,7 @@ Route::group([
             Route::get('/visits/{id}', [PatientController::class, 'showVisit'])->name('visits.show');
             Route::get('/history', [PatientController::class, 'history'])->name('history');
             Route::get('/feedback', [PatientController::class, 'feedback'])->name('feedback');
+            Route::post('/feedback', [PatientController::class, 'storeFeedback'])->name('feedback.store');
         });
     });
 });
