@@ -41,6 +41,10 @@
                         <span class="font-semibold text-gray-700">{{ __('Date/Time') }}:</span>
                         {{ \Carbon\Carbon::parse($visit->arrival_time)->format('Y-m-d h:i A') }}
                     </p> {{-- <p class="mb-2"><span class="font-semibold text-gray-700">Time:</span> 10:00 AM</p> --}}
+                    <p class="mb-2">
+                        <span class="font-semibold text-gray-700">{{ __('Total Price') }}:</span>
+                        125 IQD
+                    </p>
                 </div>
             </div>
         </section>
