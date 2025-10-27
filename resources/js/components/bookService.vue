@@ -1,33 +1,86 @@
 <template>
-  <form class="bookService">
-    <div class="slots_wrapper">
-      <div v-for="(daySlots, day) in timeSlots" :key="day" class="slot_day">
-        <p class="text-gray-800 font-medium mb-1 capitalize">{{ day }}</p>
-  
-        <div class="flex flex-wrap gap-3">
-          <!-- 9:00 AM -->
-          <label v-for="(slot, index) in daySlots.slots" :key="index" class="slot_time" :class="index%2 == 0 ? 'choosen_slot_time' : ''">
-            <input :disabled="index%2 == 0" type="radio" class="option-input" name="timeSlots" :value="`${daySlots.date} ${slot.datetime}:00`" />
-            <span class="text-sm text-gray-700">{{ slot.datetime }}</span>
-          </label>
+  <form class="bookService" @submit.prevent="handleBookService">
+    <div v-if="toaster.showToaster" class="fixed top-4 ltr:right-4 rtl:left-4">
+      <div class="flex items-center p-4 mb-4 text-sm border rounded-lg w-[450px] max-w-[95%]" :class="{ 'text-green-800 border-green-300 bg-green-50' : toaster.status == 'success', 'text-red-800 border-red-300 bg-red-50' : toaster.status == 'error' }" role="alert">
+        <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        </svg>
+        <span class="sr-only">Info</span>
+        <div>
+          <span class="font-medium" v-text="toaster.msg"></span>
         </div>
       </div>
+    </div>
+
+    <div class="slots_wrapper">
+      <div class="mb-4">
+        <VueDatePicker 
+          v-model="selectedDate"
+          :min-date="new Date()"
+          inline
+          auto-apply
+          :disabled-dates="isDisabled"
+          :enable-time-picker="false"
+        ></VueDatePicker>
+      </div>
+      
+      <div class="flex flex-wrap gap-3 mb-4">
+        <label v-for="(slot, index) in currentSelectedDateSlots" :key="index" class="slot_time" :class="(bookedTimeSlots && bookedTimeSlots.includes(`${selectedDate_formated_Date} ${slot.datetime}:00`)) ? 'choosen_slot_time' : ''">
+          <input v-model="form.arrival_time" :disabled="bookedTimeSlots && bookedTimeSlots.includes(`${selectedDate_formated_Date} ${slot.datetime}:00`)" type="radio" class="option-input" name="timeSlots" :value="`${selectedDate_formated_Date} ${slot.datetime}:00`" />
+          <span class="text-sm text-gray-700">{{ slot.datetime }}</span>
+        </label>
+      </div>
+      <div class="mb-4">
+        <div class="space-y-2">
+          <label for="patient_description" class="block text-sm font-medium text-gray-700">
+            {{ parsedDataObj.patient_description }}
+          </label>
+          <textarea v-model="form.patient_description" class="form-input" :placeholder="parsedDataObj.patient_description" name="patient_description" id="patient_description" rows="4"></textarea>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button type="submit"
+          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200 cursor-pointer max-w-sm mx-auto">
+          {{ parsedDataObj.book_now }}
+      </button>
     </div>
   </form>
 </template>
 
 <script>
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
 export default {
   name: 'bookService',
   data() {
     return {
-      parsedObjData: {},
+      parsedServiceDataObj: {},
+      parsedDataObj: {},
       bookedTimeSlots: [],
+      availableDays: [],
       service: {},
-      timeSlots: {}
+      timeSlots: {},
+      selectedDate: null,
+      selectedDate_formated_Date: null,
+      currentSelectedDateSlots: [],
+      form: {
+        arrival_time: '',
+        service_id: '',
+        patient_id: '',
+        patient_description: '',
+      },
+      toaster: {
+        showToaster: false,
+        msg: "",
+        status: ""
+      },
+      _toasterTimeoutId: null,
     }
   },
-  props: ["dataObj"],
+  components: { VueDatePicker },
+  props: ["serviceDataObj", "dataObj"],
   methods: {
     generateTimeSlots(service) {
       const slots = {};
@@ -71,7 +124,6 @@ export default {
           
           slots[schedule.day_of_week] = {
               day: schedule.day_of_week,
-              date: schedule.date_of_day,
               schedule_id: schedule.id,
               slots: scheduleSlots
           };
@@ -79,24 +131,98 @@ export default {
       
       return slots;
     },
+    isDisabled(date){      
+      const day = date.getDay()
+      return !this.availableDays.includes(day)
+    },
+    async handleBookService() {
+      // Check if required fields are filled (service_id, selectedDate_formated_Date, and arrival_time)
+      if (!this.form.service_id || !this.selectedDate_formated_Date || !this.form.arrival_time) {
+        this.handleToaster(this.parsedDataObj?.missing_data, 'error');
+        return;
+      }
+      const that = this;
+      try {
+        const response = await fetch('/api/v1/patient/create/visit/web', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify(this.form),
+        });
+        
+        console.log("response");
+        console.log(response);
+        
+        if (!response.ok) {
+          throw new Error('Failed to book service');
+        }
 
+        that.handleToaster('Service booked successfully!');
+      } catch (error) {
+        that.handleToaster('Something went wrong', 'error');
+      }
+    },
+    handleToaster(msg, status = 'success'){
+      if(!msg) return;
+      // Clear any existing timeout to prevent multiple overlapping timers
+      if (this._toasterTimeoutId) {
+        clearTimeout(this._toasterTimeoutId);
+        this._toasterTimeoutId = null;
+      }
+
+      // Show the toaster
+      this.toaster = {
+        showToaster: true,
+        msg: msg,
+        status: status
+      };      
+
+      // Set up a new timeout to auto-hide the toaster after 3 seconds
+      this._toasterTimeoutId = setTimeout(() => {
+        // Only hide if the user hasn't clicked to dismiss
+        if (this.toaster && this.toaster.showToaster) {
+          this.toaster.showToaster = false;
+        }
+        this._toasterTimeoutId = null;
+      }, 8000);
+    },
   },
   mounted(){
-    this.parsedObjData = this.dataObj ? JSON.parse(this.dataObj) : {};
-    this.bookedTimeSlots = this.parsedObjData?.booked_times || [];
-    this.service = this.parsedObjData?.service || {};
+    this.parsedServiceDataObj = this.serviceDataObj ? JSON.parse(this.serviceDataObj) : {};
+    this.parsedDataObj = this.dataObj ? JSON.parse(this.dataObj) : {};
+    this.bookedTimeSlots = this.parsedServiceDataObj?.booked_times || [];
+    this.service = this.parsedServiceDataObj?.service || {};
+    this.form.service_id = this.service?.id || '';
+    this.form.patient_id = this.parsedDataObj?.patient_id || '';
     this.timeSlots = this.generateTimeSlots(this.service);
-    console.log("this.parsedObjData");
-    console.log(this.parsedObjData);
-    console.log("this.timeSlots");
-    console.log(this.timeSlots);
-    
+    const schedules = this.parsedServiceDataObj?.service?.schedules || [];
+    this.availableDays = schedules.map(schedule => schedule.day_of_week);
+  },
+  watch: {
+    selectedDate(newVal){
+      const jsDay = newVal.getDay()
+      const dayNumber = jsDay === 0 ? 7 : jsDay;
+      const day = String(newVal.getDate()).padStart(2, '0')
+      const month = String(newVal.getMonth() + 1).padStart(2, '0') // months start at 0
+      const year = newVal.getFullYear()
+
+      this.selectedDate_formated_Date = `${year}-${month}-${day}`;
+      this.currentSelectedDateSlots = this.timeSlots ? (this.timeSlots[dayNumber]?.slots || []) : [];
+      this.form.arrival_time = '';
+    }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .slots_wrapper {
+  .dp__today {
+    border: 0 !important;
+    // @apply border-0 #{!important};
+  }
   .slot_day {
     border: 1px solid #1f2937; 
     padding: 1rem; /* p-4 */

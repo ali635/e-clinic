@@ -34,6 +34,13 @@
         ],
         'booked_times' => $bookedTimes ?? [],
     ];
+
+    $book_service_data = [
+        'patient_id' => '2',
+        'patient_description' => 'Patient Description',
+        'book_now' => 'Book Now',
+        'missing_data' => 'Missing Data'
+    ]
 @endphp
 
     <!-- Hero Section with Service Image -->
@@ -169,27 +176,9 @@
                             <span class="sr-only">{{ __('Close modal') }}</span>
                         </button>
                     </div>
-                    <div class="grid grid-cols-1 gap-3">
-                        <!-- Services Field -->
-                        <div class="space-y-2">
-                            <label for="services" class="block text-sm font-medium text-gray-700">
-                                {{ __('services') }}
-                            </label>
-                            <input id="services" name="services" type="hidden" class="form-input"
-                                value="{{ $service->id }}">
-                        </div>
-                    </div>
-
-                    <!-- Submit Button -->
+                    
                     <div id="vue-app">
-                        <book-service data-obj='@json($service_details)'></book-service>
-                    </div>
-
-                    <div>
-                        <button type="submit"
-                            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200 cursor-pointer max-w-sm mx-auto">
-                            {{ __('Book Now') }}
-                        </button>
+                        <book-service service-data-obj='@json($service_details)' data-obj='@json($book_service_data)'></book-service>
                     </div>
                 </form>
             </div>
