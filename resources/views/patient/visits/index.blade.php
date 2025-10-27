@@ -38,7 +38,7 @@
 
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $visit->is_arrival }}
+                                    {{ $visit->is_arrival ? __('Yes') : __('No') }}
 
                                 </td>
                                 <td class="px-6 py-4">
