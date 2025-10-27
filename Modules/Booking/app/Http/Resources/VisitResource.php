@@ -44,9 +44,17 @@ class VisitResource extends JsonResource
                     ];
                 });
             }),
-
+            'show_btn_feedback' => $this->feedback ? false : true,
+            
+            'feedback' => $this->whenLoaded('feedback', function () {
+                return [
+                    'id' => $this->feedback->id,
+                    'rating' => $this->feedback->rating,
+                    'comments' => $this->feedback->comments,
+                ];
+            }),
             'lab_tests' => $this->mapFiles($this->lab_tests),
-            'x_rays' => $this->mapFiles($this->{'x-rays'}),
+            'x_rays' => $this->mapFiles($this->x_rays),
             'attachment' => $this->mapFiles($this->attachment),
         ];
     }

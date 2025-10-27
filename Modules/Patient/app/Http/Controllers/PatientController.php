@@ -44,7 +44,7 @@ class PatientController extends Controller
     public function visits()
     {
         $patient = auth('patient')->user();
-        $visits = Visit::with(['service', 'relatedService'])
+        $visits = Visit::with(['service', 'relatedService','feedback'])
             ->where('patient_id', $patient->id)->orderByDesc('created_at')
             ->get();
         return view('patient.visits.index', compact('patient', 'visits'));

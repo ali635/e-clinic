@@ -18,10 +18,7 @@ class FeedbackController extends Controller
 
         $query = Feedback::query()->where('patient_id', $patient->id)->with(['visit', 'visit.service']);
 
-        // If visit_id is passed, filter by it
-        if ($request->has('visit_id')) {
-            $query->where('visit_id', $request->query('visit_id'));
-        }
+        
 
         $feedback = $query->get();
 
@@ -34,6 +31,15 @@ class FeedbackController extends Controller
         $patient = auth('api')->user();
 
         $data = $request->validated();
+        
+        $query = Feedback::query()->where('patient_id', $patient->id)->where('visit_id', $data['visit_id']);
+
+        if ($query->exists()) {
+            return response()->json([
+                'message' => __('Feedback already submitted for this visit'),
+            ], 400);
+        }
+
         $data['patient_id'] = $patient->id;
 
         $feedback = Feedback::create($data);
