@@ -79,6 +79,7 @@ class BookingController extends Controller
         $visit->patient_id = $patient->id;
         $visit->arrival_time = $request->arrival_time;
         $visit->patient_description = $request->patient_description;
+        $visit->total_price = $service->price;
         $visit->save();
 
 

@@ -26,11 +26,6 @@ class PatientController extends Controller
 
         return response()->json([
             'patient' => new PatientResource($patient),
-            'stats' => [
-                'completed_visits' => $completedVisits ?? 0,
-                'not_completed_visits' => $notCompletedVisits ?? 0,
-                'reward_rating' => $rating,
-            ],
         ]);
     }
 

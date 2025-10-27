@@ -222,10 +222,9 @@ class VisitForm
 
         if (is_array($relatedItems)) {
             foreach ($relatedItems as $item) {
-                $relatedTotal += (float) ($item['price_related_service'] ?? $item['price'] ?? 0);
+                $relatedTotal += (float) ($item['price_related_service'] * (int) $item['qty'] ?? $item['price'] ?? 0);
             }
         }
-
         return $servicePrice + $relatedTotal;
     }
 }
