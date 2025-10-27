@@ -12,6 +12,7 @@ use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Modules\Booking\Filament\Resources\Visits\VisitResource;
+use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
 
 class VisitsTable
 {
@@ -48,12 +49,13 @@ class VisitsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                Action::make('activities')->url(fn($record) => VisitResource::getUrl('activities', ['record' => $record]))
+                Action::make('activities')->label(__('Activities Log'))->url(fn($record) => VisitResource::getUrl('activities', ['record' => $record]))
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+                ExportBulkAction::make()
             ]);
     }
 }
