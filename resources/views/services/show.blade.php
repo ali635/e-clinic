@@ -25,13 +25,14 @@
                         'id' => $schedule->id,
                         'start_time' => $schedule->start_time,
                         'end_time' => $schedule->end_time,
-                        'day_of_week' => $daysMap[strtolower($schedule->day_of_week)] ?? null,
+                        'day_of_week' => \Carbon\Carbon::parse($schedule->day_of_week)->dayOfWeekIso,
                         'service_id' => $schedule->service_id,
                     ];
                 }),
             ],
             'booked_times' => $bookedTimes ?? [],
         ];
+        
     @endphp
     <!-- Hero Section with Service Image -->
     <section class="service-hero relative h-[60vh] min-h-[400px] overflow-hidden">
