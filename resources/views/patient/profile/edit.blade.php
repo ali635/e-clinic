@@ -186,6 +186,7 @@
         </div>
         <script src="{{ asset('js/intelTelInput.js') }}"></script>
         <script>
+            let currentLocale = "{{ app()->getLocale() }}";
             const editProfileBtn = document.querySelector('#editProfileBtn');
             const cancelEditProfileBtn = document.querySelector('#cancelEditProfileBtn');
 
@@ -217,7 +218,7 @@
                 let optionsStr = `<option value="">{{ __('Select your area') }}</option>`;
                 area.innerHTML = optionsStr;
                 if(cityId){
-                    fetch(`/api/v1/countries/${cityId}/areas`)
+                    fetch(`/api/v1/countries/${cityId}/areas?lang=${currentLocale}`)
                         .then(response => response.json())
                         .then(data => {
                             const areas = data?.data || [];

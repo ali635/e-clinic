@@ -225,13 +225,14 @@
 
 
         const city = document.querySelector("#city");
+        let currentLocale = "{{ app()->getLocale() }}";
         city.addEventListener("change", function() {
             const cityId = this.value;
             const area = document.querySelector("#area");
             let optionsStr = `<option value="">{{ __('Select your area') }}</option>`;
             area.innerHTML = optionsStr;
             if(cityId){
-                fetch(`/api/v1/countries/${cityId}/areas`)
+                fetch(`/api/v1/countries/${cityId}/areas?lang=${currentLocale}`)
                     .then(response => response.json())
                     .then(data => {
                         const areas = data?.data || [];
