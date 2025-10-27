@@ -219,3 +219,13 @@ body {
     }
 }
 
+.rating {
+    @apply flex justify-center gap-2;
+    .rating-item {
+        @apply cursor-pointer text-[#ddd] text-3xl transition-all ;
+        &:hover, &.active {
+            @apply text-[#ffd700] scale-125 ;
+        }
+    }
+}
+
