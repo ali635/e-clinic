@@ -17,7 +17,6 @@ class PatientDisease extends ChartWidget
             ->groupBy('disease_id')
             ->with('disease') // Eager load the disease relationship
             ->get();
-
         return [
             'datasets' => [
                 [
