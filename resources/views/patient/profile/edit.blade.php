@@ -87,7 +87,7 @@
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">{{ __('Date of Birth') }}</label>
-                    <input type="date" name="date_of_birth" value="{{ $patient->date_of_birth }}"
+                    <input type="date" name="date_of_birth" value="{{  Carbon\Carbon::parse($patient->date_of_birth)->format('Y-m-d') }}"
                         class="form-input w-full">
                     @error('date_of_birth')
                         <div class="text-red-600 text-sm mt-1">
