@@ -10,7 +10,7 @@
                 </h2>
             </div>
 
-            <form class="mt-8 space-y-6" method="POST" action="{{ route('patient.register.post') }}">
+            <form class="mt-8 space-y-6 genericForm" method="POST" action="{{ route('patient.register.post') }}">
                 @csrf
                 <div class="grid grid-cols-1 tablet:grid-cols-2 gap-3">
                     <!-- Full Name Field -->
