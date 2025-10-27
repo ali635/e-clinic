@@ -3,6 +3,7 @@
 namespace Modules\Patient\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Devrabiul\ToastMagic\Facades\ToastMagic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Modules\Booking\Models\Feedback;
@@ -126,6 +127,9 @@ class PatientController extends Controller
         $data = $request->validated();
         $data['patient_id'] = $patient->id;
         Feedback::create($data);
+
+        ToastMagic::success(__('Feedback sent successfully'));
+
         return redirect()->route('patient.feedback')->with('success', __('Feedback sent successfully'));
     }
 

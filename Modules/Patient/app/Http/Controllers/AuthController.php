@@ -3,6 +3,7 @@
 namespace Modules\Patient\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Devrabiul\ToastMagic\Facades\ToastMagic;
 use Illuminate\Http\Request;
 use Modules\Patient\Http\Requests\PatientLoginRequest;
 use Modules\Patient\Http\Requests\PatientRegisterRequest;
@@ -64,6 +65,7 @@ class AuthController extends Controller
 
         Auth::guard('patient')->login($patient);
 
+        ToastMagic::success(__('Account created successfully.'));
         return redirect()->route('patient.dashboard')
             ->with('success', __('Account created successfully.'));
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ getDirection() }}" >
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ getDirection() }}">
 
 <head>
     <meta charset="utf-8">
@@ -17,6 +17,7 @@
     <!-- @vite('resources/css/app.css') -->
     <!--
 @endif -->
+    {!! ToastMagic::styles() !!}
 
 </head>
 
@@ -25,6 +26,9 @@
     @include('share.header')
     @yield('content')
     @include('share.footer')
+
+        {!! ToastMagic::scripts() !!}
+
 </body>
 
 </html>

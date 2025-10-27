@@ -7,9 +7,8 @@
                         alt="{{ setting('site_name') }}">
                 </div>
 
-                <p
-                    class="max-w-md mx-auto mt-6 leading-relaxed text-center text-gray-400 tablet:max-w-xs tablet:mx-0 tablet:text-start">
-                    {!! setting_lang("about_us") !!}
+                <p class="max-w-md mx-auto mt-6 leading-relaxed text-center text-gray-400 tablet:max-w-xs tablet:mx-0 tablet:text-start">
+                    {{ strip_tags(setting_lang("about_us")) }}
                 </p>
 
                 <ul class="flex justify-center gap-6 mt-8 tablet:gap-8 tablet:justify-start">
