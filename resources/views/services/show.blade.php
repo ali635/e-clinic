@@ -1,31 +1,41 @@
 @extends('layout.defult')
 @section('content')
     @php
-        
-        $service_details = [
-            'service' => [
-                'id' => $service->id,
-                'name' => $service->name,
-                'short_description' => $service->short_description ?? '',
-                'description' => $service->description ?? '',
-                'price' => $service->price ?? '',
-                'patient_time_minute' => $service->patient_time_minute ?? '',
-                'image' => $service->image ? asset('storage/' . $service->image) : asset('images/default-service.jpg'),
-                'is_home' => $service->is_home ?? false,
-                'schedules' => $service->schedules->map(function ($schedule) {
-                    return [
-                        'id' => $schedule->id,
-                        'start_time' => $schedule->start_time,
-                        'end_time' => $schedule->end_time,
-                        'day_of_week' => \Carbon\Carbon::parse($schedule->day_of_week)->dayOfWeekIso,
-                        'service_id' => $schedule->service_id,
-                    ];
-                }),
-            ],
-            'booked_times' => $bookedTimes ?? [],
-        ];
-        
-    @endphp
+    $daysMap = [
+        'monday' => 1,
+        'tuesday' => 2,
+        'wednesday' => 3,
+        'thursday' => 4,
+        'friday' => 5,
+        'saturday' => 6,
+        'sunday' => 7,
+    ];
+
+    $service_details = [
+        'service' => [
+            'id' => $service->id,
+            'name' => $service->name,
+            'short_description' => $service->short_description ?? '',
+            'description' => $service->description ?? '',
+            'price' => $service->price ?? '',
+            'patient_time_minute' => $service->patient_time_minute ?? '',
+            'image' => $service->image ? asset('storage/' . $service->image) : asset('images/default-service.jpg'),
+            'is_home' => $service->is_home ?? false,
+            'schedules' => $service->schedules->map(function ($schedule) use ($daysMap) {
+                $dayValue = strtolower($schedule->day_of_week->value); // ✅ get enum value as string
+                return [
+                    'id' => $schedule->id,
+                    'start_time' => $schedule->start_time,
+                    'end_time' => $schedule->end_time,
+                    'day_of_week' => $daysMap[$dayValue] ?? null, // convert to numeric day
+                    'service_id' => $schedule->service_id,
+                ];
+            }),
+        ],
+        'booked_times' => $bookedTimes ?? [],
+    ];
+@endphp
+
     <!-- Hero Section with Service Image -->
     <section class="service-hero relative h-[60vh] min-h-[400px] overflow-hidden">
         <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->name }}" class="w-full h-full object-cover">
