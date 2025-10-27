@@ -92,7 +92,7 @@ class PatientController extends Controller
     public function showVisit($id)
     {
         $patient = auth('patient')->user();
-        $visit = Visit::with(['service', 'relatedService', 'relatedService.relatedService'])
+        $visit = Visit::with(['service', 'relatedService', 'relatedService.relatedService','feedback'])
             ->where('patient_id', $patient->id)
             ->find($id);
 

@@ -30,7 +30,7 @@
                                 {{ $visit->arrival_time }})
                             </span>
                         @else
-                            <span class="text-red-500 font-bold">{{__('No')}}</span>
+                            <span class="text-red-500 font-bold">{{ __('No') }}</span>
                         @endif
 
                         <!-- else -->
@@ -40,9 +40,9 @@
                     <p class="mb-2">
                         <span class="font-semibold text-gray-700">{{ __('Date/Time') }}:</span>
                         {{ \Carbon\Carbon::parse($visit->arrival_time)->format('Y-m-d h:i A') }}
-                    </p> 
+                    </p>
                     <p class="mb-2">
-                        <span class="font-semibold text-gray-700">{{__('Total price')}}:</span> 
+                        <span class="font-semibold text-gray-700">{{ __('Total price') }}:</span>
                         {{ $visit->total_price }}<span class="text-primary font-bold m-1">{{ __('IQD') }}</span>
                     </p>
                 </div>
@@ -187,9 +187,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(isset($visit->relatedService) && $visit->relatedService->count() > 0)
+                        @if (isset($visit->relatedService) && $visit->relatedService->count() > 0)
                             @foreach ($visit->relatedService as $service)
-                                
                                 <tr class="odd:bg-white even:bg-gray-50 border-b border-gray-200">
 
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
@@ -206,7 +205,12 @@
                         @else
                             <tr>
                                 <td colspan="5" class="px-6 py-4 text-center text-xl">
-                                    <svg class="inline-block" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z"></path></svg>
+                                    <svg class="inline-block" width="20px" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z">
+                                        </path>
+                                    </svg>
                                     {{ __('No Related Service found') }}
                                 </td>
                             </tr>
@@ -217,35 +221,59 @@
         </section>
 
         <!-- Visit Feedback -->
-        <section class="bg-white rounded-xl shadow p-6 mb-6">
-            <h2 class="text-lg font-semibold mb-3 text-primary flex items-center">
-                <svg class="inline me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                    fill="currentColor">
-                    <path
-                        d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11 11V17H13V11H11ZM11 7V9H13V7H11Z">
-                    </path>
-                </svg>
-                {{ __('Visit Feedback') }}
-            </h2>
-            <div class="grid grid-cols-1 gap-6">
-                <div>
-                    <span class="flex items-center gap-0.5 mb-4">
-                        @for ($i = 1; $i <= 5; $i++)
-                            @if ($i <= 4)
-                                <svg width="20px" class="fill-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path></svg>
-                            @else
-                                <svg width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26ZM12.0006 15.968L16.2473 18.3451L15.2988 13.5717L18.8719 10.2674L14.039 9.69434L12.0006 5.27502L9.96214 9.69434L5.12921 10.2674L8.70231 13.5717L7.75383 18.3451L12.0006 15.968Z"></path></svg>
-                            @endif
-                        @endfor
-                        (4/5)
-                    </span>
-                    <label class="block text-gray-700 font-semibold mb-2">{{ __('Feedback Comment') }}</label>
-                    <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                        Here will be the feedback comment
+        @if ($visit->feedback)
+            <section class="bg-white rounded-xl shadow p-6 mb-6">
+                <h2 class="text-lg font-semibold mb-3 text-primary flex items-center">
+                    <svg class="inline me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11 11V17H13V11H11ZM11 7V9H13V7H11Z">
+                        </path>
+                    </svg>
+                    {{ __('Visit Feedback') }}
+                </h2>
+
+                <div class="grid grid-cols-1 gap-6">
+                    <div>
+                        {{-- ⭐ Dynamic star rating --}}
+                        <span class="flex items-center gap-0.5 mb-4">
+                            @php
+                                $rating = $visit->feedback->rating ?? 0; // ensure numeric rating
+                            @endphp
+
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $rating)
+                                    {{-- Filled star --}}
+                                    <svg width="20px" class="fill-primary" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z">
+                                        </path>
+                                    </svg>
+                                @else
+                                    {{-- Empty star --}}
+                                    <svg width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                        fill="currentColor">
+                                        <path
+                                            d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26ZM12.0006 15.968L16.2473 18.3451L15.2988 13.5717L18.8719 10.2674L14.039 9.69434L12.0006 5.27502L9.96214 9.69434L5.12921 10.2674L8.70231 13.5717L7.75383 18.3451L12.0006 15.968Z">
+                                        </path>
+                                    </svg>
+                                @endif
+                            @endfor
+
+                            ({{ $rating }}/5)
+                        </span>
+
+                        {{-- 💬 Feedback Comment --}}
+                        <label class="block text-gray-700 font-semibold mb-2">{{ __('Feedback Comment') }}</label>
+                        <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
+                            {{ $visit->feedback->comments ?? __('No comment provided') }}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        @endif
+
 
     </main>
 
