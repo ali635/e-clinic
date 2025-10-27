@@ -18,6 +18,7 @@ Route::prefix('v1/patient')->group(function () {
     });
     Route::middleware(['auth:api'])->group(function () {
         Route::get('me', [PatientController::class, 'index']);
+        Route::get('loyalty', [PatientController::class, 'loyalty']);
         Route::post('update', [PatientController::class, 'update']);
         Route::prefix('feedback')->group(function () {
             Route::get('/', [FeedbackController::class, 'index']);
