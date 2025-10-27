@@ -86,6 +86,8 @@ export default {
     this.bookedTimeSlots = this.parsedObjData?.booked_times || [];
     this.service = this.parsedObjData?.service || {};
     this.timeSlots = this.generateTimeSlots(this.service);
+    console.log("this.parsedObjData");
+    console.log(this.parsedObjData);
     console.log("this.timeSlots");
     console.log(this.timeSlots);
     
