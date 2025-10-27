@@ -2,6 +2,7 @@
 @section('patient_content')
     <!-- Main Content -->
     <main class="flex-1 px-4 py-8 md:ml-0 ml-0 overflow-x-auto">
+        <p class="px-4 py-2 bg-green-200 mb-4">Complete 1 more visit to earn your next <span>star <span class="text-[#ffd700] text-2xl">★</span></span></p>
         <h2 class="text-xl font-bold mb-6">{{ __('Visits list') }}</h2>
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -86,8 +87,8 @@
                     <div class="relative bg-white rounded-lg shadow-sm p-4">
                         <h3 class="text-xl text-primary">{{__('Rate the Visit')}}</h3>
                         <!-- Modal body -->
-                        <form class="space-y-6" method="POST" action="{{ route('patient.feedback.store') }}">
-                            @csrf
+                        <form class="space-y-6 genericForm ajaxForm" method="POST" action="/api/v1/patient/feedback/store">
+                            
                             <div class="flex justify-end !mb-0">
                                 <button type="button" class="cursor-pointer text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="feedback-modal">
                                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -124,6 +125,9 @@
                                 </button>
                             </div>
                         </form>
+                        <div class="success hidden text-center p-4 rounded bg-green-100 text-green-800 mt-4">
+                            {{ __('Thank you for submitting your feedback!') }}
+                        </div>
                     </div>
                 </div>
             </div>
