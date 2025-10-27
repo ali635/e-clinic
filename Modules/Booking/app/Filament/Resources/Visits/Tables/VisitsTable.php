@@ -55,7 +55,7 @@ class VisitsTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-                ExportBulkAction::make()
+                // ExportBulkAction::make()
             ]);
     }
 }
