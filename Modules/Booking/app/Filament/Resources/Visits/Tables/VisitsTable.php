@@ -58,4 +58,5 @@ class VisitsTable
                 // ExportBulkAction::make()
             ]);
     }
+    
 }
