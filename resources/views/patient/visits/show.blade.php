@@ -216,6 +216,37 @@
             </div>
         </section>
 
+        <!-- Visit Feedback -->
+        <section class="bg-white rounded-xl shadow p-6 mb-6">
+            <h2 class="text-lg font-semibold mb-3 text-primary flex items-center">
+                <svg class="inline me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="currentColor">
+                    <path
+                        d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11 11V17H13V11H11ZM11 7V9H13V7H11Z">
+                    </path>
+                </svg>
+                {{ __('Visit Feedback') }}
+            </h2>
+            <div class="grid grid-cols-1 gap-6">
+                <div>
+                    <span class="flex items-center gap-0.5 mb-4">
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= 4)
+                                <svg width="20px" class="fill-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path></svg>
+                            @else
+                                <svg width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26ZM12.0006 15.968L16.2473 18.3451L15.2988 13.5717L18.8719 10.2674L14.039 9.69434L12.0006 5.27502L9.96214 9.69434L5.12921 10.2674L8.70231 13.5717L7.75383 18.3451L12.0006 15.968Z"></path></svg>
+                            @endif
+                        @endfor
+                        (4/5)
+                    </span>
+                    <label class="block text-gray-700 font-semibold mb-2">{{ __('Feedback Comment') }}</label>
+                    <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
+                        Here will be the feedback comment
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <script src="{{ asset('js/lightbox-plus-jquery.min.js') }}"></script>

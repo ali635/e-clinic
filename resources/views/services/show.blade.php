@@ -19,7 +19,6 @@ $service_details = [
                 "start_time" => "16:00:00",
                 "end_time" => "18:00:00",
                 "day_of_week" => "thursday",
-                "date_of_day" => "2025-10-23",
                 "service_id" => 14
             ],
             [
@@ -27,7 +26,6 @@ $service_details = [
                 "start_time" => "18:00:00",
                 "end_time" => "20:00:00",
                 "day_of_week" => "friday",
-                "date_of_day" => "2025-10-24",
                 "service_id" => 14
             ]
         ]

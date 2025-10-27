@@ -55,15 +55,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('patient.feedback') }}"
-                                class="sidebarMenu_item @if (Route::currentRouteName() == 'patient.feedback') active @endif">
-
-                                <!-- Smiley feedback icon -->
-                                <svg class="me-2" width="20px" height="20px" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                    <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.873 1.48 8.321L12 18.896l-7.416 4.604 1.48-8.321L0 9.306l8.332-1.151z" />
-                                </svg>
-
+                            <a href="{{ route('patient.feedback') }}" class="sidebarMenu_item @if (Route::currentRouteName() == 'patient.feedback') active @endif">
+                                <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM11 13V15H13V13H11ZM11 7V12H13V7H11Z"></path></svg>
                                 {{ __('Feedback') }}
                             </a>
                         </li>

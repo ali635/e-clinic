@@ -9,9 +9,7 @@
             </h2>
         </div>
         
-        <form class="mt-8 space-y-6" method="POST" action="{{ route('patient.login') }}">
-            @csrf
-            
+        <form class="mt-8 space-y-6 genericForm" method="POST" action="/api/v1/patient/login">            
             <!-- Email Field -->
             <div class="space-y-2">
                 <label for="email" class="block text-sm font-medium text-gray-700">

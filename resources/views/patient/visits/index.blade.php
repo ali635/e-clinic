@@ -45,17 +45,8 @@
                                     {{ $visit->arrival_time }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <a href="{{ route('patient.visits.show', $visit->id) }}"
-                                        class="font-medium text-primary hover:opacity-60">
-                                        <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="currentColor">
-                                            <path
-                                                d="M1.18164 12C2.12215 6.87976 6.60812 3 12.0003 3C17.3924 3 21.8784 6.87976 22.8189 12C21.8784 17.1202 17.3924 21 12.0003 21C6.60812 21 2.12215 17.1202 1.18164 12ZM12.0003 17C14.7617 17 17.0003 14.7614 17.0003 12C17.0003 9.23858 14.7617 7 12.0003 7C9.23884 7 7.00026 9.23858 7.00026 12C7.00026 14.7614 9.23884 17 12.0003 17ZM12.0003 15C10.3434 15 9.00026 13.6569 9.00026 12C9.00026 10.3431 10.3434 9 12.0003 9C13.6571 9 15.0003 10.3431 15.0003 12C15.0003 13.6569 13.6571 15 12.0003 15Z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                    @if ($visit->is_arrival && $visit->feedback == null)
-                                        <a href="#"
+                                    <span class="flex gap-2">
+                                        <a href="{{ route('patient.visits.show', $visit->id) }}"
                                             class="font-medium text-primary hover:opacity-60">
                                             <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                                 fill="currentColor">
@@ -64,7 +55,13 @@
                                                 </path>
                                             </svg>
                                         </a>
-                                    @endif
+                                        @if ($visit->is_arrival && $visit->feedback == null)
+                                            <a data-visit-id="{{ $visit->id }}" data-modal-target="feedback-modal" data-modal-toggle="feedback-modal" href="javascript:;"
+                                                class="showFeedbackModalBtn font-medium text-primary hover:opacity-60">
+                                                <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM11 13V15H13V13H11ZM11 7V12H13V7H11Z"></path></svg>
+                                            </a>
+                                        @endif
+                                    </span>
                                 </td>
                             </tr>
                         @endforeach
@@ -83,6 +80,91 @@
                     @endif
                 </tbody>
             </table>
+            <div id="feedback-modal" tabindex="-1" aria-hidden="true" class="feedbackModalWrapper hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative p-4 w-full max-w-2xl max-h-full">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow-sm p-4">
+                        <h3 class="text-xl text-primary">Rate the Visit</h3>
+                        <!-- Modal body -->
+                        <form class="space-y-6" method="POST" action="">
+                            <div class="flex justify-end !mb-0">
+                                <button type="button" class="cursor-pointer text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="feedback-modal">
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                    </svg>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-1 gap-3">
+                                <!-- Services Field -->
+                                <input id="visitId" name="visitId" type="hidden" class="form-input" value="">
+                                <input id="rating" name="rating" type="hidden" class="form-input" value="">
+                                <div class="space-y-2">
+                                    <div class="rating">
+                                        <span class="rating-item cursor-pointer text-[#ddd] transition-all">★</span>
+                                        <span class="rating-item cursor-pointer text-[#ddd] transition-all">★</span>
+                                        <span class="rating-item cursor-pointer text-[#ddd] transition-all">★</span>
+                                        <span class="rating-item cursor-pointer text-[#ddd] transition-all">★</span>
+                                        <span class="rating-item cursor-pointer text-[#ddd] transition-all">★</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="feedback" class="block text-sm font-medium text-gray-700">
+                                        {{ __('Feedback') }}
+                                    </label>
+                                    <textarea class="form-input" placeholder="Write Your Feedback" name="feedback" id="feedback" rows="4"></textarea>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit"
+                                    class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200 cursor-pointer max-w-sm mx-auto">
+                                    {{ __('Submit') }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        const ratingItems = document.querySelectorAll('.rating-item');
+        const ratingInput = document.querySelector('#rating');
+        const visitIdInput = document.querySelector('#visitId');
+        const showFeedbackModal = document.querySelectorAll('.showFeedbackModalBtn');
+        let selectedRating = 0;
+    
+        ratingItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                selectedRating = index + 1;
+                ratingInput.value = selectedRating;
+                ratingItems.forEach((star, idx) => {
+                    star.classList.toggle('active', idx < selectedRating);
+                });
+            });
+    
+            item.addEventListener('mouseover', () => {
+                ratingItems.forEach((star, idx) => {
+                    star.classList.toggle('active', idx <= index);
+                });
+            });
+    
+            item.addEventListener('mouseout', () => {
+                ratingItems.forEach((star, idx) => {
+                    star.classList.toggle('active', idx < selectedRating);
+                });
+            });
+        });
+
+        showFeedbackModal.forEach(item => {
+            item.addEventListener('click', function(){
+                const visitId = this.getAttribute('data-visit-id');
+                visitIdInput.value = visitId;
+            })
+        })
+    })
+</script>
