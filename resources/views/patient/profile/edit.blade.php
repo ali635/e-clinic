@@ -34,7 +34,7 @@
                     </div>
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('Date of Birth') }}:</dt>
-                        <dd class="text-end">{{ $patient->date_of_birth ?? '-' }}</dd>
+                        <dd class="text-end">{{ Carbon\Carbon::parse($patient->date_of_birth)->format('Y-m-d') ?? '-' }}</dd>
                     </div>
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('Gender') }}:</dt>

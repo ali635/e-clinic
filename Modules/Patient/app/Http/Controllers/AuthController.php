@@ -55,6 +55,8 @@ class AuthController extends Controller
             'address' => $request->address,
             'country_id' => $country_id,
             'city_id' => $request->city_id,
+            'other_phone' => $request->other_phone,
+            'area_id' => $request->area_id,
             'hear_about_us' => $request->hear_about_us,
             'status' => 1,
             'password' => Hash::make($request->password),
