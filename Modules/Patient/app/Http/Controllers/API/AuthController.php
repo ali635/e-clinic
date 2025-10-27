@@ -5,6 +5,7 @@ namespace Modules\Patient\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Modules\Location\Models\City;
 use Modules\Patient\Models\Patient;
 use Modules\Patient\Http\Requests\PatientLoginRequest;
 use Modules\Patient\Http\Requests\PatientRegisterRequest;
@@ -16,6 +17,8 @@ class AuthController extends Controller
      */
     public function register(PatientRegisterRequest $request)
     {
+        $country_id = City::where('id', $request->city_id)->value('country_id');
+        $data['country_id'] = $country_id;
         $data = $request->validated();
         $data['status'] = 1;
         $data['password'] = Hash::make($data['password']);

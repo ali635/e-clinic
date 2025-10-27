@@ -11,8 +11,10 @@ return [
     */
     'paths' => [
         app_path(),
+        base_path('app'),
         resource_path('views'),
         base_path('vendor'),
+        base_path('Modules'),          // <<< add your modules
     ],
 
     /*
@@ -25,6 +27,14 @@ return [
     */
 
     'excludedPaths' => [],
+
+    // 'scan_paths' => [
+    //     base_path('app'),
+    //     resource_path('views'),
+    //     base_path('routes'),
+    //     base_path('Modules'),          // <<< add your modules
+    //     base_path('resources/js'),    // if JS contains __('...')
+    // ],
 
     /*
     |--------------------------------------------------------------------------

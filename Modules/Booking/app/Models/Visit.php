@@ -52,7 +52,10 @@ class Visit extends Model
     {
         return $this->hasMany(RelatedServiceVisit::class);
     }
-
+    public function feedback()
+    {
+        return $this->hasOne(Feedback::class, 'visit_id', 'id');
+    }
     public function patient()
     {
         return $this->belongsTo(Patient::class)->where('status', 1);

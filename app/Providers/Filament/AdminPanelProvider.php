@@ -23,6 +23,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Modules\Patient\Filament\Widgets\Patient;
+use Modules\Patient\Filament\Widgets\PatientArea;
 use Modules\Patient\Filament\Widgets\PatientDisease;
 use Modules\Service\Filament\Widgets\ServiceVisitsChart;
 use Resma\FilamentAwinTheme\FilamentAwinTheme;
@@ -51,6 +52,7 @@ class AdminPanelProvider extends PanelProvider
                 AccountWidget::class,
                 FilamentInfoWidget::class,
                 Patient::class,
+                PatientArea::class,
                 PatientDisease::class,
                 ServiceVisitsChart::class,
             ])

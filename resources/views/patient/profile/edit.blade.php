@@ -34,7 +34,7 @@
                     </div>
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('Date of Birth') }}:</dt>
-                        <dd class="text-end">{{ $patient->date_of_birth ?? '-' }}</dd>
+                        <dd class="text-end">{{ Carbon\Carbon::parse($patient->date_of_birth)->format('Y-m-d') ?? '-' }}</dd>
                     </div>
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('Gender') }}:</dt>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">{{ __('Date of Birth') }}</label>
-                    <input type="date" name="date_of_birth" value="{{ $patient->date_of_birth }}"
+                    <input type="date" name="date_of_birth" value="{{  Carbon\Carbon::parse($patient->date_of_birth)->format('Y-m-d') }}"
                         class="form-input w-full">
                     @error('date_of_birth')
                         <div class="text-red-600 text-sm mt-1">
@@ -186,6 +186,7 @@
         </div>
         <script src="{{ asset('js/intelTelInput.js') }}"></script>
         <script>
+            let currentLocale = "{{ app()->getLocale() }}";
             const editProfileBtn = document.querySelector('#editProfileBtn');
             const cancelEditProfileBtn = document.querySelector('#cancelEditProfileBtn');
 
@@ -217,7 +218,7 @@
                 let optionsStr = `<option value="">{{ __('Select your area') }}</option>`;
                 area.innerHTML = optionsStr;
                 if(cityId){
-                    fetch(`/api/v1/countries/${cityId}/areas`)
+                    fetch(`/api/v1/countries/${cityId}/areas?lang=${currentLocale}`)
                         .then(response => response.json())
                         .then(data => {
                             const areas = data?.data || [];

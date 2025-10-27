@@ -61,7 +61,7 @@
                         <label for="phone" class="block text-sm font-medium text-gray-700">
                             {{ __('Another Phone Number') }}
                         </label>
-                        <input id="another_phone" name="another_phone" type="tel" class="form-input"
+                        <input id="another_phone" name="other_phone" type="tel" class="form-input"
                             placeholder="Enter your another phone number" value="{{ old('another_phone') }}">
                         @error('another_phone')
                             <div class="text-red-600 text-sm mt-1 ">
@@ -225,13 +225,14 @@
 
 
         const city = document.querySelector("#city");
+        let currentLocale = "{{ app()->getLocale() }}";
         city.addEventListener("change", function() {
             const cityId = this.value;
             const area = document.querySelector("#area");
             let optionsStr = `<option value="">{{ __('Select your area') }}</option>`;
             area.innerHTML = optionsStr;
             if(cityId){
-                fetch(`/api/v1/countries/${cityId}/areas`)
+                fetch(`/api/v1/countries/${cityId}/areas?lang=${currentLocale}`)
                     .then(response => response.json())
                     .then(data => {
                         const areas = data?.data || [];
