@@ -32,7 +32,7 @@
                 ];
             }),
         ],
-        'booked_times' => $bookedTimes ?? [],
+        'booked_times' => $booked_times ?? [],
     ];
 
     $book_service_data = [
@@ -40,7 +40,7 @@
         'patient_description' => __('What are you suffering from ?'),
         'book_now' => __('Book Now'),
         'missing_data' => __('Missing Data'),
-        'something_wrong' => __('Something went Wrong'),
+        'something_wrong' => __('Something went Wrong please try again'),
     ]
 @endphp
 

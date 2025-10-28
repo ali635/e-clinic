@@ -18,6 +18,7 @@ class ServiceResource extends JsonResource
             'description' => $this->description,
             'price' => $this->price,
             'patient_time_minute' => $this->patient_time_minute,
+            'currency_lang' => __('IQD'),
             'image' => $this->image ? asset('storage/' . $this->image) : null,
             'is_home' => (bool) $this->is_home,
         ];
