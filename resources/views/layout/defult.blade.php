@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ getDirection() }}">
+@php
+    $isProductionMode = config(key: 'app.env') == 'production';
+@endphp
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>@yield('title', __('Home'))</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <link rel="shortcut icon" href="{{ asset('storage/' . setting('site_logo')) }}" type="image/x-icon">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+
+    @if($isProductionMode)
+        @php
+            $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+        @endphp
+        <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
+    @else
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endif
+    
     {!! ToastMagic::styles() !!}
     @php
         $languagesFonts = [
@@ -54,13 +64,18 @@
 </head>
 
 
-<body class="{{ $currentFont }}" dir="{{ getDirection() }}">
+<body dir="{{ getDirection() }}">
     @include('share.header')
     @yield('content')
     @include('share.footer')
 
-        {!! ToastMagic::scripts() !!}
-
+    @if($isProductionMode)
+        @php
+            $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+        @endphp
+        <script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
+    @endif
+    {!! ToastMagic::scripts() !!}
 </body>
 
 </html>

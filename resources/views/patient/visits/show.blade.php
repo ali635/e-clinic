@@ -25,7 +25,7 @@
                         <!-- if arrived -->
                         @if ($visit->is_arrival)
                             <span class="text-primary font-bold">{{ __('Yes') }}</span>
-                            <span class="ml-2 text-gray-700" style="font-size: 0.95em;">
+                            <span class="ms-2 text-gray-700" style="font-size: 0.95em;">
                                 ({{ __('Arrival Time') }}:
                                 {{ $visit->arrival_time }})
                             </span>
