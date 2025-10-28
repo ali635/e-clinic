@@ -72,7 +72,7 @@ class ServiceController extends Controller
             ->map(fn($t) => Carbon::parse($t)->toDateTimeString())
             ->toArray();
 
-
+        
 
         // If an authenticated patient exists, tell if they have a booking for this service
         $bookedByAuth = false;

@@ -1,6 +1,6 @@
 @php
     $locales = Modules\AdvancedLanguage\Models\Language::query()->get();
-    $isProfileLayout = false;
+    $isProfileLayout = request()->routeIs('patient.*');
 @endphp
 
 <header>
