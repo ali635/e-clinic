@@ -1,4 +1,13 @@
 @extends('layout.defult')
+@section('title', __('Our Blog - Latest News and Updates'))
+@section('description', __('Explore the latest articles, updates, and insights from our team.'))
+@section('keywords', __('blog, news, updates, health tips, clinics, 3M Services'))
+@section('og_title', __('Our Blog - Latest News and Updates'))
+@section('og_description', __('Explore the latest articles, updates, and insights from our team.'))
+@section('og_type', 'website')
+@section('twitter_title', __('Our Blog - Latest News and Updates'))
+@section('twitter_description', __('Explore the latest articles, updates, and insights from our team.'))
+
 @section('content')
     <section class="py-12">
         <div class="container">

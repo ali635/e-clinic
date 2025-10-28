@@ -1,6 +1,32 @@
 @extends('layout.defult')
+
+{{-- 🧠 SEO & Social Meta --}}
+@section('title', __(':serviceName - 3M Medical System', ['serviceName' => $service->name]))
+@section('description',
+    __(':serviceName details, price, and booking information at 3M Medical System. :shortDesc', [
+    'serviceName' => $service->name,
+    'shortDesc' => strip_tags(Str::limit($service->short_description, 150)),
+    ]))
+@section('keywords', __(':serviceName, clinic services, booking, healthcare, doctors, medical system, 3M services',
+    ['serviceName' => $service->name]))
+
+@section('og_title', __(':serviceName - 3M Medical System', ['serviceName' => $service->name]))
+@section('og_description',
+    __(':serviceName details, price, and booking information at 3M Medical System. :shortDesc', [
+    'serviceName' => $service->name,
+    'shortDesc' => strip_tags(Str::limit($service->short_description, 150)),
+    ]))
+@section('og_type', 'article')
+
+@section('twitter_title', __(':serviceName - 3M Medical System', ['serviceName' => $service->name]))
+@section('twitter_description',
+    __(':serviceName details, price, and booking information at 3M Medical System. :shortDesc', [
+    'serviceName' => $service->name,
+    'shortDesc' => strip_tags(Str::limit($service->short_description, 150)),
+    ]))
+
 @section('content')
-    @php    
+    @php
         $isProductionMode = config(key: 'app.env') == 'production';
 
         $daysMap = [
@@ -43,10 +69,10 @@
             'book_now' => __('Book Now'),
             'missing_data' => __('Missing Data'),
             'something_wrong' => __('Something went Wrong please try again'),
-        ]
+        ];
     @endphp
 
-    @if($isProductionMode)
+    @if ($isProductionMode)
         @php
             $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
         @endphp
@@ -150,14 +176,11 @@
                 {{ __('Get started today and experience our professional service with guaranteed quality and care.') }}
             </p>
             <div class="flex flex-col tablet:flex-row gap-4 justify-center items-center">
-                <button 
+                <button
                     @php
-                        $dataModalTarget = (isset($book_service_data['patient_id']) && $book_service_data['patient_id']) ? 'book-modal' : 'login-modal';
-                    @endphp
-                    data-modal-target="{{ $dataModalTarget }}" 
-                    data-modal-toggle="{{ $dataModalTarget }}"
-                    class="bg-white text-primary font-bold py-4 px-8 rounded-full text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 flex items-center cursor-pointer"
-                >
+$dataModalTarget = (isset($book_service_data['patient_id']) && $book_service_data['patient_id']) ? 'book-modal' : 'login-modal'; @endphp
+                    data-modal-target="{{ $dataModalTarget }}" data-modal-toggle="{{ $dataModalTarget }}"
+                    class="bg-white text-primary font-bold py-4 px-8 rounded-full text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 flex items-center cursor-pointer">
                     <svg class="w-6 h-6 me-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
@@ -181,7 +204,8 @@
                 <!-- Modal body -->
                 <form class="space-y-6" method="POST">
                     <div id="vue-app">
-                        <book-service service-data-obj='@json($service_details)' data-obj='@json($book_service_data)'></book-service>
+                        <book-service service-data-obj='@json($service_details)'
+                            data-obj='@json($book_service_data)'></book-service>
                     </div>
                 </form>
             </div>
@@ -195,7 +219,11 @@
             <div class="relative bg-white rounded-lg shadow-sm p-4">
                 <!-- Icon -->
                 <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="h-10 w-10 fill-blue-600" fill="none"><path d="M608-522 422-708q14-6 28.5-9t29.5-3q59 0 99.5 40.5T620-580q0 15-3 29.5t-9 28.5ZM234-276q51-39 114-61.5T480-360q18 0 34.5 1.5T549-354l-88-88q-47-6-80.5-39.5T341-562L227-676q-32 41-49.5 90.5T160-480q0 59 19.5 111t54.5 93Zm498-8q32-41 50-90.5T800-480q0-133-93.5-226.5T480-800q-56 0-105.5 18T284-732l448 448ZM480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-60Z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="h-10 w-10 fill-blue-600"
+                        fill="none">
+                        <path
+                            d="M608-522 422-708q14-6 28.5-9t29.5-3q59 0 99.5 40.5T620-580q0 15-3 29.5t-9 28.5ZM234-276q51-39 114-61.5T480-360q18 0 34.5 1.5T549-354l-88-88q-47-6-80.5-39.5T341-562L227-676q-32 41-49.5 90.5T160-480q0 59 19.5 111t54.5 93Zm498-8q32-41 50-90.5T800-480q0-133-93.5-226.5T480-800q-56 0-105.5 18T284-732l448 448ZM480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-60Z" />
+                    </svg>
                 </div>
 
                 <!-- Title -->
@@ -207,10 +235,12 @@
                     This helps us save your booking details and manage your visits easily.
                 </p>
                 <div class="flex justify-center gap-2">
-                    <a href="{{ route('patient.login') }}" class="bg-primary text-white px-6 py-2 flex items-center rounded-full transition-colors duration-300 capitalize hover:bg-primary/60">
+                    <a href="{{ route('patient.login') }}"
+                        class="bg-primary text-white px-6 py-2 flex items-center rounded-full transition-colors duration-300 capitalize hover:bg-primary/60">
                         {{ __('sign in') }}
                     </a>
-                    <a href="{{ route('patient.register') }}" class="bg-primary text-white px-6 py-2 flex items-center rounded-full transition-colors duration-300 capitalize hover:bg-primary/60">
+                    <a href="{{ route('patient.register') }}"
+                        class="bg-primary text-white px-6 py-2 flex items-center rounded-full transition-colors duration-300 capitalize hover:bg-primary/60">
                         {{ __('register') }}
                     </a>
                 </div>
