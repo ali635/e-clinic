@@ -49,12 +49,7 @@
     <meta name="twitter:description" content="@yield('twitter_description', __('E-Clinic - Your trusted healthcare partner'))">
     <meta name="twitter:image" content="@yield('twitter_image', asset('storage/' . setting('site_logo')))">
     <meta name="twitter:image:alt" content="@yield('twitter_image_alt', __('Dr Azad Hasan'))">
-    <meta name="twitter:domain" content="@yield('twitter_domain', request()->getHost())">
-
-    {{-- Additional SEO Meta Tags --}}
-    <meta name="google-site-verification" content="@yield('google_verification', setting('google_site_verification'))">
-    <meta name="msvalidate.01" content="@yield('bing_verification', setting('bing_verification'))">
-    <meta name="yandex-verification" content="@yield('yandex_verification', setting('yandex_verification'))">
+    <meta name="twitter:domain" content="@yield('twitter_domain', request()->getHost())"> 
     
     {{-- Mobile App Meta Tags --}}
     <meta name="mobile-web-app-capable" content="yes">
