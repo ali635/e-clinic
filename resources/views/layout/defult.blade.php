@@ -11,6 +11,62 @@
     <title>@yield('title', __('Home'))</title>
     <link rel="shortcut icon" href="{{ asset('storage/' . setting('site_logo')) }}" type="image/x-icon">
 
+    {{-- Basic Meta Tags --}}
+    <meta name="description" content="@yield('meta_description', setting('site_description', 'E-Clinic - Your trusted healthcare partner'))">
+    <meta name="keywords" content="@yield('meta_keywords', setting('site_keywords', 'healthcare, clinic, medical, doctor, appointment'))">
+    <meta name="author" content="@yield('meta_author', setting('site_name', 'E-Clinic'))">
+    <meta name="robots" content="@yield('meta_robots', 'index, follow')">
+    <meta name="language" content="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <meta name="revisit-after" content="7 days">
+    <meta name="rating" content="general">
+    <meta name="distribution" content="global">
+    <meta name="theme-color" content="@yield('theme_color', '#03bafc')">
+
+    {{-- Canonical URL --}}
+    <link rel="canonical" href="@yield('canonical_url', url()->current())">
+
+    {{-- Alternate Language Versions --}}
+
+    {{-- Open Graph Meta Tags --}}
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:title" content="@yield('og_title', @yield('title', __('Home')))">
+    <meta property="og:description" content="@yield('og_description', @yield('meta_description', setting('site_description', 'E-Clinic - Your trusted healthcare partner')))">
+    <meta property="og:url" content="@yield('og_url', url()->current())">
+    <meta property="og:site_name" content="@yield('og_site_name', setting('site_name', 'E-Clinic'))">
+    <meta property="og:image" content="@yield('og_image', asset('storage/' . setting('site_logo')))">
+    <meta property="og:image:width" content="@yield('og_image_width', '1200')">
+    <meta property="og:image:height" content="@yield('og_image_height', '630')">
+    <meta property="og:image:alt" content="@yield('og_image_alt', @yield('og_title', @yield('title', __('Home'))))">
+    <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <meta property="og:updated_time" content="@yield('og_updated_time', now()->toISOString())">
+
+    {{-- Twitter Card Meta Tags --}}
+    <meta name="twitter:card" content="@yield('twitter_card', 'summary_large_image')">
+    <meta name="twitter:site" content="@yield('twitter_site', setting('twitter_handle', '@eclinic'))">
+    <meta name="twitter:creator" content="@yield('twitter_creator', setting('twitter_handle', '@eclinic'))">
+    <meta name="twitter:title" content="@yield('twitter_title', @yield('title', __('Home')))">
+    <meta name="twitter:description" content="@yield('twitter_description', @yield('meta_description', setting('site_description', 'E-Clinic - Your trusted healthcare partner')))">
+    <meta name="twitter:image" content="@yield('twitter_image', asset('storage/' . setting('site_logo')))">
+    <meta name="twitter:image:alt" content="@yield('twitter_image_alt', @yield('twitter_title', @yield('title', __('Home'))))">
+    <meta name="twitter:domain" content="@yield('twitter_domain', request()->getHost())">
+
+    {{-- Additional SEO Meta Tags --}}
+    <meta name="google-site-verification" content="@yield('google_verification', setting('google_site_verification'))">
+    <meta name="msvalidate.01" content="@yield('bing_verification', setting('bing_verification'))">
+    <meta name="yandex-verification" content="@yield('yandex_verification', setting('yandex_verification'))">
+    
+    {{-- Mobile App Meta Tags --}}
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="@yield('app_title', setting('site_name', 'E-Clinic'))">
+    <meta name="application-name" content="@yield('app_name', setting('site_name', 'E-Clinic'))">
+    <meta name="msapplication-TileColor" content="@yield('ms_tile_color', '#03bafc')">
+    <meta name="msapplication-config" content="@yield('ms_config', '/browserconfig.xml')">
+
+    {{-- Page-specific SEO --}}
+    @yield('page_seo')
+
 
     @if($isProductionMode)
         @php
