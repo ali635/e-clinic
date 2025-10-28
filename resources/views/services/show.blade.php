@@ -1,48 +1,57 @@
 @extends('layout.defult')
 @section('content')
-    @php
-    $daysMap = [
-        'monday' => 1,
-        'tuesday' => 2,
-        'wednesday' => 3,
-        'thursday' => 4,
-        'friday' => 5,
-        'saturday' => 6,
-        'sunday' => 7,
-    ];
+    @php    
+        $isProductionMode = config(key: 'app.env') == 'production';
 
-    $service_details = [
-        'service' => [
-            'id' => $service->id,
-            'name' => $service->name,
-            'short_description' => $service->short_description ?? '',
-            'description' => $service->description ?? '',
-            'price' => $service->price ?? '',
-            'patient_time_minute' => $service->patient_time_minute ?? '',
-            'image' => $service->image ? asset('storage/' . $service->image) : asset('images/default-service.jpg'),
-            'is_home' => $service->is_home ?? false,
-            'schedules' => $service->schedules->map(function ($schedule) use ($daysMap) {
-                $dayValue = strtolower($schedule->day_of_week->value); // ✅ get enum value as string
-                return [
-                    'id' => $schedule->id,
-                    'start_time' => $schedule->start_time,
-                    'end_time' => $schedule->end_time,
-                    'day_of_week' => $daysMap[$dayValue] ?? null, // convert to numeric day
-                    'service_id' => $schedule->service_id,
-                ];
-            }),
-        ],
-        'booked_times' => $booked_times ?? [],
-    ];
+        $daysMap = [
+            'monday' => 1,
+            'tuesday' => 2,
+            'wednesday' => 3,
+            'thursday' => 4,
+            'friday' => 5,
+            'saturday' => 6,
+            'sunday' => 7,
+        ];
 
-    $book_service_data = [
-        'patient_id' => auth('patient')->user()?->id,
-        'patient_description' => __('What are you suffering from ?'),
-        'book_now' => __('Book Now'),
-        'missing_data' => __('Missing Data'),
-        'something_wrong' => __('Something went Wrong please try again'),
-    ]
-@endphp
+        $service_details = [
+            'service' => [
+                'id' => $service->id,
+                'name' => $service->name,
+                'short_description' => $service->short_description ?? '',
+                'description' => $service->description ?? '',
+                'price' => $service->price ?? '',
+                'patient_time_minute' => $service->patient_time_minute ?? '',
+                'image' => $service->image ? asset('storage/' . $service->image) : asset('images/default-service.jpg'),
+                'is_home' => $service->is_home ?? false,
+                'schedules' => $service->schedules->map(function ($schedule) use ($daysMap) {
+                    $dayValue = strtolower($schedule->day_of_week->value); // ✅ get enum value as string
+                    return [
+                        'id' => $schedule->id,
+                        'start_time' => $schedule->start_time,
+                        'end_time' => $schedule->end_time,
+                        'day_of_week' => $daysMap[$dayValue] ?? null, // convert to numeric day
+                        'service_id' => $schedule->service_id,
+                    ];
+                }),
+            ],
+            'booked_times' => $booked_times ?? [],
+        ];
+
+        $book_service_data = [
+            'patient_id' => auth('patient')->user()?->id,
+            'patient_description' => __('What are you suffering from ?'),
+            'book_now' => __('Book Now'),
+            'missing_data' => __('Missing Data'),
+            'something_wrong' => __('Something went Wrong please try again'),
+        ]
+    @endphp
+
+    @if($isProductionMode)
+        @php
+            $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+        @endphp
+        <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/js/app.js']['css'][0] ?? '') }}">
+    @endif
 
     <!-- Hero Section with Service Image -->
     <section class="service-hero relative h-[60vh] min-h-[400px] overflow-hidden">
@@ -116,7 +125,7 @@
                                 <span class="text-gray-600 font-medium">{{ __('Status') }}</span>
                                 <span
                                     class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg class="w-4 h-4 me-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                             clip-rule="evenodd"></path>
@@ -178,6 +187,7 @@
             </div>
         </div>
     </div>
+
     <div id="login-modal" tabindex="-1" aria-hidden="true"
         class="loginModalWrapper hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 tablet:p-6 w-full max-w-2xl max-h-full">

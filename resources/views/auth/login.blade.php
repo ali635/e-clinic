@@ -63,7 +63,7 @@
                         class="h-4 w-4 accent-primary text-primary focus:ring-primary border-gray-300 rounded"
                         {{ old('remember') ? 'checked' : '' }}
                     >
-                    <label for="remember" class="ml-2 block text-sm text-gray-900">
+                    <label for="remember" class="ms-2 block text-sm text-gray-900">
                         {{__('Remember me')}}
                     </label>
                 </div>

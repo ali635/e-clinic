@@ -151,11 +151,7 @@ export default {
     },
     async handleBookService() {
       // Check if required fields are filled (service_id, selectedDate_formated_Date, and arrival_time)
-      if (!this.form.service_id || !this.selectedDate_formated_Date || !this.form.arrival_time) {
-        console.log("this.form");
-        console.log(this.form);
-        console.log(this.selectedDate_formated_Date);
-        
+      if (!this.form.service_id || !this.selectedDate_formated_Date || !this.form.arrival_time) {        
         this.handleToaster(this.parsedDataObj?.missing_data, 'error');
         return;
       }
@@ -174,13 +170,13 @@ export default {
           .then(response => response.json())
           .then(res => {
             if(res.status){
+              this.bookedTimeSlots.push(this.form.arrival_time);
               this.form.arrival_time = '';
               this.form.patient_description = '';
               this.selectedDate = null;
               this.selectedDate_formated_Date = null;
-
+              this.currentSelectedDateSlots = [];
               that.handleToaster(res.message, 'success');
-              // that.$refs?.closeModalBtn?.click();
             }else {
               that.handleToaster(res.message, 'error');
             }
@@ -234,9 +230,6 @@ export default {
     this.timeSlots = this.generateTimeSlots(this.service);
     const schedules = this.parsedServiceDataObj?.service?.schedules || [];
     this.availableDays = schedules.map(schedule => schedule.day_of_week);
-    
-    console.log("this.parsedServiceDataObj");
-    console.log(this.parsedServiceDataObj);
   },
   watch: {
     selectedDate(newVal){
@@ -253,55 +246,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.slots_wrapper {
-  .dp__today {
-    border: 0 !important;
-  }
-
-  .dp__main {
-    & > div:last-child {
-      width: 100% !important;
-      .dp__cell_inner {
-        margin-inline: auto !important;
-      }
-    }
-  }
-
-  .slot_day {
-    border: 1px solid #1f2937; 
-    padding: 1rem; /* p-4 */
-    border-radius: 0.5rem; /* rounded-lg */
-    margin-bottom: 1rem; /* mb-4 */
-  }
-  .slot_time {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; /* gap-2 */
-    border: 1px solid #e5e7eb; /* gray-200 */
-    border-radius: 0.375rem; /* rounded-md */
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem; /* px-4 py-2 */
-    min-height: 30px; /* min-h-[30px] */
-    cursor: pointer;
-    transition: all 0.2s;
-    &:not(.choosen_slot_time):hover {
-      background-color: #f3f4f6; /* hover:bg-gray-100 */
-    }
-    &.choosen_slot_time {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-  }
-}
-
-body[dir="rtl"] {
-  .dp__month_year_wrap {
-    flex-direction: row-reverse !important;
-  }
-}
-</style>

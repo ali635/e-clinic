@@ -72,41 +72,14 @@
             </div>
         </div>
     </nav>
+</header>
 
+<script>
+    let toggleBtn = document.querySelector("#navbar-toggle");
+    let collapse = document.querySelector("#navbar-collapse");
 
-    <script>
-        let toggleBtn = document.querySelector("#navbar-toggle");
-        let collapse = document.querySelector("#navbar-collapse");
-
-        toggleBtn.onclick = () => {
-            collapse.classList.toggle("hidden");
-            collapse.classList.toggle("flex");
-        };
-    </script>
-
-
-{{-- {{ __('Blogs') }}
-{{ __('Posts') }}
-{{ __('Post') }}
-{{ __('Group Services') }}
-{{ __('Services') }}
-{{ __('Service') }}
-{{ __('Related Service') }}
-{{ __('Related Services') }}
-{{ __('Patient Information') }}
-{{ __('Patients') }}
-{{ __('Patient') }}
-{{ __('Diseases') }}
-{{ __('Disease') }}
-
-{{ __('Locations') }}
-{{ __('Countries') }}
-{{ __('Country') }}
-{{ __('Cities') }}
-{{ __('City') }}
-{{ __('Visits') }}
-{{ __('Visit') }}
-{{ __('Feedbacks') }}
-{{ __('Feedback') }}
-{{ __('Users') }}
-{{ __('User') }} --}}
+    toggleBtn.onclick = () => {
+        collapse.classList.toggle("hidden");
+        collapse.classList.toggle("flex");
+    };
+</script>
