@@ -2,6 +2,7 @@
 
 namespace Modules\Booking\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class VisitResource extends JsonResource
@@ -17,6 +18,7 @@ class VisitResource extends JsonResource
             'total_price' => $this->total_price,
             'arrival_time' => $this->arrival_time,
             'is_arrival' => (bool) $this->is_arrival,
+            'status' => (bool) $this->is_arrival ? __('completed') : ($this->arrival_time > Carbon::now() ? __('pending') : __('cancelled')),
             'doctor_description' => $this->doctor_description,
             'treatment' => $this->treatment,
             'secretary_description' => $this->secretary_description,
