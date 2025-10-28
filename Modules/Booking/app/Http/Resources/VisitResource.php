@@ -47,7 +47,7 @@ class VisitResource extends JsonResource
                     ];
                 });
             }),
-            'show_btn_feedback' => $this->feedback ? false : true,
+            'show_btn_feedback' => $this->feedback && (bool) $this->is_arrival ? false : true,
             
             'feedback' => $this->whenLoaded('feedback', function () {
                 return [

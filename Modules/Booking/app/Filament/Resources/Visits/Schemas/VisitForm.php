@@ -121,9 +121,12 @@ class VisitForm
                                 ->reactive()
                                 ->afterStateUpdated(function ($state, callable $set, $get) {
                                     $relatedService = $state ? RelatedService::find($state) : null;
-                                    $price = (float) ($relatedService?->price ?? 0);
-                                    $qty = (int) ($get('qty') ?: 1);
-                                    $set('price_related_service', $price * $qty);
+                                    $unitPrice = (float) ($relatedService?->price ?? 0);
+
+                                    // store unit price (not multiplied)
+                                    $set('price_related_service', $unitPrice);
+
+                                    // recompute total for whole form
                                     $set('total_price', self::calculateTotal($get));
                                 })
                                 ->searchable()
@@ -141,12 +144,14 @@ class VisitForm
                             TextInput::make('qty')
                                 ->label(__('Quantity'))
                                 ->numeric()
-                                ->default(1)
+                                ->default(0)                // <-- change from 0 to 1
                                 ->reactive()
+                                ->dehydrated(true)
                                 ->afterStateUpdated(function ($state, callable $set, $get) {
                                     $relatedService = RelatedService::find($get('related_service_id'));
-                                    $price = (float) ($relatedService?->price ?? 0);
-                                    $set('price_related_service', $price * max((int) $state, 1));
+                                    $unitPrice = (float) ($relatedService?->price ?? 0);
+                                    // store unit price (not multiplied)
+                                    $set('price_related_service', $unitPrice);
                                     $set('total_price', self::calculateTotal($get));
                                 })
                                 ->required(),
@@ -222,9 +227,12 @@ class VisitForm
 
         if (is_array($relatedItems)) {
             foreach ($relatedItems as $item) {
-                $relatedTotal += (float) ($item['price_related_service'] * (int) $item['qty'] ?? $item['price'] ?? 0);
+                $unit = (float) ($item['price_related_service'] ?? 0);
+                $qty  = max(1, (int) ($item['qty'] ?? 1));
+                $relatedTotal += $unit * $qty;
             }
         }
+
         return $servicePrice + $relatedTotal;
     }
 }
