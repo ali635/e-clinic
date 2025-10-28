@@ -151,11 +151,7 @@ export default {
     },
     async handleBookService() {
       // Check if required fields are filled (service_id, selectedDate_formated_Date, and arrival_time)
-      if (!this.form.service_id || !this.selectedDate_formated_Date || !this.form.arrival_time) {
-        console.log("this.form");
-        console.log(this.form);
-        console.log(this.selectedDate_formated_Date);
-        
+      if (!this.form.service_id || !this.selectedDate_formated_Date || !this.form.arrival_time) {        
         this.handleToaster(this.parsedDataObj?.missing_data, 'error');
         return;
       }
@@ -174,13 +170,13 @@ export default {
           .then(response => response.json())
           .then(res => {
             if(res.status){
+              this.bookedTimeSlots.push(this.form.arrival_time);
               this.form.arrival_time = '';
               this.form.patient_description = '';
               this.selectedDate = null;
               this.selectedDate_formated_Date = null;
-
+              this.currentSelectedDateSlots = [];
               that.handleToaster(res.message, 'success');
-              // that.$refs?.closeModalBtn?.click();
             }else {
               that.handleToaster(res.message, 'error');
             }
