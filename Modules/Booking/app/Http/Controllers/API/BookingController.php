@@ -9,6 +9,7 @@ use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Illuminate\Http\Request;
 use Modules\Booking\Http\Requests\VisitRequest;
+use Modules\Booking\Http\Resources\VisitHomeResource;
 use Modules\Booking\Http\Resources\VisitResource;
 use Modules\Booking\Models\Visit;
 use Modules\Service\Models\Service;
@@ -30,7 +31,6 @@ class BookingController extends Controller
 
         // Eager load all visits once
         $visits = $patient->visits()
-            ->with(['service', 'relatedService', 'relatedService.relatedService', 'feedback'])
             ->get();
 
         // Categorize in memory (no extra SQL)
@@ -51,9 +51,9 @@ class BookingController extends Controller
             'completed_visits' => $completedVisits,
             'pending_visits' => $pendingVisits,
             'cancelled_visits' => $cancelledVisits,
-            'visitCompleted' => VisitResource::collection($visitCompleted),
-            'visitPending' => VisitResource::collection($visitPending),
-            'visitCancelled' => VisitResource::collection($visitCancelled),
+            'visitCompleted' => VisitHomeResource::collection($visitCompleted),
+            'visitPending' => VisitHomeResource::collection($visitPending),
+            'visitCancelled' => VisitHomeResource::collection($visitCancelled),
         ]);
     }
 
