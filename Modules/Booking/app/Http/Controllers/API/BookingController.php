@@ -4,6 +4,7 @@ namespace Modules\Booking\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Illuminate\Http\Request;
@@ -20,24 +21,39 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         $patient = auth('api')->user();
+
         if (!$patient) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $completedVisits = $patient->visits()->where('is_arrival', true)->count();
-        $notCompletedVisits = $patient->visits()->where('is_arrival', false)->count();
+        $now = Carbon::now();
 
+        // Eager load all visits once
+        $visits = $patient->visits()
+            ->with(['service', 'relatedService', 'relatedService.relatedService', 'feedback'])
+            ->get();
 
-        $visitCompleted = $patient->visits()->where('is_arrival', true)->with(['service', 'relatedService', 'relatedService.relatedService', 'feedback'])->get();
+        // Categorize in memory (no extra SQL)
+        $visitCompleted = $visits->where('is_arrival', true);
 
-        $visitNotCompleted = $patient->visits()->where('is_arrival', false)->with(['service', 'relatedService', 'relatedService.relatedService', 'feedback'])->get();
+        $visitPending = $visits->where('is_arrival', false)
+            ->filter(fn($v) => $v->arrival_time > $now);
 
+        $visitCancelled = $visits->where('is_arrival', false)
+            ->filter(fn($v) => $v->arrival_time < $now);
+
+        // Calculate counts (cheap, in memory)
+        $completedVisits = $visitCompleted->count();
+        $pendingVisits = $visitPending->count();
+        $cancelledVisits = $visitCancelled->count();
 
         return response()->json([
-            'completed_visits' => $completedVisits ?? 0,
-            'not_completed_visits' => $notCompletedVisits ?? 0,
-            'visitCompleted' =>  VisitResource::collection($visitCompleted),
-            'visitNotCompleted' =>  VisitResource::collection($visitNotCompleted),
+            'completed_visits' => $completedVisits,
+            'pending_visits' => $pendingVisits,
+            'cancelled_visits' => $cancelledVisits,
+            'visitCompleted' => VisitResource::collection($visitCompleted),
+            'visitPending' => VisitResource::collection($visitPending),
+            'visitCancelled' => VisitResource::collection($visitCancelled),
         ]);
     }
 

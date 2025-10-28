@@ -12,9 +12,9 @@
     <link rel="shortcut icon" href="{{ asset('storage/' . setting('site_logo')) }}" type="image/x-icon">
 
     {{-- Basic Meta Tags --}}
-    <meta name="description" content="@yield('meta_description', setting('site_description', 'E-Clinic - Your trusted healthcare partner'))">
-    <meta name="keywords" content="@yield('meta_keywords', setting('site_keywords', 'healthcare, clinic, medical, doctor, appointment'))">
-    <meta name="author" content="@yield('meta_author', setting('site_name', 'E-Clinic'))">
+    <meta name="description" content="@yield('meta_description', __( 'E-Clinic - Your trusted healthcare partner'))">
+    <meta name="keywords" content="@yield('meta_keywords', __( 'healthcare, clinic, medical, doctor, appointment'))">
+    <meta name="author" content="@yield('meta_author', __( 'E-Clinic'))">
     <meta name="robots" content="@yield('meta_robots', 'index, follow')">
     <meta name="language" content="{{ str_replace('_', '-', app()->getLocale()) }}">
     <meta name="revisit-after" content="7 days">
