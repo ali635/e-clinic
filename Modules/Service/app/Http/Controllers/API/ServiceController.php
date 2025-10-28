@@ -45,7 +45,7 @@ class ServiceController extends Controller
 
     public function show(Request $request, $id)
     {
-        $service = Service::with(['translations','schedules'])->findOrFail($id);
+        $service = Service::with(['translations', 'schedules'])->findOrFail($id);
 
         // set language for translations
         $lang = $request->query('lang', app()->getLocale());
@@ -70,7 +70,8 @@ class ServiceController extends Controller
         } else {
             // If no date given, return upcoming bookings (from now)
             $bookedQuery = Visit::where('service_id', $service->id)
-                ->whereNotNull('arrival_time');
+                ->whereNotNull('arrival_time')
+                ->whereTodayOrAfter('arrival_time');
         }
 
         $bookedTimes = $bookedQuery
@@ -79,7 +80,7 @@ class ServiceController extends Controller
             ->map(fn($t) => Carbon::parse($t)->toDateTimeString())
             ->toArray();
 
-       
+
 
         // If an authenticated patient exists, tell if they have a booking for this service
         $bookedByAuth = false;

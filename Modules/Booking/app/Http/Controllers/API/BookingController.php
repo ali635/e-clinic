@@ -119,6 +119,7 @@ class BookingController extends Controller
             'message' => __('Service Registration successful'),
             'data'    => [
                 'visit' => $visit,
+                'arrival_time' => $visit->arrival_time
             ],
         ], 201);
     }
