@@ -168,14 +168,14 @@ body {
     }
 
     .sidebarToggleBtn {
-        @apply flex items-center justify-center md:hidden absolute top-[50px] ltr:left-full rtl:right-full z-30 bg-primary text-white rounded p-2 shadow focus:outline-none transition-all opacity-70 ;
+        @apply flex items-center justify-center tablet:hidden absolute top-[50px] ltr:left-full rtl:right-full z-30 bg-primary text-white rounded p-2 shadow focus:outline-none transition-all opacity-70 ;
         &:hover {
             @apply opacity-100;
         }
     }
 
     .sidebarMenu {
-        @apply w-[220px] bg-white p-3 z-20 md:block max-tablet:ltr:-translate-x-full max-tablet:rtl:translate-x-full fixed md:static top-0 left-0 h-full md:h-auto transition-all;
+        @apply w-[220px] bg-white px-3 py-8 web:p-3 z-20 tablet:block max-tablet:ltr:-translate-x-full max-tablet:rtl:translate-x-full fixed tablet:static top-0 ltr:left-0 rtl:right-0 h-full tablet:h-auto transition-all;
         &.menuOpened {
             @apply translate-x-0;
         }

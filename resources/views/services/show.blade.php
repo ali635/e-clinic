@@ -39,7 +39,8 @@
         'patient_id' => auth('patient')->user()?->id,
         'patient_description' => __('What are you suffering from ?'),
         'book_now' => __('Book Now'),
-        'missing_data' => __('Missing Data')
+        'missing_data' => __('Missing Data'),
+        'something_wrong' => __('Something went Wrong'),
     ]
 @endphp
 
@@ -77,7 +78,7 @@
                     <!-- Service Info Card -->
                     <div class="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-6 border border-primary/20">
                         <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                            <svg class="w-6 h-6 mr-2 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-6 h-6 me-2 text-primary" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
                                     d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                                     clip-rule="evenodd"></path>
@@ -148,7 +149,7 @@
                     data-modal-toggle="{{ $dataModalTarget }}"
                     class="bg-white text-primary font-bold py-4 px-8 rounded-full text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 flex items-center cursor-pointer"
                 >
-                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-6 h-6 me-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
                             clip-rule="evenodd"></path>
@@ -169,20 +170,7 @@
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow-sm p-4">
                 <!-- Modal body -->
-                <form class="space-y-6" method="POST" action="">
-                    <div class="flex justify-end !mb-0">
-                        <button type="button"
-                            class="cursor-pointer text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                            data-modal-hide="book-modal">
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                            </svg>
-                            <span class="sr-only">{{ __('Close modal') }}</span>
-                        </button>
-                    </div>
-                    
+                <form class="space-y-6" method="POST">
                     <div id="vue-app">
                         <book-service service-data-obj='@json($service_details)' data-obj='@json($book_service_data)'></book-service>
                     </div>
@@ -197,7 +185,6 @@
             <div class="relative bg-white rounded-lg shadow-sm p-4">
                 <!-- Icon -->
                 <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-                    
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="h-10 w-10 fill-blue-600" fill="none"><path d="M608-522 422-708q14-6 28.5-9t29.5-3q59 0 99.5 40.5T620-580q0 15-3 29.5t-9 28.5ZM234-276q51-39 114-61.5T480-360q18 0 34.5 1.5T549-354l-88-88q-47-6-80.5-39.5T341-562L227-676q-32 41-49.5 90.5T160-480q0 59 19.5 111t54.5 93Zm498-8q32-41 50-90.5T800-480q0-133-93.5-226.5T480-800q-56 0-105.5 18T284-732l448 448ZM480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-60Z"/></svg>
                 </div>
 
@@ -206,8 +193,8 @@
 
                 <!-- Message -->
                 <p class="text-gray-600 mb-6">
-                To book your appointment, please log in to your account.<br />
-                This helps us save your booking details and manage your visits easily.
+                    To book your appointment, please log in to your account.<br />
+                    This helps us save your booking details and manage your visits easily.
                 </p>
                 <div class="flex justify-center gap-2">
                     <a href="{{ route('patient.login') }}" class="bg-primary text-white px-6 py-2 flex items-center rounded-full transition-colors duration-300 capitalize hover:bg-primary/60">

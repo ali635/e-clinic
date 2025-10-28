@@ -1,11 +1,11 @@
 @php
     $locales = Modules\AdvancedLanguage\Models\Language::query()->get();
-
+    $isProfileLayout = false;
 @endphp
 
 <header>
     <nav class="bg-white py-2 tablet:py-4">
-        <div class="container tablet:flex tablet:items-center tablet:justify-between">
+        <div class="{{ $isProfileLayout ? 'px-3' : 'container' }} tablet:flex tablet:items-center tablet:justify-between">
             <div class="flex justify-between items-center">
                 <a href="/" class="font-bold text-xl text-primary">
                     <img class="max-w-[200px]"  src="{{ asset('storage/' . setting('site_logo')) }}"

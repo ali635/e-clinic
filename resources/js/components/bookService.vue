@@ -1,5 +1,17 @@
 <template>
   <form class="bookService" @submit.prevent="handleBookService">
+    <div class="flex justify-end mb-2">
+      <button type="button" ref="closeModalBtn"
+          class="cursor-pointer text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          data-modal-hide="book-modal">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+          </svg>
+          <span class="sr-only">Close modal</span>
+      </button>
+    </div>
     <div v-if="toaster.showToaster" class="fixed top-4 ltr:right-4 rtl:left-4">
       <div class="flex items-center p-4 mb-4 text-sm border rounded-lg w-[450px] max-w-[95%]" :class="{ 'text-green-800 border-green-300 bg-green-50' : toaster.status == 'success', 'text-red-800 border-red-300 bg-red-50' : toaster.status == 'error' }" role="alert">
         <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -42,7 +54,7 @@
     </div>
     <div>
       <button type="submit"
-          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200 cursor-pointer max-w-sm mx-auto">
+          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none transition-colors duration-200 cursor-pointer max-w-sm mx-auto" :class="{ 'btn-loading' : isLoading }">
           {{ parsedDataObj.book_now }}
       </button>
     </div>
@@ -78,6 +90,7 @@ export default {
         status: ""
       },
       _toasterTimeoutId: null,
+      isLoading: false,
     }
   },
   components: { VueDatePicker },
@@ -139,12 +152,17 @@ export default {
     async handleBookService() {
       // Check if required fields are filled (service_id, selectedDate_formated_Date, and arrival_time)
       if (!this.form.service_id || !this.selectedDate_formated_Date || !this.form.arrival_time) {
+        console.log("this.form");
+        console.log(this.form);
+        console.log(this.selectedDate_formated_Date);
+        
         this.handleToaster(this.parsedDataObj?.missing_data, 'error');
         return;
       }
       const that = this;
+      this.isLoading = true;
       try {
-        const response = await fetch('/api/v1/patient/create/visit/web', {
+        fetch('/api/v1/patient/create/visit/web', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -152,18 +170,33 @@ export default {
             'Accept': 'application/json',
           },
           body: JSON.stringify(this.form),
-        });
-        
-        console.log("response");
-        console.log(response);
-        
-        if (!response.ok) {
-          throw new Error('Failed to book service');
-        }
+        })
+          .then(response => response.json())
+          .then(res => {
+            if(res.status){
+              this.form.arrival_time = '';
+              this.form.patient_description = '';
+              this.selectedDate = null;
+              this.selectedDate_formated_Date = null;
 
-        that.handleToaster('Service booked successfully!');
+              that.handleToaster(res.message, 'success');
+              // that.$refs?.closeModalBtn?.click();
+            }else {
+              that.handleToaster(res.message, 'error');
+            }
+          })
+          .catch(() => {            
+            that.handleToaster(this.parsedDataObj?.something_wrong, 'error');
+          })
+          .finally(() => {
+            this.isLoading = false;
+          })
+        
+        // if (!response.ok) {
+        //   throw new Error('Failed to book service');
+        // }
       } catch (error) {
-        that.handleToaster('Something went wrong', 'error');
+        that.handleToaster(this.parsedDataObj?.something_wrong, 'error');
       }
     },
     handleToaster(msg, status = 'success'){
@@ -188,7 +221,7 @@ export default {
           this.toaster.showToaster = false;
         }
         this._toasterTimeoutId = null;
-      }, 8000);
+      }, 5000);
     },
   },
   mounted(){
@@ -201,6 +234,9 @@ export default {
     this.timeSlots = this.generateTimeSlots(this.service);
     const schedules = this.parsedServiceDataObj?.service?.schedules || [];
     this.availableDays = schedules.map(schedule => schedule.day_of_week);
+    
+    console.log("this.parsedServiceDataObj");
+    console.log(this.parsedServiceDataObj);
   },
   watch: {
     selectedDate(newVal){
@@ -260,6 +296,12 @@ export default {
       opacity: 0.6;
       cursor: not-allowed;
     }
+  }
+}
+
+body[dir="rtl"] {
+  .dp__month_year_wrap {
+    flex-direction: row-reverse !important;
   }
 }
 </style>
