@@ -45,7 +45,7 @@
                         <dd class="text-end">{{ Carbon\Carbon::parse($patient->date_of_birth)->format('Y-m-d') ?? '-' }}</dd>
                     </div>
                     <div class="flex justify-between">
-                        <dt class="font-medium">{{ __('Gender') }}:</dt>
+                        <dt class="font-medium">{{ __('gender') }}:</dt>
                         <dd class="text-end">{{ ucfirst($patient->gender ?? '-') }}</dd>
                     </div>
                     <div class="flex justify-between">
@@ -57,7 +57,7 @@
                         <dd class="text-end">{{ $patient->area->name ?? '-' }}</dd>
                     </div>
                     <div class="flex justify-between">
-                        <dt class="font-medium">{{ __('Address') }}:</dt>
+                        <dt class="font-medium">{{ __('address') }}:</dt>
                         <dd class="text-end">{{ $patient->address ?? '-' }}</dd>
                     </div>
                 </dl>
@@ -104,7 +104,7 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">{{ __('Gender') }}</label>
+                    <label class="block text-sm font-medium mb-1">{{ __('gender') }}</label>
                     <select name="gender" class="form-input w-full">
                         <option value="">{{ __('Select') }}</option>
                         <option value="male" @if ($patient->gender == 'male') selected @endif>{{ __('Male') }}
@@ -149,7 +149,7 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">{{ __('Address') }}</label>
+                    <label class="block text-sm font-medium mb-1">{{ __('address') }}</label>
                     <input type="text" name="address" value="{{ $patient->address }}" class="form-input w-full">
                     @error('address')
                         <div class="text-red-600 text-sm mt-1">
