@@ -66,7 +66,7 @@
                     </div>
                 @else
                     <a href="{{ route('patient.login') }}" class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 capitalize">
-                        {{ __('sign in') }}
+                        {{ __('Sign in') }}
                     </a>
                 @endauth
             </div>
