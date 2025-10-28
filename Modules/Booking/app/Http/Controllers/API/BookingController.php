@@ -30,7 +30,7 @@ class BookingController extends Controller
         $now = Carbon::now();
 
         // Eager load all visits once
-        $visits = $patient->visits()
+        $visits = $patient->visits()->with(['service'])
             ->get();
 
         // Categorize in memory (no extra SQL)

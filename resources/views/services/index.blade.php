@@ -1,4 +1,15 @@
 @extends('layout.defult')
+
+{{-- 🧠 SEO & Social Meta --}}
+@section('title', __('Dr Azad Hasan Clinic Services - 3M Medical System'))
+@section('description', __('Explore all our healthcare and clinic services. Book your appointment easily with 3M Medical System.'))
+@section('keywords', __('Dr Azad Hasan, clinic services, healthcare, booking, doctors, appointments, medical system, 3M services'))
+@section('og_title', __('Dr Azad Hasan Clinic Services - 3M Medical System'))
+@section('og_description', __('Explore all our healthcare and clinic services. Book your appointment easily with 3M Medical System.'))
+@section('og_type', 'website')
+@section('twitter_title', __('Dr Azad Hasan Clinic Services - 3M Medical System'))
+@section('twitter_description', __('Explore all our healthcare and clinic services. Book your appointment easily with 3M Medical System.'))
+
 @section('content')
     <section class="py-12 bg-white">
         <div class="container">
@@ -18,7 +29,8 @@
                         </div>
                         <div class="p-5 tablet:p-6">
                             <h2 class="text-xl tablet:text-2xl font-bold mb-2 tablet:mb-3 text-gray-800">
-                                {{ $service->name }}</h2>
+                                {{ $service->name }}
+                            </h2>
                             <p class="text-sm tablet:text-base text-gray-600 mb-5">{!! $service->short_description !!}</p>
                             <div class="flex items-center justify-between">
                                 <h2 class="text-xl tablet:text-2xl font-bold text-gray-800">
@@ -26,15 +38,15 @@
                                     <span class="text-md tablet:text-lg text-primary">{{ __('IQD') }}</span>
                                 </h2>
                                 @if ($service->slug)
-                                <a href="{{ route('service.show', $service->slug) }}"
-                                    class="px-4 py-1 rounded-full hover:bg-primary text-white transition duration-300 ease-in-out bg-primary/60">{{ __('Book the service') }}
-                                </a>
+                                    <a href="{{ route('service.show', $service->slug) }}"
+                                        class="px-4 py-1 rounded-full hover:bg-primary text-white transition duration-300 ease-in-out bg-primary/60">
+                                        {{ __('Book the service') }}
+                                    </a>
                                 @endif
                             </div>
                         </div>
                     </div>
                 @endforeach
-
             </div>
         </div>
     </section>

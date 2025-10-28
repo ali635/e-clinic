@@ -23,9 +23,14 @@ class VisitHomeResource extends JsonResource
             'secretary_description' => $this->secretary_description,
             'notes' => $this->notes,
             'show_btn_feedback' => $this->feedback && (bool) $this->is_arrival ? false : true,
-               
+            // ✅ Service info (translated)
+            'service' => $this->whenLoaded('service', function () use ($lang) {
+                return [
+                    'id' => $this->service->id,
+                    'name' => $this->service->name ?? '',
+                    'price' => $this->service->price,
+                ];
+            }),
         ];
     }
-
-   
 }

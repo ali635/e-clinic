@@ -29,7 +29,7 @@
 
     {{-- Open Graph Meta Tags --}}
     <meta property="og:type" content="@yield('og_type', 'website')">
-    <meta property="og:title" content="@yield('og_title', $title ?? __('Home'))">
+    <meta property="og:title" content="@yield('og_title', $title ?? __('Dr Azad Hasan'))">
 
 <meta property="og:description" content="@yield('og_description',  __('E-Clinic - Your trusted healthcare partner'))">
     <meta property="og:url" content="@yield('og_url', url()->current())">
