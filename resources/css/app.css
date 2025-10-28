@@ -17,6 +17,9 @@
     --breakpoint-tablet: 768px;
     --breakpoint-web: 1200px;
     --breakpoint-web-lg: 1600px;
+
+    --font-cairo: 'Cairo', 'sans-serif' ;
+    --font-inter: 'Inter', 'sans-serif' ;
 }
 
 @import '../scss/main.scss';

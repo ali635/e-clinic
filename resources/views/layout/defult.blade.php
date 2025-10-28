@@ -12,11 +12,49 @@
     <link rel="shortcut icon" href="{{ asset('storage/' . setting('site_logo')) }}" type="image/x-icon">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     {!! ToastMagic::styles() !!}
+    @php
+        $languagesFonts = [
+            'ar' => 'Cairo',
+            'ku' => 'Cairo',
+            'en' => 'Inter',
+        ];
+
+        $currentFont = $languagesFonts[str_replace('_', '-', app()->getLocale())];
+    @endphp
+    <style>
+        @font-face {
+            font-family: {{ $currentFont }};
+            src: url("{{ asset('fonts/' . $currentFont . '-Regular.ttf') }}") format("truetype");
+            font-weight: 400;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: {{ $currentFont }};
+            src: url("{{ asset('fonts/' . $currentFont . '-Medium.ttf') }}") format("truetype");
+            font-weight: 500;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: {{ $currentFont }};
+            src: url("{{ asset('fonts/' . $currentFont . '-SemiBold.ttf') }}") format("truetype");
+            font-weight: 600;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: {{ $currentFont }};
+            src: url("{{ asset('fonts/' . $currentFont . '-Bold.ttf') }}") format("truetype");
+            font-weight: 700;
+            font-display: swap;
+        }
+    </style>
 
 </head>
 
 
-<body class="" dir="{{ getDirection() }}">
+<body class="{{ $currentFont }}" dir="{{ getDirection() }}">
     @include('share.header')
     @yield('content')
     @include('share.footer')
