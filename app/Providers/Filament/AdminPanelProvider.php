@@ -68,7 +68,7 @@ class AdminPanelProvider extends PanelProvider
                 \TomatoPHP\FilamentSettingsHub\FilamentSettingsHubPlugin::make()
                     ->allowSiteSettings()
                     ->allowSocialMenuSettings(false),
-                \TomatoPHP\FilamentTranslationsGoogle\FilamentTranslationsGooglePlugin::make()
+                // \TomatoPHP\FilamentTranslationsGoogle\FilamentTranslationsGooglePlugin::make()
                 // FilamentFabricatorPlugin::make(),
             ])
             ->databaseNotifications()
