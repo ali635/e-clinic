@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ getDirection() }}">
 @php
-    $isProductionMode = config(key: 'app.env') == 'production';
+    $isProductionMode = config('app.env') == 'production';
 @endphp
 
 <head>
