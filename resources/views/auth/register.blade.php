@@ -1,4 +1,14 @@
 @extends('layout.defult')
+
+@section('title', __('Create Account | Dr Azad Hasan Clinic System'))
+@section('description', __('Register a new account on the Dr Azad Hasan Clinic System to book appointments and access health services.'))
+@section('keywords', __('register, sign up, create account,  Dr Azad Hasan , clinic system, medical registration'))
+@section('og_title', __('Create Account | Dr Azad Hasan Clinic System'))
+@section('og_description', __('Register a new account on the Dr Azad Hasan Clinic System to book appointments and access health services.'))
+@section('og_type', 'website')
+@section('twitter_title', __('Create Account | Dr Azad Hasan Clinic System'))
+@section('twitter_description', __('Register a new account on the Dr Azad Hasan Clinic System to book appointments and access health services.'))
+
 @section('content')
     <link rel="stylesheet" href="{{ asset('css/intelTelInput.css') }}">
 
