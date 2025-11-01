@@ -55,7 +55,7 @@
                 <!-- Remember Me Checkbox -->
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input id="remember" name="remember" type="checkbox"
+                        <input id="remember" name="remember_me" type="checkbox"
                             class="h-4 w-4 accent-primary text-primary focus:ring-primary border-gray-300 rounded"
                             {{ old('remember') ? 'checked' : '' }}>
                         <label for="remember" class="ms-2 block text-sm text-gray-900">
