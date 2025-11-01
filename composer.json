@@ -16,6 +16,7 @@
         "filament/filament": "^4.0",
         "laravel/framework": "^12.0",
         "laravel/passport": "^13.0",
+        "laravel/pulse": "^1.4",
         "laravel/tinker": "^2.10.1",
         "mcamara/laravel-localization": "^2.3",
         "mokhosh/filament-rating": "^2.0",
