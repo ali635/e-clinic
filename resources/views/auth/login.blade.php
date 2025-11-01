@@ -63,11 +63,11 @@
                         </label>
                     </div>
 
-                    <div class="text-sm">
+                    {{-- <div class="text-sm">
                         <a href="#" class="font-medium text-primary hover:text-primary/80">
                             {{ __('Forgot your password?') }}
                         </a>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <!-- Submit Button -->
