@@ -20,20 +20,20 @@ class UpdatePatientProfileRequest extends FormRequest
             $id = auth('api')->id();
         }
         return [
-            'name'          => ['sometimes', 'string', 'max:255'],
-            'email'         => ['sometimes', 'email', 'unique:patients,email,' . $id],
-            'phone'         => ['sometimes', 'string', 'max:20', 'unique:patients,phone,' . $id],
-            'other_phone'   => ['sometimes', 'string', 'max:20', 'unique:patients,phone,' . $id],
-            'gender'        => ['sometimes', 'in:male,female'],
-            'date_of_birth' => ['sometimes', 'date'],
-            'address'       => ['sometimes', 'string', 'max:500'],
-            'country_id'    => ['sometimes', 'exists:countries,id'],
-            'city_id'       => ['sometimes', 'exists:cities,id'],
-            'area_id'       => ['sometimes', 'exists:areas,id'],
+            'name'          => ['nullable', 'string', 'max:255'],
+            'email'         => ['nullable', 'email', 'unique:patients,email,' . $id],
+            'phone'         => ['nullable', 'string', 'max:20', 'unique:patients,phone,' . $id],
+            'other_phone'   => ['nullable', 'string', 'max:20', 'unique:patients,phone,' . $id],
+            'gender'        => ['nullable', 'in:male,female'],
+            'date_of_birth' => ['nullable', 'date'],
+            'address'       => ['nullable', 'string', 'max:500'],
+            'country_id'    => ['nullable', 'exists:countries,id'],
+            'city_id'       => ['nullable', 'exists:cities,id'],
+            'area_id'       => ['nullable', 'exists:areas,id'],
             'password'      => ['nullable', 'string', 'min:8', 'confirmed'],
-            'diseases'      => ['sometimes', 'array'],
+            'diseases'      => ['required', 'array'],
             'diseases.*'    => ['exists:diseases,id'],
-            'hear_about_us' => ['sometimes', 'string', 'max:255'],
+            'hear_about_us' => ['nullable', 'string', 'max:255'],
         ];
     }
 

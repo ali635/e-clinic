@@ -18,7 +18,8 @@ class PatientResource extends JsonResource
             'age'            => $this->age,
             'address'        => $this->address,
             'status'         => $this->status,
-
+            'other_phone'    => $this->other_phone,
+            'hear_about_us'  => $this->hear_about_us,
             'country' => $this->country ? [
                 'id' => $this->country->id,
                 'name' => $this->country->getTranslation('name', app()->getLocale())->name,
