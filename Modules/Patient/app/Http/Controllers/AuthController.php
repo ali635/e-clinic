@@ -31,7 +31,7 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('patient')->attempt($credentials)) {
+        if (Auth::guard('patient')->attempt($credentials, $remember_me)) {
             $request->session()->regenerate();
             return redirect()->intended(route('patient.dashboard'))
                 ->with('success', __('Welcome back!'));

@@ -38,8 +38,11 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('admin-control')
             ->login()
+            ->brandLogo(setting(asset('storage/' . setting('site_logo'))))
+            ->brandLogoHeight('4rem')
+            ->brandName(setting('site_name'))
             ->colors([
                 'primary' => Color::Amber,
             ])
