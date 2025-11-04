@@ -30,6 +30,7 @@ class ServiceDetailResource extends JsonResource
             'price'                => $this->price,
             'patient_time_minute'  => (int) $this->patient_time_minute,
             'image'                => $imageUrl,
+            'currency_lang' => __('IQD'),
             'is_home'              => (bool) $this->is_home,
             'schedules'            => ScheduleResource::collection($this->schedules),
         ];

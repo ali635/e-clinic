@@ -19,7 +19,7 @@ class PatientController extends Controller
         }
 
         // Count completed and not completed visits
-        
+
 
         // Load relationships for full details
         $patient->load(['country.translations', 'city.translations', 'diseasesMany.translations']);
@@ -36,24 +36,32 @@ class PatientController extends Controller
             return response()->json(['message' => __('Unauthorized')], 401);
         }
         $completedVisits = $patient->visits()->where('is_arrival', true)->count();
-        $notCompletedVisits = $patient->visits()->where('is_arrival', false)->count();
 
         // Determine reward rating
         $rating = 0;
+        $nextVisit = 0;
+        $nextStar = 0 ;
         if ($completedVisits >= 15) {
             $rating = 4;
         } elseif ($completedVisits >= 10) {
             $rating = 3;
+            $nextStar = 4;
+            $nextVisit = 15 - $completedVisits;
         } elseif ($completedVisits >= 5) {
             $rating = 2;
+            $nextVisit = 10 - $completedVisits;
+            $nextStar = 3;
         } elseif ($completedVisits >= 3) {
             $rating = 1;
+            $nextStar = 2;
+            $nextVisit = 5 - $completedVisits;
         }
 
-         return response()->json([
+        return response()->json([
             'stats' => [
                 'completed_visits' => $completedVisits ?? 0,
-                'not_completed_visits' => $notCompletedVisits ?? 0,
+                'next_visit' => $nextVisit ?? 0,
+                'next_star' => $nextStar ?? 0,
                 'reward_rating' => $rating,
             ],
         ]);
@@ -74,10 +82,10 @@ class PatientController extends Controller
         }
 
         $diseaseIds = $data['diseases'] ?? null;
-        unset($data['diseases']); 
+        unset($data['diseases']);
 
         $patient->update($data);
-        
+
         if (!empty($diseaseIds) && is_array($diseaseIds)) {
             $patient->diseasesMany()->sync($diseaseIds);
         }
