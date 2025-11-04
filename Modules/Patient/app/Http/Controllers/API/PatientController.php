@@ -17,11 +17,6 @@ class PatientController extends Controller
         if (!$patient) {
             return response()->json(['message' => __('Unauthorized')], 401);
         }
-
-        // Count completed and not completed visits
-
-
-        // Load relationships for full details
         $patient->load(['country.translations', 'city.translations', 'diseasesMany.translations']);
 
         return response()->json([
