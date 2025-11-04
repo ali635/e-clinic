@@ -12,11 +12,11 @@ use Modules\Patient\Filament\Resources\Diseases\Pages\EditDisease;
 use Modules\Patient\Filament\Resources\Diseases\Pages\ListDiseases;
 use Modules\Patient\Filament\Resources\Diseases\Schemas\DiseaseForm;
 use Modules\Patient\Filament\Resources\Diseases\Tables\DiseasesTable;
-use Modules\Patient\Models\disease;
+use Modules\Patient\Models\Disease;
 
 class DiseaseResource extends Resource
 {
-    protected static ?string $model = disease::class;
+    protected static ?string $model = Disease::class;
 
      protected static ?string $recordTitleAttribute = 'display_name';
 
