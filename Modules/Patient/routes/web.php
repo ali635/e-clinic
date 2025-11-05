@@ -11,7 +11,7 @@ use Modules\Patient\Http\Controllers\PatientController;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
-    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath','checkLang']
 ], function () {
 
     Route::prefix('patient')->name('patient.')->group(function () {

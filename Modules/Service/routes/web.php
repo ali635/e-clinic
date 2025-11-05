@@ -11,7 +11,7 @@ use Modules\Service\Http\Controllers\ServiceController;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
-    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath','checkLang']
 ], function () {
 
     Route::prefix('services')->group(function () {

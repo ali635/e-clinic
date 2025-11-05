@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
             'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
             'auth' => \App\Http\Middleware\RedirectIfNotPatient::class,
+            'checkLang' => \App\Http\Middleware\CheckLang::class
 
         ]);
     })

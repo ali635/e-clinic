@@ -8,10 +8,10 @@ use Modules\Patient\Http\Controllers\AuthController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-
 Route::group([
-    'prefix' => LaravelLocalization::setLocale(),
-    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'checkLang'],
+    'prefix' => app()->getLocale(),
+
 ], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 });

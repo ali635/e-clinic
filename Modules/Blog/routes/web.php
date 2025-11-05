@@ -10,7 +10,7 @@ use Modules\Blog\Http\Controllers\BlogController;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
-    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath','checkLang']
 ], function () {
     Route::prefix('posts')->group(function () {
         Route::get('/', [BlogController::class, 'index'])->name('posts');
