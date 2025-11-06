@@ -8,17 +8,35 @@
         <div class="{{ $isProfileLayout ? 'px-3' : 'container' }} tablet:flex tablet:items-center tablet:justify-between">
             <div class="flex justify-between items-center">
                 <a href="/" class="font-bold text-xl text-primary">
-                    <img class="max-w-[200px]"  src="{{ asset('storage/' . setting('site_logo')) }}"
+                    <img class="max-w-[150px] tablet:max-w-[200px]"  src="{{ asset('storage/' . setting('site_logo')) }}"
                         alt="{{ setting('site_name') }}">
                 </a>
-                <button
-                    class="border border-solid border-primary px-2 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 tablet:hidden"
-                    id="navbar-toggle">
-                    <svg class="fill-primary" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                        width="24px">
-                        <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
-                    </svg>
-                </button>
+                <div class="flex gap-1">
+                    <div class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 relative group border border-gray-200 tablet:hidden">
+                        <span class="capitalize flex items-center gap-2">
+                            <img width="25px" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$locales->where('lang_code', App::getLocale())->first()->lang_flag}}.svg" />
+                            {{ App::getLocale() }}
+                        </span>
+                        <ul class="absolute bg-white py-2 w-52 ltr:right-0 rtl:left-0 top-full transform scale-0 group-focus:scale-100 group-hover:scale-100 hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg z-[9]">
+                            @foreach ($locales as $localeCode => $local)
+                            <li>
+                                <a class="px-3 text-sm hover:bg-slate-100 leading-8 flex items-center gap-2 capitalize" href="{{ LaravelLocalization::getLocalizedURL($local->lang_code, null, [], true) }}">
+                                    <img width="25px" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$local->lang_flag}}.svg" />
+                                    {{ $local->lang_name }}
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <button
+                        class="border border-solid border-primary px-2 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 tablet:hidden"
+                        id="navbar-toggle">
+                        <svg class="fill-primary" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                            width="24px">
+                            <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <div class="hidden tablet:flex flex-col tablet:flex-row mt-3 tablet:mt-0"
@@ -32,12 +50,15 @@
                 <a href="{{ route('posts') }}"
                     class="p-2 web:px-4 tablet:mx-2 @if (Route::currentRouteName() == 'posts') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif">{{ __('Blogs') }}</a>
                 
-                <div class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 relative group border border-gray-200">
-                    <span class="capitalize">{{ App::getLocale() == 'ar' ? 'العربية' : ($locales->where('lang_code', App::getLocale())->first()->lang_name ?? App::getLocale()) }}</span>
+                <div class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 relative group border border-gray-200 max-tablet:hidden">
+                    <span class="capitalize flex items-center gap-2">
+                        <img width="25px" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$locales->where('lang_code', App::getLocale())->first()->lang_flag}}.svg" />
+                        {{ App::getLocale() == 'ar' ? 'العربية' : ($locales->where('lang_code', App::getLocale())->first()->lang_name ?? App::getLocale()) }}
+                    </span>
                     <ul class="absolute bg-white py-2 w-52 ltr:right-0 rtl:left-0 top-full transform scale-0 group-hover:scale-100 hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg z-[9]">
                         @foreach ($locales as $localeCode => $local)
                         <li>
-                            <a class="px-3 text-sm hover:bg-slate-100 leading-8 flex items-center gap-2" href="{{ LaravelLocalization::getLocalizedURL($local->lang_code, null, [], true) }}">
+                            <a class="px-3 text-sm hover:bg-slate-100 leading-8 flex items-center gap-2 capitalize" href="{{ LaravelLocalization::getLocalizedURL($local->lang_code, null, [], true) }}">
                                 <img width="25px" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$local->lang_flag}}.svg" />
                                 {{ $local->lang_name }}
                             </a>
