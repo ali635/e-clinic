@@ -54,7 +54,7 @@ class VisitResource extends JsonResource
             'feedback' => $this->whenLoaded('feedback', function () {
                 return [
                     'id' => $this->feedback->id,
-                    'rating' => $this->feedback->rating,
+                    'rating' => (int)$this->feedback->rating,
                     'comments' => $this->feedback->comments,
                 ];
             }),
