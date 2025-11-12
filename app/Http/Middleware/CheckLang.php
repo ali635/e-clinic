@@ -21,10 +21,12 @@ class CheckLang
         if (!$default_lang) {
             $default_lang = Language::query()->where('is_default', true)->first();
         }
-
+        
         if ($default_lang) {
-            app()->setLocale($default_lang->lang_code);
-        }
+            app()->setLocale($default_lang->lang_code,);
+        } else {
+            app()->setLocale('en');
+        }   
         return $next($request);
     }
 }

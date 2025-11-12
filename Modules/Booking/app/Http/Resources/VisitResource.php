@@ -31,6 +31,7 @@ class VisitResource extends JsonResource
                     'id' => $this->service->id,
                     'name' => $this->service->name ?? '',
                     'price' => $this->service->price,
+                    'currency_lang' => __('IQD'),
                 ];
             }),
 
@@ -44,6 +45,7 @@ class VisitResource extends JsonResource
                         'price' => $related->relatedService?->price ?? 0,
                         'qty' => $related->qty ?? 1,
                         'total' => $related->price_related_service ?? 0,
+                        'currency_lang' => __('IQD'),
                     ];
                 });
             }),
