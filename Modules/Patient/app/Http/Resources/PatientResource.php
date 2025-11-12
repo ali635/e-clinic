@@ -25,7 +25,7 @@ class PatientResource extends JsonResource
                 return [
                     'id' => $this->country->id,
                     'name' => $this->country->name ?? '',
-                    'status' => $this->country->status,
+                    'status' => (boolean)$this->country->status,
                     'order' => $this->country->order,
                 ];
             }),
@@ -34,7 +34,7 @@ class PatientResource extends JsonResource
                 return [
                     'id' => $this->city->id,
                     'name' => $this->city->name ?? '',
-                    'status' => $this->city->status,
+                    'status' => (boolean)$this->city->status,
                     'order' => $this->city->order,
 
                 ];
@@ -44,7 +44,7 @@ class PatientResource extends JsonResource
                 return [
                     'id' => $this->area->id,
                     'name' => $this->area->name ?? '',
-                    'status' => $this->area->status,
+                    'status' => (boolean)$this->area->status,
                     'order' => $this->area->order,
                 ];
             }),

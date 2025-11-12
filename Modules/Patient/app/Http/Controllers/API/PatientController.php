@@ -50,6 +50,10 @@ class PatientController extends Controller
             $rating = 1;
             $nextStar = 2;
             $nextVisit = 5 - $completedVisits;
+        } else {
+            $rating = 0;
+            $nextVisit = 3 - $completedVisits;
+            $nextStar = 1;
         }
 
         return response()->json([

@@ -34,7 +34,7 @@ class StoreFeedbackRequest extends FormRequest
             }
 
             // 1️⃣ Check that the visit belongs to this patient
-            if ($visit->patient_id !== $patient->id) {
+            if ((int)$visit->patient_id !== (int)$patient->id) {
                 $validator->errors()->add('visit_id', __('This visit does not belong to you.'));
             }
 
@@ -45,8 +45,8 @@ class StoreFeedbackRequest extends FormRequest
 
             // 3️⃣ Check that feedback for this visit hasn’t been submitted before
             $alreadyExists = Feedback::query()
-                ->where('visit_id', $visit->id)
-                ->where('patient_id', $patient->id)
+                ->where('visit_id', (int)$visit->id)
+                ->where('patient_id', (int)$patient->id)
                 ->exists();
 
             if ($alreadyExists) {
