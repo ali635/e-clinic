@@ -22,7 +22,8 @@ class VisitHomeResource extends JsonResource
             'status' => (bool) $this->is_arrival ? __('completed') : ($this->arrival_time > Carbon::now() ? __('pending') : __('cancelled')),
             'secretary_description' => $this->secretary_description,
             'notes' => $this->notes,
-            'show_btn_feedback' => $this->feedback && (bool) $this->is_arrival ? false : true,
+            // 'show_btn_feedback' => $this->feedback && (bool) $this->is_arrival ? false : true,
+            'show_btn_feedback' => $this->feedback && (bool) $this->is_arrival && !$this->feedback->exists() ? true : false,
             // ✅ Service info (translated)
             'service' => $this->whenLoaded('service', function () use ($lang) {
                 return [
