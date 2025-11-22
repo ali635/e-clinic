@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Modules\Blog\Models\Post;
+use Modules\Booking\Models\Feedback;
 use Modules\Service\Models\Service;
 use Modules\Slider\Models\Slider;
 
@@ -27,6 +28,15 @@ class HomeController extends Controller
             ->orderBy('order', 'desc')
             ->get();
 
-        return view('home.index', compact('services', 'posts', 'banners'));
+        $feedbacks = Feedback::query()
+            ->with(['patient', 'visit.service'])
+            ->whereNotNull('comments')
+            ->whereNotNull('rating')
+            ->where('rating', '>', 0)
+            ->latest()
+            ->take(12)
+            ->get();
+
+        return view('home.index', compact('services', 'posts', 'banners', 'feedbacks'));
     }
 }

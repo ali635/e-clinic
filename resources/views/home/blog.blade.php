@@ -4,7 +4,8 @@
             <h2 class="text-3xl tablet:text-4xl font-bold text-primary">
                 {{ __('Blogs') }}
             </h2>
-            <a href="{{ route('posts') }}" class="text-primary self-end tablet:self-center border border-primary text-center px-3 py-1.5 rounded-lg hover:bg-primary hover:text-white transition duration-300 ease-in-out">{{ __('All Blogs') }}</a>
+            <a href="{{ route('posts') }}"
+                class="text-primary self-end tablet:self-center border border-primary text-center px-3 py-1.5 rounded-lg hover:bg-primary hover:text-white transition duration-300 ease-in-out">{{ __('All Blogs') }}</a>
         </div>
         <div class="grid grid-cols-1 tablet:grid-cols-2 web:grid-cols-4 gap-4">
             @foreach ($posts as $post)
@@ -25,4 +26,3 @@
         </div>
     </div>
 </section>
-
