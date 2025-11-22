@@ -32,7 +32,8 @@ class Visit extends Model
         'total_price',
         'notes',
         'attachment',
-        'patient_description'
+        'patient_description',
+        'status',
     ];
 
     protected function casts(): array
@@ -40,7 +41,6 @@ class Visit extends Model
         return [
             'lab_tests' => 'array',
             'x_rays' => 'array',
-
         ];
     }
     public function service()
