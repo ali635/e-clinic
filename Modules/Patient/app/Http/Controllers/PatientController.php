@@ -31,7 +31,7 @@ class PatientController extends Controller
 
 
         $visits = $patient->visits ?? collect(); // ensure collection
-        $totalVisits = $visits->count();
+        $totalVisits = $visits->where('status', 'complete')->count();
 
         // Determine stars based on visits
         $stars = 0;
@@ -51,10 +51,10 @@ class PatientController extends Controller
     {
         $patient = auth('patient')->user();
 
-        $completedVisits = $patient->visits()->where('is_arrival', true)->count();
-        $notCompletedVisits = $patient->visits()->where('is_arrival', false)->count();
+        $completedVisits = $patient->visits()->where('status', 'complete')->where('is_arrival', true)->count();
+        $notCompletedVisits = $patient->visits()->where('status', 'pending')->where('is_arrival', false)->count();
 
-        $date_of_last_visit = $patient->visits()->orderByDesc('created_at')->first()?->created_at?->format('d-m-Y') ?? '-';
+        $date_of_last_visit = $patient->visits()->where('status', 'complete')->orderByDesc('created_at')->first()?->created_at?->format('d-m-Y') ?? '-';
 
         return view('patient.statistical.index', compact('patient', 'completedVisits', 'notCompletedVisits', 'date_of_last_visit'));
     }
@@ -66,7 +66,7 @@ class PatientController extends Controller
             ->where('patient_id', $patient->id)->orderByDesc('created_at')
             ->get();
 
-        $totalVisits = $visits->count();
+        $totalVisits = $visits->where('status', 'complete')->count();
 
         // Determine stars based on number of visits
         $stars = 0;

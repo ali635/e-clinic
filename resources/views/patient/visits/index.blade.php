@@ -35,6 +35,9 @@
                             {{ __('Service name') }}
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            {{ __('Status') }}
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             {{ __('Total Price') }}
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -56,6 +59,9 @@
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                     {{ $visit->service->name }}
                                 </th>
+                                <td class="px-6 py-4 @if($visit->status == 'complete') text-green-500 @elseif($visit->status == 'pending') text-yellow-500 @else text-red-500 @endif">
+                                    {{ $visit->status }}
+                                </td>
                                 <td class="px-6 py-4">
                                     {{ $visit->total_price ?? $visit->price }}
 
@@ -78,7 +84,7 @@
                                                 </path>
                                             </svg>
                                         </a>
-                                        @if ($visit->is_arrival && $visit->feedback == null)
+                                        @if ($visit->is_arrival && $visit->feedback == null && $visit->status == 'complete')
                                             <a data-visit-id="{{ $visit->id }}" data-modal-target="feedback-modal"
                                                 data-modal-toggle="feedback-modal" href="javascript:;"
                                                 class="showFeedbackModalBtn font-medium text-primary hover:opacity-60">

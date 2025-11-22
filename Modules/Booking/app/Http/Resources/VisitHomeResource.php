@@ -19,11 +19,11 @@ class VisitHomeResource extends JsonResource
             'currency_lang' => __('IQD'),
             'arrival_time' => $this->arrival_time,
             'is_arrival' => (bool) $this->is_arrival,
-            'status' => (bool) $this->is_arrival ? __('completed') : ($this->arrival_time > Carbon::now() ? __('pending') : __('cancelled')),
+            'status' => (bool) $this->is_arrival && $this->status == 'complete' ? __('completed') : ($this->arrival_time > Carbon::now() && $this->status == 'pending' ? __('pending') : __('cancelled')),
             'secretary_description' => $this->secretary_description,
             'notes' => $this->notes,
             // 'show_btn_feedback' => $this->feedback && (bool) $this->is_arrival ? false : true,
-            'show_btn_feedback' => $this->feedback && (bool) $this->is_arrival && !$this->feedback->exists() ? true : false,
+            'show_btn_feedback' => $this->status == 'complete' && $this->feedback && (bool) $this->is_arrival && !$this->feedback->exists() ? true : false,
             // ✅ Service info (translated)
             'service' => $this->whenLoaded('service', function () use ($lang) {
                 return [

@@ -14,22 +14,31 @@ class VisitStatsOverview extends BaseWidget
         $totalVisits = Visit::count();
 
         // ----- 2. Completed Visits --------------------------------------------
-        $completed = Visit::where('is_arrival', true)->count();
+        $completed = Visit::where('is_arrival', true)->where('status', 'complete')->count();
         $completedPrev = Visit::where('is_arrival', true)
             ->whereBetween('created_at', [now()->subMonth(), now()->subMonth()->endOfMonth()])
             ->count();
         $completedDiff = $completed - $completedPrev;
         $completedDiffPct = $completedPrev ? round(($completedDiff / $completedPrev) * 100, 1) : 0;
 
-        // ----- 3. Not Completed Visits ----------------------------------------
-        $notCompleted = Visit::where('is_arrival', false)->count();
-        $notCompletedPrev = Visit::where('is_arrival', false)
+        // ----- 3. Not Completed Visits (pending) ----------------------------------------
+        $pendingCompleted = Visit::where('is_arrival', false)->where('status', 'pending')->count();
+        $pendingCompletedPrev = Visit::where('is_arrival', false)->where('status', 'pending')
             ->whereBetween('created_at', [now()->subMonth(), now()->subMonth()->endOfMonth()])
             ->count();
-        $notCompletedDiff = $notCompleted - $notCompletedPrev;
-        $notCompletedDiffPct = $notCompletedPrev ? round(($notCompletedDiff / $notCompletedPrev) * 100, 1) : 0;
+        $pendingCompletedDiff = $pendingCompleted - $pendingCompletedPrev;
+        $pendingCompletedDiffPct = $pendingCompletedPrev ? round(($pendingCompletedDiff / $pendingCompletedPrev) * 100, 1) : 0;
 
-        // ----- 4. Total Price (Completed) -------------------------------------
+        // ----- 4. Not Completed Visits (cancalled) ----------------------------------------
+        $cancalled = Visit::where('is_arrival', false)->where('status', 'cancelled')->count();
+        $cancalledPrev = Visit::where('is_arrival', false)->where('status', 'cancelled')
+            ->whereBetween('created_at', [now()->subMonth(), now()->subMonth()->endOfMonth()])
+            ->count();
+        $cancalledDiff = $cancalled - $cancalledPrev;
+        $cancalledDiffPct = $cancalledPrev ? round(($cancalledDiff / $cancalledPrev) * 100, 1) : 0; 
+
+
+        // ----- 5. Total Price (Completed) -------------------------------------
         $totalPrice = Visit::where('is_arrival', true)->sum('total_price');
         $totalPricePrev = Visit::where('is_arrival', true)
             ->whereBetween('created_at', [now()->subMonth(), now()->subMonth()->endOfMonth()])
@@ -52,16 +61,25 @@ class VisitStatsOverview extends BaseWidget
                         : 'heroicon-m-arrow-trending-down'
                 ),
 
-            // 3. Not Completed Visits
-            Stat::make(__('Total Not Completed Visits'), number_format($notCompleted))
-                ->description(abs($notCompletedDiffPct) . '% ' . ($notCompletedDiff >= 0 ? __('increase') : __('decrease')))
+            // 3. Not Completed (Pending) Visits
+            Stat::make(__('Total Not Completed (Pending) Visits'), number_format($pendingCompleted))
+                ->description(abs($pendingCompletedDiffPct) . '% ' . ($pendingCompletedDiff >= 0 ? __('increase') : __('decrease')))
                 ->descriptionIcon(
-                    $notCompletedDiff >= 0
+                    $pendingCompletedDiff >= 0
                         ? 'heroicon-m-arrow-trending-up'
                         : 'heroicon-m-arrow-trending-down'
                 ),
 
-            // 4. Total Price Received
+            // 4. Not Completed (Canclled) Visits
+             Stat::make(__('Total Not Completed (Canclled) Visits'), number_format($cancalled))
+                ->description(abs($cancalledDiffPct) . '% ' . ($cancalledDiff >= 0 ? __('increase') : __('decrease')))
+                ->descriptionIcon(
+                    $cancalledDiff >= 0
+                        ? 'heroicon-m-arrow-trending-up'
+                        : 'heroicon-m-arrow-trending-down'
+                ),
+
+            // 5. Total Price Received
             Stat::make(__('Total price Received Visits'), __('IQD ') . number_format($totalPrice, 2))
                 ->description($priceDiffPct . '% ' . ($priceDiff >= 0 ? __('increase') : __('decrease')))
                 ->descriptionIcon(

@@ -12,7 +12,10 @@ use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Modules\Booking\Filament\Resources\Visits\VisitResource;
+use Modules\Patient\Models\Patient;
+use Modules\Service\Models\Service;
 use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
+use Filament\Tables\Filters\SelectFilter;
 
 class VisitsTable
 {
@@ -32,6 +35,8 @@ class VisitsTable
                 TextColumn::make('service.name')
                     ->searchable(),
 
+                TextColumn::make('status')
+                    ->searchable(),
                 TextColumn::make('price')
                     ->searchable(),
 
@@ -44,7 +49,26 @@ class VisitsTable
 
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->options([
+                        'pending' => __('Pending'),
+                        'complete' => __('Complete'),
+                        'cancelled' => __('Cancelled'),
+                    ]),
+                SelectFilter::make('is_arrival')
+                    ->options([
+                        true => __('Yes'),
+                        false => __('No'),
+                    ]),
+
+                SelectFilter::make('patient_id')
+                    ->options(function () {
+                        return Patient::all()->pluck('name', 'id');
+                    }),
+                SelectFilter::make('service_id')
+                    ->options(function () {
+                        return Service::all()->pluck('name', 'id');
+                    }),
             ])
             ->recordActions([
                 ViewAction::make(),

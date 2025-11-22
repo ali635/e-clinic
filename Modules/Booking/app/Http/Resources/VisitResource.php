@@ -19,7 +19,7 @@ class VisitResource extends JsonResource
             'currency_lang' => __('IQD'),
             'arrival_time' => $this->arrival_time,
             'is_arrival' => (bool) $this->is_arrival,
-            'status' => (bool) $this->is_arrival ? __('completed') : ($this->arrival_time > Carbon::now() ? __('pending') : __('cancelled')),
+            'status' => (bool) $this->is_arrival && $this->status == 'complete' ? __('completed') : ($this->arrival_time > Carbon::now() && $this->status == 'pending' ? __('pending') : __('cancelled')),
             'doctor_description' => $this->doctor_description,
             'treatment' => $this->treatment,
             'secretary_description' => $this->secretary_description,
@@ -50,7 +50,7 @@ class VisitResource extends JsonResource
                 });
             }),
 
-            'show_btn_feedback' => !isset($this->feedback) && (bool) $this->is_arrival ? true : false,
+            'show_btn_feedback' => !isset($this->feedback) && (bool) $this->is_arrival && $this->status == 'complete' ? true : false,
             
             'feedback' => $this->whenLoaded('feedback', function () {
                 return [

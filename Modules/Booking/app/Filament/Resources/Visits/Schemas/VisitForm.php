@@ -89,6 +89,16 @@ class VisitForm
                         ->label(__('Arrival Time'))
                         ->helperText(__('Expected / actual arrival time')),
 
+                    Select::make('status')
+                        ->label(__('Status'))
+                        ->options([
+                            'pending' => __('Pending'),
+                            'complete' => __('Complete'),
+                            'cancelled' => __('Cancelled'),
+                        ])
+                        ->default('pending')
+                        ->required(),
+
                     Toggle::make('is_arrival')
                         ->label(__('Is arrival?')),
                 ]),
