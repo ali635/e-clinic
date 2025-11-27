@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Modules\Setting\Filament\Pages\AboutSetting;
 use Modules\Setting\Filament\Pages\FooterSocialSetting;
 use Modules\Setting\Filament\Pages\CounterSettings;
+use Modules\Setting\Filament\Pages\GeneralSetting;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -43,7 +44,6 @@ class SettingServiceProvider extends ServiceProvider
                 ->description('Counter Section in Home Page')
                 ->group('Home Page'),
         ]);
-
         FilamentSettingsHub::register([
             SettingHold::make()
                 ->order(2)
@@ -54,7 +54,6 @@ class SettingServiceProvider extends ServiceProvider
                 ->description(__('facebook , youtube , x , instagram '))
                 ->group('Home Page'),
         ]);
-
         FilamentSettingsHub::register([
             SettingHold::make()
                 ->order(2)
@@ -65,6 +64,19 @@ class SettingServiceProvider extends ServiceProvider
                 ->description(__('About Us and Address'))
                 ->group('Home Page'),
         ]);
+        FilamentSettingsHub::register([
+            SettingHold::make()
+            ->order(2)
+            ->label(__('Genral Settings'))
+            ->icon('heroicon-o-cog')
+            ->route('filament.admin.pages.general-setting')
+            ->page(GeneralSetting::class)
+            ->description(__('General Settings'))
+            ->group('General'),
+        ]);
+
+        
+
     }
 
     /**
