@@ -16,7 +16,6 @@ class ServiceController extends Controller
     public function index(Request $request)
     {
         // Optional filters
-        $isHome = $request->query('is_home');
         $lang   = $request->query('lang', app()->getLocale());
 
         // Set current language for translatable model
@@ -27,7 +26,7 @@ class ServiceController extends Controller
         
 
         // Fetch services ordered by "order" column
-        $services = $query->orderBy('order', 'asc')->get();
+        $services = $query->orderBy('order', 'asc')->cursorPaginate(10);
 
         return view('services.index', [
             'services' => $services,

@@ -22,7 +22,7 @@ class BlogController extends Controller
         $query = Post::query()->where('status', 1);
 
         // Fetch posts ordered by "order" column
-        $posts = $query->orderBy('order', 'asc')->get();
+        $posts = $query->orderBy('order', 'asc')->cursorPaginate(10);
 
         return view('blog.index', [
             'posts' => $posts,
