@@ -10,6 +10,7 @@
         "astrotomic/laravel-translatable": "^11.16",
         "bezhansalleh/filament-language-switch": "^4.0",
         "bezhansalleh/filament-shield": "^4.0",
+        "caresome/filament-auth-designer": "^1.0",
         "charrafimed/global-search-modal": "^4.2",
         "coolsam/modules": "^5.0",
         "devrabiul/laravel-toaster-magic": "^1.5",

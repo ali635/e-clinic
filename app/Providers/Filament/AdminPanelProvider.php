@@ -4,6 +4,9 @@ namespace App\Providers\Filament;
 
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Caresome\FilamentAuthDesigner\AuthDesignerPlugin;
+use Caresome\FilamentAuthDesigner\Enums\AuthLayout;
+use Caresome\FilamentAuthDesigner\Enums\MediaDirection;
 use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
 use Coolsam\Modules\ModulesPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -68,6 +71,12 @@ class AdminPanelProvider extends PanelProvider
                 FilamentAwinTheme::make(),
                 FilamentTranslationsPlugin::make(),
                 GlobalSearchModalPlugin::make(),
+                AuthDesignerPlugin::make()
+                ->login(
+                    layout: AuthLayout::Split,
+                    media: asset('images/intro-image.jpg'),
+                    direction: MediaDirection::Right
+                ),
                 \TomatoPHP\FilamentSettingsHub\FilamentSettingsHubPlugin::make()
                     ->allowSiteSettings()
                     ->allowSocialMenuSettings(false),
