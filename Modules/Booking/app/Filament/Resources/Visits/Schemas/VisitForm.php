@@ -213,8 +213,12 @@ class VisitForm
                         ->label(__('Secretary Description'))
                         ->helperText(__('Administrative notes, reminders')),
 
-                    RichEditor::make('note')
+                    RichEditor::make('notes')
                         ->label(__('Patient Notes')),
+
+                     RichEditor::make('patient_description')
+                        ->label(__('Patient Description'))
+                        ->helperText(__('Patient description')),
 
                     FileUpload::make('attachment')
                         ->label(__('Attachment'))
