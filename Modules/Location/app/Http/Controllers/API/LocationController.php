@@ -28,9 +28,10 @@ class LocationController extends Controller
     /**
      * Get all active cities for a specific country.
      */
-    public function cities(Request $request)
+    public function cities(Request $request,$countryId)
     {
-        $cities = City::where('status', true)
+        $cities = City::where('country_id', $countryId)
+            ->where('status', true)
             ->orderBy('order', 'asc')
             ->get();
 
