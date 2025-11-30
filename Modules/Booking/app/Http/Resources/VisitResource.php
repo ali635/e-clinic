@@ -24,7 +24,8 @@ class VisitResource extends JsonResource
             'treatment' => $this->treatment,
             'secretary_description' => $this->secretary_description,
             'notes' => $this->notes,
-
+            'patient_description' => $this->patient_description,
+            
             // ✅ Service info (translated)
             'service' => $this->whenLoaded('service', function () use ($lang) {
                 return [
