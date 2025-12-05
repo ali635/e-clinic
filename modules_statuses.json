@@ -8,5 +8,6 @@
     "Localization": true,
     "AdvancedLanguage": true,
     "User": true,
-    "Setting": true
+    "Setting": true,
+    "Medicine": true
 }
