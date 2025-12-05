@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('weight')->nullable();
             $table->string('height')->nullable();
             $table->string('body_max_index')->nullable();
-
         });
     }
 
