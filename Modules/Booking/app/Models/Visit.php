@@ -34,6 +34,15 @@ class Visit extends Model
         'attachment',
         'patient_description',
         'status',
+        'chief_complaint',
+        'medical_history',
+        'diagnosis',
+        'sys',
+        'dia',
+        'pulse_rate',
+        'weight',
+        'height',
+        'body_max_index',
     ];
 
     protected function casts(): array
@@ -51,6 +60,10 @@ class Visit extends Model
     public function relatedService()
     {
         return $this->hasMany(RelatedServiceVisit::class);
+    }
+    public function medicines()
+    {
+        return $this->hasMany(MedicineVisit::class);
     }
     public function feedback()
     {

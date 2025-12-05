@@ -4,6 +4,8 @@ namespace Modules\Medicine\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Booking\Models\MedicineVisit;
+use Modules\Booking\Models\Visit;
 // use Modules\Medicine\Database\Factories\MedicineFactory;
 
 class Medicine extends Model
@@ -17,8 +19,8 @@ class Medicine extends Model
         'name'
     ];
 
-    // protected static function newFactory(): MedicineFactory
-    // {
-    //     // return MedicineFactory::new();
-    // }
+    public function visits()
+    {
+        return $this->hasMany(MedicineVisit::class);
+    }
 }

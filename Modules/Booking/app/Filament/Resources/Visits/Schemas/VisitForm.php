@@ -5,16 +5,18 @@ namespace Modules\Booking\Filament\Resources\Visits\Schemas;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\RichEditor;
+// use Filament\Forms\Components\CKEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Kahusoftware\FilamentCkeditorField\CKEditor;
 use Modules\Patient\Models\Patient;
 use Modules\Service\Models\RelatedService;
 use Modules\Service\Models\Service;
-
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 class VisitForm
 {
     public static function configure(Schema $schema): Schema
@@ -168,38 +170,98 @@ class VisitForm
                         ]),
                 ]),
 
+            Section::make(__('Vital Signs Section'))
+                ->columns(3)
+                ->columnSpan(2)
+                ->schema([
+                    TextInput::make('sys')
+                                ->numeric()
+                                ->required(),
+                    TextInput::make('dia')
+                                ->numeric()
+                                ->required(),
+                    TextInput::make('pulse_rate')
+                                ->numeric()
+                                ->required(),
+                ]),
+
+
+           Section::make(__('Anthropometric Measurements'))
+                ->columns(3)
+                ->columnSpan(2)
+                ->schema([
+                    TextInput::make('weight')
+                        ->numeric()
+                        ->required()
+                        ->suffix('kg')
+                        ->minValue(1)
+                        ->maxValue(500)
+                        ->live(onBlur: true) // Trigger on blur for better UX
+                        ->afterStateUpdated(fn (Get $get, Set $set) => self::calculateBMI($get, $set))
+                        ->columnSpan(1),
+                    
+                    TextInput::make('height')
+                        ->numeric()
+                        ->required()
+                        ->suffix('cm')
+                        ->minValue(50)
+                        ->maxValue(300)
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn (Get $get, Set $set) => self::calculateBMI($get, $set))
+                        ->columnSpan(1),
+                    
+                    TextInput::make('body_max_index')
+                        ->numeric()
+                        ->required()
+                        ->suffix('kg/m²')
+                        ->helperText('Auto-calculated from weight and height')
+                        ->placeholder('Calculated automatically')
+                        ->columnSpan(1),
+                ]),
+            
+
             // ===== Attachments =====
             Section::make(__('Attachments'))
-                ->columns(2)
+                ->columns(1)
                 ->columnSpan(2)
                 ->schema([
                     FileUpload::make('lab_tests')
-                        ->label(__('Lab tests'))
+                        ->label(__('Lab tests \ x-rays'))
                         ->disk('public')
                         ->directory('visit')
                         ->multiple()
-                        ->helperText(__('Drag & drop or browse to upload multiple lab tests')),
+                        ->helperText(__('Drag & drop or browse to upload multiple lab tests and x-rays')),
 
-                    FileUpload::make('x_rays')
-                        ->label(__('X-rays'))
-                        ->disk('public')
-                        ->directory('visit')
-                        ->multiple()
-                        ->helperText(__('Drag & drop or browse to upload multiple x-rays')),
+                   CKEditor::make('notes')
+                        ->label(__('Notes')),
                 ]),
 
             // ===== Doctor & Treatment Notes =====
             Section::make(__('Doctor & Treatment Notes'))
-                ->columns(2)
+                ->columns(1)
                 ->columnSpan(2)
                 ->schema([
-                    RichEditor::make('doctor_description')
-                        ->label(__('Doctor Description'))
+                    Repeater::make('medicines')
+                        ->relationship('medicines')
+                        ->collapsible()
+                        ->addActionLabel(__('Add medicines'))
+                        ->schema([
+                              Select::make('medicine_id')
+                                ->label(__('Medicines'))
+                                ->searchable(true)
+                                ->relationship('medicine','name')
+                                ->createOptionForm([
+                                    TextInput::make('name')->required(),
+                                ])
+                                ->required(),
+                        ]),
+                    CKEditor::make('doctor_description')
+                        ->label(__('Doctor Description \ Diagnosis'))
                         ->required()
                         ->helperText(__('Clinical notes and observations')),
 
-                    RichEditor::make('treatment')
-                        ->label(__('Treatment Description'))
+                    CKEditor::make('treatment')
+                        ->label(__('Drugs / Medications'))
                         ->required()
                         ->helperText(__('Treatment plan and instructions')),
                 ]),
@@ -209,14 +271,13 @@ class VisitForm
                 ->columns(2)
                 ->columnSpan(2)
                 ->schema([
-                    RichEditor::make('secretary_description')
+                    CKEditor::make('secretary_description')
                         ->label(__('Secretary Description'))
                         ->helperText(__('Administrative notes, reminders')),
 
-                    RichEditor::make('notes')
-                        ->label(__('Patient Notes')),
+                    
 
-                     RichEditor::make('patient_description')
+                     CKEditor::make('patient_description')
                         ->label(__('Patient Description'))
                         ->helperText(__('Patient description')),
 
@@ -248,5 +309,22 @@ class VisitForm
         }
 
         return $servicePrice + $relatedTotal;
+    }
+
+    protected static function calculateBMI(Get $get, Set $set): void
+    {
+        $weight = $get('weight');
+        $height = $get('height');
+        
+        // Only calculate if both values are present and valid
+        if (filled($weight) && filled($height) && $height > 0) {
+            // Convert height from cm to meters
+            $heightInMeters = (float)$height / 100;
+            
+            if ($heightInMeters > 0) {
+                $bmi = round((float)$weight / ($heightInMeters ** 2), 1);
+                $set('body_max_index', $bmi);
+            }
+        }
     }
 }
