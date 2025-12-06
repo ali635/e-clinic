@@ -40,6 +40,9 @@
                         <th scope="col" class="px-6 py-3">
                             {{ __('Total Price') }}
                         </th>
+                         <th scope="col" class="px-6 py-3">
+                            {{ __('Total Price After Discount') }}
+                        </th>
                         <th scope="col" class="px-6 py-3">
                             {{ __('Is Arrival') }}
                         </th>
@@ -65,6 +68,9 @@
                                 <td class="px-6 py-4">
                                     {{ $visit->total_price ?? $visit->price }}
 
+                                </td>
+                                <td>
+                                    {{ $visit->total_after_discount }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $visit->is_arrival ? __('Yes') : __('No') }}

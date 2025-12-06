@@ -16,6 +16,7 @@ use Modules\Location\Models\City;
 use Modules\Location\Models\Country;
 use Modules\Patient\Enums\MaritalStatus;
 use Modules\Patient\Models\Disease;
+use Nette\PhpGenerator\Visibility;
 
 
 class PatientForm
@@ -50,17 +51,15 @@ class PatientForm
                     ])->required(),
 
                 Select::make('marital_status')
-                    ->options(MaritalStatus::options())
-                    ->required(),
+                    ->options(MaritalStatus::options()),
 
                 Select::make('referral_id')
-                                ->label(__('Referrals'))
-                                ->searchable(true)
-                                ->relationship('referral','name')
-                                ->createOptionForm([
-                                    TextInput::make('name')->required(),
-                                ])
-                                ->required(),
+                    ->label(__('Referrals'))
+                    ->searchable(true)
+                    ->relationship('referral', 'name')
+                    ->createOptionForm([
+                        TextInput::make('name')->required(),
+                    ]),
 
 
                 TextInput::make('phone')
@@ -131,8 +130,7 @@ class PatientForm
 
                 TextInput::make('address')
                     ->label(__('address'))
-                    ->maxLength(255)
-                    ->required(),
+                    ->maxLength(255),
 
                 Select::make('disease_id')
                     ->label(__('diseases'))
@@ -149,11 +147,13 @@ class PatientForm
                         }
                     })
                     ->searchable()
-                    ->multiple()
-                    ->required(),
+                    ->multiple(),
 
                 FileUpload::make('img_profile')
+                    ->directory('patients/profiles')
+                    ->visibility('private')
                     ->label(__('img profile')),
+
                 Toggle::make('status')
                     ->label(__('status'))
                     ->required(),

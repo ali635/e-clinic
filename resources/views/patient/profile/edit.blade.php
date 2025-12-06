@@ -48,6 +48,11 @@
                         <dt class="font-medium">{{ __('gender') }}:</dt>
                         <dd class="text-end">{{ ucfirst($patient->gender ?? '-') }}</dd>
                     </div>
+
+                     <div class="flex justify-between">
+                        <dt class="font-medium">{{ __('marital status') }}:</dt>
+                        <dd class="text-end">{{ ucfirst($patient->marital_status ?? '-') }}</dd>
+                    </div>
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('City') }}:</dt>
                         <dd class="text-end">{{ $patient->city->name ?? '-' }}</dd>
@@ -59,6 +64,21 @@
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('address') }}:</dt>
                         <dd class="text-end">{{ $patient->address ?? '-' }}</dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="font-medium">{{ __('Referral') }}:</dt>
+                        <dd class="text-end">{{ $patient->referral->name ?? '-' }}</dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="font-medium">{{ __('Hear About Us') }}:</dt>
+                        <dd class="text-end">{{ $patient->hear_about_us ?? '-' }}</dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="font-medium">{{ __('Image') }}:</dt>
+                        <dd class="text-end">
+                            <img src="{{ asset('storage/' . $patient->img_profile) }}" alt="{{ $patient->name }}"
+                                class="w-16 h-16 rounded-full">
+                        </dd>
                     </div>
                 </dl>
             </div>
@@ -118,6 +138,27 @@
                         </div>
                     @enderror
                 </div>
+
+                 <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">{{ __('marital status') }}</label>
+                    <select name="marital_status" class="form-input w-full">
+                        <option value="">{{ __('Select') }}</option>
+                        <option value="single" @if ($patient->marital_status == 'single') selected @endif>{{ __('Single') }}
+                        </option>
+                        <option value="married" @if ($patient->marital_status == 'married') selected @endif>{{ __('Married') }}
+                        </option>
+                        <option value="divorced" @if ($patient->marital_status == 'divorced') selected @endif>{{ __('Divorced') }}
+                        </option>
+                        <option value="widowed" @if ($patient->marital_status == 'widowed') selected @endif>{{ __('Widowed') }}
+                        </option>
+                    </select>
+                    @error('marital_status')
+                        <div class="text-red-600 text-sm mt-1">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                
                 <div class="mb-4">
                     <label for="city" class="block text-sm font-medium mb-1">{{ __('City') }}</label>
                     <select id="city" name="city" class="form-input w-full">

@@ -31,6 +31,7 @@ class AuthController extends Controller
     public function create(): View
     {
         $cities = City::where('status', 1)->orderBy('order', 'desc')->get();
+        
         return view('auth.register', compact('cities'));
     }
 
@@ -66,10 +67,9 @@ class AuthController extends Controller
 
         // Handle referral creation if provided
         $referralId = $this->handleReferral($validated['refferal'] ?? null);
-
         // Handle profile image upload
         $imgProfilePath = $this->handleProfileImage($request);
-
+        
         // Create patient with mass assignment
         $patient = Patient::create([
             'name' => $validated['name'],
@@ -85,7 +85,7 @@ class AuthController extends Controller
             'hear_about_us' => $validated['hear_about_us'],
             'status' => 1,
             'password' => Hash::make($validated['password']),
-            'refferal_id' => $referralId,
+            'referral_id' => $referralId,
             'img_profile' => $imgProfilePath,
         ]);
 
@@ -134,6 +134,6 @@ class AuthController extends Controller
             return null;
         }
 
-        return $request->file('img_profile')->store('patients/profiles', 'public');
+        return $request->file('img_profile')->store('patients/profiles', 'local');
     }
 }

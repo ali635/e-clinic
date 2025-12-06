@@ -20,8 +20,9 @@
                 </h2>
             </div>
 
-            <form class="mt-8 space-y-6 genericForm" method="POST" action="{{ route('patient.register.post') }}">
+            <form class="mt-8 space-y-6 genericForm" method="POST" action="{{ route('patient.register.post') }}" enctype="multipart/form-data">
                 @csrf
+
                 <div class="grid grid-cols-1 tablet:grid-cols-2 gap-3">
                     <!-- Full Name Field -->
                     <div class="space-y-2">
@@ -71,9 +72,9 @@
                         <label for="phone" class="block text-sm font-medium text-gray-700">
                             {{ __('Another Phone Number') }}
                         </label>
-                        <input id="another_phone" name="other_phone" type="tel" class="form-input"
-                            placeholder="Enter your another phone number" value="{{ old('another_phone') }}">
-                        @error('another_phone')
+                        <input id="other_phone" name="other_phone" type="tel" class="form-input"
+                            placeholder="Enter your another phone number" value="{{ old('other_phone') }}">
+                        @error('other_phone')
                             <div class="text-red-600 text-sm mt-1 ">
                                 {{ $message }}
                             </div>
@@ -221,8 +222,8 @@
                             {{ __('image profile') }}
                         </label>
                         <input id="img_profile" type="file" name="img_profile" required class="form-input"
-                            placeholder="{{ __('Enter Refferal') }}" value="{{ old('refferal') }}">
-                        @error('refferal')
+                            placeholder="{{ __('Enter img_profile') }}" value="{{ old('img_profile') }}">
+                        @error('img_profile')
                             <div class="text-red-600 text-sm mt-1 ">
                                 {{ $message }}
                             </div>

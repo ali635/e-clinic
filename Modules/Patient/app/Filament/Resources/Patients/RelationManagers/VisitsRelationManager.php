@@ -88,4 +88,8 @@ class VisitsRelationManager extends RelationManager
                 DeleteAction::make(),
             ]);
     }
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
 }
