@@ -213,7 +213,7 @@ class VisitForm
                         ]),
                 ]),
 
-            Section::make(__('Vital Signs Section'))
+            Section::make(__('Blood Pressure'))
                 ->columns(3)
                 ->columnSpan(2)
                 ->schema([
@@ -298,8 +298,24 @@ class VisitForm
                                 ])
                                 ->required(),
                         ]),
+
+                    CKEditor::make('chief_complaint')
+                        ->label(__('chief complaint'))
+                        ->required()
+                        ->helperText(__('chief complaint')),
+
+                    CKEditor::make('medical_history')
+                        ->label(__('past medical history'))
+                        ->required()
+                        ->helperText(__('past medical history')),
+
+                    CKEditor::make('diagnosis')
+                        ->label(__('diagnosis'))
+                        ->required()
+                        ->helperText(__('diagnosis')),
+
                     CKEditor::make('doctor_description')
-                        ->label(__('Doctor Description \ Diagnosis'))
+                        ->label(__('Doctor Description'))
                         ->required()
                         ->helperText(__('Clinical notes and observations')),
 

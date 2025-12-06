@@ -46,6 +46,7 @@ class Visit extends Model
         'payment_method',
         'discount_amount',
         'total_after_discount',
+        'diagnosis'
     ];
 
     protected function casts(): array

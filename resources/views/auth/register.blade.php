@@ -202,6 +202,33 @@
                             </div>
                         @enderror
                     </div>
+
+                     <div class="space-y-2">
+                        <label for="street" class="block text-sm font-medium text-gray-700">
+                            {{ __('Refferal') }}
+                        </label>
+                        <input id="refferal" name="refferal" required class="form-input"
+                            placeholder="{{ __('Enter Refferal') }}" value="{{ old('refferal') }}">
+                        @error('refferal')
+                            <div class="text-red-600 text-sm mt-1 ">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                     <div class="space-y-2">
+                        <label for="street" class="block text-sm font-medium text-gray-700">
+                            {{ __('image profile') }}
+                        </label>
+                        <input id="img_profile" type="file" name="img_profile" required class="form-input"
+                            placeholder="{{ __('Enter Refferal') }}" value="{{ old('refferal') }}">
+                        @error('refferal')
+                            <div class="text-red-600 text-sm mt-1 ">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
                 </div>
 
                 <!-- Submit Button -->

@@ -14,7 +14,7 @@ class PatientLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'    => 'required|email|exists:patients,email',
+            'phone'    => 'required|exists:patients,phone',
             'password' => 'required|string|min:6',
         ];
     }
@@ -22,7 +22,7 @@ class PatientLoginRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.exists' => __('No account found with this email.'),
+            'phone.exists' => __('No account found with this phone.'),
             'password.min' => __('Password must be at least 6 characters long.'),
         ];
     }

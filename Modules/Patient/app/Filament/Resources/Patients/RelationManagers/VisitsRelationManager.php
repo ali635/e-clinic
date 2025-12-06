@@ -3,6 +3,8 @@
 namespace Modules\Patient\Filament\Resources\Patients\RelationManagers;
 
 use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\BooleanColumn;
@@ -81,7 +83,9 @@ class VisitsRelationManager extends RelationManager
             ->recordActions([
                 ViewAction::make()
                     ->url(fn($record) => VisitResource::getUrl('view', ['record' => $record])),
+                EditAction::make()
+                    ->url(fn($record) => VisitResource::getUrl('edit', ['record' => $record])),
+                DeleteAction::make(),
             ]);
     }
 }
-

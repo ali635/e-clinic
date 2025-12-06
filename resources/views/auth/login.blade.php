@@ -24,14 +24,14 @@
             <form class="mt-8 space-y-6 genericForm" method="POST" action="{{ route('patient.login') }}">
                 @csrf
 
-                <!-- Email Field -->
+                <!-- phone Field -->
                 <div class="space-y-2">
-                    <label for="email" class="block text-sm font-medium text-gray-700">
-                        {{ __('Email Address') }}
+                    <label for="phone" class="block text-sm font-medium text-gray-700">
+                        {{ __('Phone') }}
                     </label>
-                    <input id="email" name="email" type="email" required class="form-input"
-                        placeholder="{{ __('Enter your email') }}" value="{{ old('email') }}">
-                    @error('email')
+                    <input id="phone" name="phone" type="number" required class="form-input"
+                        placeholder="{{ __('Enter your phone') }}" value="{{ old('phone') }}">
+                    @error('phone')
                         <div class="text-red-600 text-sm mt-1">
                             {{ $message }}
                         </div>

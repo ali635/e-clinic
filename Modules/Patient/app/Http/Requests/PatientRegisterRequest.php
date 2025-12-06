@@ -26,6 +26,8 @@ class PatientRegisterRequest extends FormRequest
             'city_id'       => 'required|integer|exists:cities,id',
             'hear_about_us' => 'required|string|max:255',
             'area_id'       => 'nullable|integer|exists:areas,id',
+            'refferal'      => 'nullable|string|max:255',
+            'img_profile'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             // 'diseases'      => 'nullable|array|exists:diseases,id',
 
         ];

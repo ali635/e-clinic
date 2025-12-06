@@ -42,9 +42,9 @@ class AuthController extends Controller
      */
     public function login(PatientLoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('phone', 'password');
 
-        $patient = Patient::where('email', $credentials['email'])->first();
+        $patient = Patient::where('phone', $credentials['phone'])->first();
 
         if (!$patient || !Hash::check($credentials['password'], $patient->password)) {
             return response()->json([
