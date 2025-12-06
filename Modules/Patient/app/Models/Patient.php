@@ -38,10 +38,13 @@ class Patient extends Authenticatable implements OAuthenticatable
         'hear_about_us',
         'other_phone',
         'area_id',
+        'marital_status',
+        'img_profile',
     ];
 
     protected $casts = [
         'date_of_birth' => 'date',
+        'password' => 'hashed',
     ];
     protected $hidden = [
         'password',
@@ -90,5 +93,10 @@ class Patient extends Authenticatable implements OAuthenticatable
     public function visits()
     {
         return $this->hasMany(Visit::class, 'patient_id');
+    }
+
+    public function referral()
+    {
+        return $this->belongsTo(Referral::class);
     }
 }

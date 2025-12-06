@@ -2,8 +2,10 @@
 
 namespace Modules\Patient\Filament\Resources\Patients\Schemas;
 
+use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -12,9 +14,9 @@ use Illuminate\Support\Facades\Hash;
 use Modules\Location\Models\Area;
 use Modules\Location\Models\City;
 use Modules\Location\Models\Country;
+use Modules\Patient\Enums\MaritalStatus;
 use Modules\Patient\Models\Disease;
 
-use function Laravel\Prompts\select;
 
 class PatientForm
 {
@@ -31,8 +33,7 @@ class PatientForm
                     ->label(__('email'))
                     ->email()
                     ->unique()
-                    ->maxLength(255)
-                    ->required(),
+                    ->maxLength(255),
 
                 TextInput::make('password')
                     ->label(__('password'))
@@ -41,9 +42,6 @@ class PatientForm
                     ->dehydrated(fn($state) => filled($state))
                     ->required(fn(string $context): bool => $context === 'create'),
 
-
-
-
                 Select::make('gender')
                     ->label(__('gender'))
                     ->options([
@@ -51,15 +49,49 @@ class PatientForm
                         'female' => 'female'
                     ])->required(),
 
+                Select::make('marital_status')
+                    ->options(MaritalStatus::options())
+                    ->required(),
+
+                Select::make('referral_id')
+                                ->label(__('Referrals'))
+                                ->searchable(true)
+                                ->relationship('referral','name')
+                                ->createOptionForm([
+                                    TextInput::make('name')->required(),
+                                ])
+                                ->required(),
+
+
                 TextInput::make('phone')
                     ->label(__('phone'))
                     ->maxLength(255)
-                    ->required(),
+                    ->unique()
+                    ->required()
+                    ->suffixAction(
+                        Action::make('whatsapp_phone')
+                            ->icon('heroicon-o-chat-bubble-left-right')
+                            ->color('success')
+                            ->url(fn($state) => 'https://wa.me/' . preg_replace('/[^0-9]/', '', $state))
+                            ->openUrlInNewTab()
+                            ->visible(fn($state) => filled($state))
+                            ->tooltip('Open WhatsApp chat')
+                    ),
 
                 TextInput::make('other_phone')
                     ->label(__('other phone'))
                     ->maxLength(255)
-                    ->required(),
+                    ->unique()
+                    // ->required()
+                    ->suffixAction(
+                        Action::make('whatsapp_other_phone')
+                            ->icon('heroicon-o-chat-bubble-left-right')
+                            ->color('success')
+                            ->url(fn($state) => 'https://wa.me/' . preg_replace('/[^0-9]/', '', $state))
+                            ->openUrlInNewTab()
+                            ->visible(fn($state) => filled($state))
+                            ->tooltip('Open WhatsApp chat')
+                    ),
 
                 TextInput::make('hear_about_us')
                     ->label(__('hear about us'))
@@ -102,10 +134,6 @@ class PatientForm
                     ->maxLength(255)
                     ->required(),
 
-                Toggle::make('status')
-                    ->label(__('status'))
-                    ->required(),
-
                 Select::make('disease_id')
                     ->label(__('diseases'))
                     ->options(function () {
@@ -123,6 +151,13 @@ class PatientForm
                     ->searchable()
                     ->multiple()
                     ->required(),
+
+                FileUpload::make('img_profile')
+                    ->label(__('img profile')),
+                Toggle::make('status')
+                    ->label(__('status'))
+                    ->required(),
+
 
             ]);
     }

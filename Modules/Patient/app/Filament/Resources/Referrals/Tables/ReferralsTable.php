@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Medicine\Filament\Resources\Medicines\Tables;
+namespace Modules\Patient\Filament\Resources\Referrals\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -9,7 +9,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class MedicinesTable
+class ReferralsTable
 {
     public static function configure(Table $table): Table
     {

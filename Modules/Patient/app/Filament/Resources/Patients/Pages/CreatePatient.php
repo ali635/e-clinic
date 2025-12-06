@@ -21,12 +21,16 @@ class CreatePatient extends CreateRecord
             'address' => $data['address'],
             'gender' => $data['gender'],
             'phone' => $data['phone'],
+            'other_phone' => $data['other_phone'],
             'country_id' => $data['country_id'],
             'city_id' => $data['city_id'],
-
+            'area_id' => $data['area_id'],
+            'marital_status' => $data['marital_status'],
             'date_of_birth' => $data['date_of_birth'],
             'status' => $data['status'],
-
+            'img_profile' => $data['img_profile'],
+            'hear_about_us' => $data['hear_about_us'],
+            'referral_id' => $data['referral_id'],
         ]);
 
         foreach ($data['disease_id'] as $item) {
