@@ -16,6 +16,7 @@ use Modules\Patient\Filament\Resources\Patients\Pages\ViewPatient;
 use Modules\Patient\Filament\Resources\Patients\Schemas\PatientForm;
 use Modules\Patient\Filament\Resources\Patients\Schemas\PatientInfolist;
 use Modules\Patient\Filament\Resources\Patients\Tables\PatientsTable;
+use Modules\Patient\Filament\Resources\Patients\RelationManagers\VisitsRelationManager;
 use Modules\Patient\Models\Patient;
 use UnitEnum;
 
@@ -71,7 +72,7 @@ class PatientResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            VisitsRelationManager::class,
         ];
     }
 

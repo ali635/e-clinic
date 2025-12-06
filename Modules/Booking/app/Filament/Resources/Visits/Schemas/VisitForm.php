@@ -33,6 +33,7 @@ class VisitForm
                         ->relationship('patient', 'name')
                         ->searchable()
                         ->required()
+                        ->default(fn() => request()->query('patient_id'))
                         ->columnSpan(1),
 
                     // Service select
@@ -175,18 +176,18 @@ class VisitForm
                 ->columnSpan(2)
                 ->schema([
                     TextInput::make('sys')
-                                ->numeric()
-                                ->required(),
+                        ->numeric()
+                        ->required(),
                     TextInput::make('dia')
-                                ->numeric()
-                                ->required(),
+                        ->numeric()
+                        ->required(),
                     TextInput::make('pulse_rate')
-                                ->numeric()
-                                ->required(),
+                        ->numeric()
+                        ->required(),
                 ]),
 
 
-           Section::make(__('Anthropometric Measurements'))
+            Section::make(__('Anthropometric Measurements'))
                 ->columns(3)
                 ->columnSpan(2)
                 ->schema([
@@ -197,9 +198,9 @@ class VisitForm
                         ->minValue(1)
                         ->maxValue(500)
                         ->live(onBlur: true) // Trigger on blur for better UX
-                        ->afterStateUpdated(fn (Get $get, Set $set) => self::calculateBMI($get, $set))
+                        ->afterStateUpdated(fn(Get $get, Set $set) => self::calculateBMI($get, $set))
                         ->columnSpan(1),
-                    
+
                     TextInput::make('height')
                         ->numeric()
                         ->required()
@@ -207,9 +208,9 @@ class VisitForm
                         ->minValue(50)
                         ->maxValue(300)
                         ->live(onBlur: true)
-                        ->afterStateUpdated(fn (Get $get, Set $set) => self::calculateBMI($get, $set))
+                        ->afterStateUpdated(fn(Get $get, Set $set) => self::calculateBMI($get, $set))
                         ->columnSpan(1),
-                    
+
                     TextInput::make('body_max_index')
                         ->numeric()
                         ->required()
@@ -218,7 +219,7 @@ class VisitForm
                         ->placeholder('Calculated automatically')
                         ->columnSpan(1),
                 ]),
-            
+
 
             // ===== Attachments =====
             Section::make(__('Attachments'))
@@ -232,7 +233,7 @@ class VisitForm
                         ->multiple()
                         ->helperText(__('Drag & drop or browse to upload multiple lab tests and x-rays')),
 
-                   CKEditor::make('notes')
+                    CKEditor::make('notes')
                         ->label(__('Notes')),
                 ]),
 
@@ -246,10 +247,10 @@ class VisitForm
                         ->collapsible()
                         ->addActionLabel(__('Add medicines'))
                         ->schema([
-                              Select::make('medicine_id')
+                            Select::make('medicine_id')
                                 ->label(__('Medicines'))
                                 ->searchable(true)
-                                ->relationship('medicine','name')
+                                ->relationship('medicine', 'name')
                                 ->createOptionForm([
                                     TextInput::make('name')->required(),
                                 ])
@@ -275,9 +276,9 @@ class VisitForm
                         ->label(__('Secretary Description'))
                         ->helperText(__('Administrative notes, reminders')),
 
-                    
 
-                     CKEditor::make('patient_description')
+
+                    CKEditor::make('patient_description')
                         ->label(__('Patient Description'))
                         ->helperText(__('Patient description')),
 
@@ -303,7 +304,7 @@ class VisitForm
         if (is_array($relatedItems)) {
             foreach ($relatedItems as $item) {
                 $unit = (float) ($item['price_related_service'] ?? 0);
-                $qty  = max(1, (int) ($item['qty'] ?? 1));
+                $qty = max(1, (int) ($item['qty'] ?? 1));
                 $relatedTotal += $unit * $qty;
             }
         }
@@ -315,14 +316,14 @@ class VisitForm
     {
         $weight = $get('weight');
         $height = $get('height');
-        
+
         // Only calculate if both values are present and valid
         if (filled($weight) && filled($height) && $height > 0) {
             // Convert height from cm to meters
-            $heightInMeters = (float)$height / 100;
-            
+            $heightInMeters = (float) $height / 100;
+
             if ($heightInMeters > 0) {
-                $bmi = round((float)$weight / ($heightInMeters ** 2), 1);
+                $bmi = round((float) $weight / ($heightInMeters ** 2), 1);
                 $set('body_max_index', $bmi);
             }
         }
