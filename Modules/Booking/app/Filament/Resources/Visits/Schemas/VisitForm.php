@@ -12,6 +12,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Kahusoftware\FilamentCkeditorField\CKEditor;
+use Modules\Booking\Enums\PaymentMethod;
 use Modules\Patient\Models\Patient;
 use Modules\Service\Models\RelatedService;
 use Modules\Service\Models\Service;
@@ -24,7 +25,7 @@ class VisitForm
         return $schema->components([
             // ===== General info (patient, service, price, total) =====
             Section::make(__('General Information'))
-                ->columns(3)
+                ->columns(2)
                 ->columnSpan(1)
                 ->schema([
                     // Patient select
@@ -53,8 +54,8 @@ class VisitForm
                             // update service price when selecting service
                             $service = $state ? Service::find($state) : null;
                             $set('price', $service?->price ?? 0);
-                            // recalc total
-                            $set('total_price', self::calculateTotal($get));
+                            // recalc totals
+                            self::updateTotals($get, $set);
                         })
                         ->searchable()
                         ->required()
@@ -80,17 +81,50 @@ class VisitForm
                         ->reactive()
                         ->dehydrated(true)
                         ->helperText(__('Auto-calculated: service price + related services'))
-                        ->columnSpan(4),
+                        ->afterStateUpdated(function ($state, callable $set, $get) {
+                            // Recalculate total_after_discount when total_price changes
+                            $discount = (float) ($get('discount_amount') ?? 0);
+                            $set('total_after_discount', max(0, (float) $state - $discount));
+                        })
+                        ->columnSpan(1),
+
+                    TextInput::make('discount_amount')
+                        ->label(__('Discount Amount'))
+                        ->suffixIcon('heroicon-m-currency-dollar')
+                        ->default(0)
+                        ->numeric()
+                        ->reactive()
+                        ->dehydrated(true)
+                        ->afterStateUpdated(function ($state, callable $set, $get) {
+                            // Calculate total_after_discount = total_price - discount_amount
+                            $totalPrice = (float) ($get('total_price') ?? 0);
+                            $discount = (float) ($state ?? 0);
+                            $set('total_after_discount', max(0, $totalPrice - $discount));
+                        })
+                        ->helperText(__('Enter discount amount to subtract from total'))
+                        ->columnSpan(1),
+
+                    TextInput::make('total_after_discount')
+                        ->label(__('Total After Discount'))
+                        ->suffixIcon('heroicon-m-currency-dollar')
+                        ->disabled()
+                        ->default(0)
+                        ->numeric()
+                        ->reactive()
+                        ->dehydrated(true)
+                        ->helperText(__('Auto-calculated: total price - discount'))
+                        ->columnSpan(1),
                 ]),
 
             // ===== Arrival info =====
             Section::make(__('Arrival Information'))
-                ->columns(1)
+                ->columns(2)
                 ->columnSpan(1)
                 ->schema([
                     DateTimePicker::make('arrival_time')
                         ->label(__('Arrival Time'))
-                        ->helperText(__('Expected / actual arrival time')),
+                        ->helperText(__('Expected / actual arrival time'))
+                        ->columnSpan(1),
 
                     Select::make('status')
                         ->label(__('Status'))
@@ -100,7 +134,15 @@ class VisitForm
                             'cancelled' => __('Cancelled'),
                         ])
                         ->default('pending')
-                        ->required(),
+                        ->required()
+                        ->columnSpan(1),
+
+                    Select::make('payment_method')
+                        ->label(__('Payment Method'))
+                        ->options(PaymentMethod::options())
+                        ->default(PaymentMethod::Cash)
+                        ->required()
+                        ->columnSpan(1),
 
                     Toggle::make('is_arrival')
                         ->label(__('Is arrival?')),
@@ -118,7 +160,7 @@ class VisitForm
                         ->columns(3)
                         ->reactive()
                         ->afterStateUpdated(function ($state, callable $set, $get) {
-                            $set('total_price', self::calculateTotal($get));
+                            self::updateTotals($get, $set);
                         })
                         ->schema([
                             Select::make('related_service_id')
@@ -139,8 +181,8 @@ class VisitForm
                                     // store unit price (not multiplied)
                                     $set('price_related_service', $unitPrice);
 
-                                    // recompute total for whole form
-                                    $set('total_price', self::calculateTotal($get));
+                                    // recompute totals for whole form
+                                    self::updateTotals($get, $set);
                                 })
                                 ->searchable()
                                 ->required(),
@@ -165,7 +207,7 @@ class VisitForm
                                     $unitPrice = (float) ($relatedService?->price ?? 0);
                                     // store unit price (not multiplied)
                                     $set('price_related_service', $unitPrice);
-                                    $set('total_price', self::calculateTotal($get));
+                                    self::updateTotals($get, $set);
                                 })
                                 ->required(),
                         ]),
@@ -295,6 +337,9 @@ class VisitForm
     /**
      * Calculate total price using the form $get callable.
      */
+    /**
+     * Calculate total price using the form $get callable.
+     */
     protected static function calculateTotal(callable $get): float
     {
         $servicePrice = (float) ($get('price') ?? 0);
@@ -310,6 +355,18 @@ class VisitForm
         }
 
         return $servicePrice + $relatedTotal;
+    }
+
+    /**
+     * Update both total_price and total_after_discount fields.
+     */
+    protected static function updateTotals(callable $get, callable $set): void
+    {
+        $totalPrice = self::calculateTotal($get);
+        $set('total_price', $totalPrice);
+
+        $discount = (float) ($get('discount_amount') ?? 0);
+        $set('total_after_discount', max(0, $totalPrice - $discount));
     }
 
     protected static function calculateBMI(Get $get, Set $set): void

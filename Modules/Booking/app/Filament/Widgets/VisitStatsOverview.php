@@ -39,10 +39,10 @@ class VisitStatsOverview extends BaseWidget
 
 
         // ----- 5. Total Price (Completed) -------------------------------------
-        $totalPrice = Visit::where('is_arrival', true)->sum('total_price');
+        $totalPrice = Visit::where('is_arrival', true)->sum('total_after_discount');
         $totalPricePrev = Visit::where('is_arrival', true)
             ->whereBetween('created_at', [now()->subMonth(), now()->subMonth()->endOfMonth()])
-            ->sum('total_price');
+            ->sum('total_after_discount');
         $priceDiff = $totalPrice - $totalPricePrev;
         $priceDiffPct = $totalPricePrev ? round(($priceDiff / $totalPricePrev) * 100, 1) : 0;
 

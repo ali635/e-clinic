@@ -43,6 +43,9 @@ class Visit extends Model
         'weight',
         'height',
         'body_max_index',
+        'payment_method',
+        'discount_amount',
+        'total_after_discount',
     ];
 
     protected function casts(): array
