@@ -3,29 +3,32 @@
 namespace Modules\Patient\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class PatientResource extends JsonResource
 {
     public function toArray($request)
     {
         return [
-            'id'             => $this->id,
-            'name'           => $this->name,
-            'email'          => $this->email,
-            'phone'          => $this->phone,
-            'gender'         => $this->gender,
-            'date_of_birth'  => $this->date_of_birth?->toDateString(),
-            'age'            => $this->age,
-            'address'        => $this->address,
-            'status'         => $this->status,
-            'other_phone'    => $this->other_phone,
-            'hear_about_us'  => $this->hear_about_us,
-
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'gender' => $this->gender,
+            'date_of_birth' => $this->date_of_birth?->toDateString(),
+            'age' => $this->age,
+            'address' => $this->address,
+            'status' => $this->status,
+            'other_phone' => $this->other_phone,
+            'hear_about_us' => $this->hear_about_us,
+            'referral' => $this->referral->name,
+            'marital_status' => $this->marital_status,
+            'img_profile' => $this->img_profile ? Storage::disk('local')->path($this->img_profile) : null,
             'country' => $this->whenLoaded('country', function () {
                 return [
                     'id' => $this->country->id,
                     'name' => $this->country->name ?? '',
-                    'status' => (boolean)$this->country->status,
+                    'status' => (boolean) $this->country->status,
                     'order' => $this->country->order,
                 ];
             }),
@@ -34,7 +37,7 @@ class PatientResource extends JsonResource
                 return [
                     'id' => $this->city->id,
                     'name' => $this->city->name ?? '',
-                    'status' => (boolean)$this->city->status,
+                    'status' => (boolean) $this->city->status,
                     'order' => $this->city->order,
 
                 ];
@@ -44,7 +47,7 @@ class PatientResource extends JsonResource
                 return [
                     'id' => $this->area->id,
                     'name' => $this->area->name ?? '',
-                    'status' => (boolean)$this->area->status,
+                    'status' => (boolean) $this->area->status,
                     'order' => $this->area->order,
                 ];
             }),

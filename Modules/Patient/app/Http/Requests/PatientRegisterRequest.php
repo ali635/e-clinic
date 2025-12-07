@@ -28,6 +28,7 @@ class PatientRegisterRequest extends FormRequest
             'area_id'       => 'nullable|integer|exists:areas,id',
             'refferal'      => 'nullable|string|max:255',
             'img_profile'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'marital_status'=> 'required|string|in:single,married,divorced,widowed',
             // 'diseases'      => 'nullable|array|exists:diseases,id',
 
         ];

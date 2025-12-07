@@ -17,7 +17,7 @@ class PatientController extends Controller
         if (!$patient) {
             return response()->json(['message' => __('Unauthorized')], 401);
         }
-        $patient->load(['country.translations', 'city.translations', 'diseasesMany.translations']);
+        $patient->load(['country.translations', 'city.translations', 'diseasesMany.translations','referral']);
 
         return response()->json([
             'patient' => new PatientResource($patient),
@@ -96,7 +96,8 @@ class PatientController extends Controller
                     'country.translations',
                     'city.translations',
                     'area.translations',
-                    'diseasesMany.translations'
+                    'diseasesMany.translations',
+                    'referral'
                 ])
             )
         ]);
