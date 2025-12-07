@@ -9,6 +9,7 @@ use Modules\Location\Models\City;
 use Modules\Patient\Models\Patient;
 use Modules\Patient\Http\Requests\PatientLoginRequest;
 use Modules\Patient\Http\Requests\PatientRegisterRequest;
+use Modules\Patient\Models\Referral;
 
 class AuthController extends Controller
 {
@@ -17,9 +18,22 @@ class AuthController extends Controller
      */
     public function register(PatientRegisterRequest $request)
     {
+        // Get validated data FIRST
+        $data = $request->validated();
+
+        // Get country_id from city
         $country_id = City::where('id', $request->city_id)->value('country_id');
         $data['country_id'] = $country_id;
-        $data = $request->validated();
+
+        // Handle referral creation if provided (use $data, not undefined $validated)
+        $data['referral_id'] = $this->handleReferral($data['refferal'] ?? null);
+
+        // Remove refferal from data as it's not a column in patients table
+        unset($data['refferal']);
+
+        // Handle profile image upload
+        $data['img_profile'] = $this->handleProfileImage($request);
+
         $data['status'] = 1;
         $data['password'] = Hash::make($data['password']);
 
@@ -28,11 +42,11 @@ class AuthController extends Controller
         $token = $patient->createToken('PatientAuthToken')->accessToken;
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => __('Registration successful'),
-            'data'    => [
+            'data' => [
                 'patient' => $patient,
-                'token'   => $token,
+                'token' => $token,
             ],
         ], 201);
     }
@@ -48,28 +62,52 @@ class AuthController extends Controller
 
         if (!$patient || !Hash::check($credentials['password'], $patient->password)) {
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => __('Invalid email or password'),
             ], 401);
         }
         if ($patient->status == 0) {
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => __('User Is Disabled'),
             ], 401);
         }
-        
+
 
         $token = $patient->createToken('PatientAuthToken')->accessToken;
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => __('Login successful'),
-            'data'    => [
+            'data' => [
                 'patient' => $patient,
-                'token'   => $token,
+                'token' => $token,
             ],
         ]);
     }
-    
+
+    private function handleReferral(?string $referralName): ?int
+    {
+        if (empty($referralName)) {
+            return null;
+        }
+
+        $referral = Referral::firstOrCreate(['name' => $referralName]);
+
+
+        return $referral->id;
+    }
+
+    /**
+     * Handle profile image upload.
+     */
+    private function handleProfileImage(PatientRegisterRequest $request): ?string
+    {
+        if (!$request->hasFile('img_profile')) {
+            return null;
+        }
+
+        return $request->file('img_profile')->store('patients/profiles', 'public');
+    }
+
 }

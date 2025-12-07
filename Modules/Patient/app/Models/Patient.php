@@ -35,6 +35,7 @@ class Patient extends Authenticatable implements OAuthenticatable
         'country_id',
         'city_id',
         'status',
+        'referral_id',
         'hear_about_us',
         'other_phone',
         'area_id',
