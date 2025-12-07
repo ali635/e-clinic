@@ -16,6 +16,7 @@ class VisitHomeResource extends JsonResource
             'id' => $this->id,
             'price' => $this->price,
             'total_price' => $this->total_price,
+            'total_after_discount'=> $this->total_after_discount,
             'currency_lang' => __('IQD'),
             'arrival_time' => $this->arrival_time,
             'is_arrival' => (bool) $this->is_arrival,

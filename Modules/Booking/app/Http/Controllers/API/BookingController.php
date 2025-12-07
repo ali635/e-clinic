@@ -65,7 +65,7 @@ class BookingController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $visit = Visit::with(['service', 'relatedService', 'relatedService.relatedService', 'feedback'])
+        $visit = Visit::with(['service', 'relatedService', 'relatedService.relatedService', 'feedback','medicines.medicine'])
             ->where('patient_id', $patient->id)
             ->find($id);
 
