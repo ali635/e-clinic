@@ -21,21 +21,23 @@ class UpdatePatientProfileRequest extends FormRequest
             $id = auth('api')->id();
         }
         return [
-            'name'          => ['nullable', 'string', 'max:255'],
-            'email'         => ['nullable', 'email', 'unique:patients,email,' . $id],
-            'phone'         => ['nullable', 'string', 'max:20', 'unique:patients,phone,' . $id],
-            'other_phone'   => ['nullable', 'string', 'max:20', 'unique:patients,phone,' . $id],
-            'gender'        => ['nullable', 'in:male,female'],
+            'name' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'email', 'unique:patients,email,' . $id],
+            'phone' => ['nullable', 'string', 'max:20', 'unique:patients,phone,' . $id],
+            'other_phone' => ['nullable', 'string', 'max:20', 'unique:patients,phone,' . $id],
+            'gender' => ['nullable', 'in:male,female'],
             'date_of_birth' => ['nullable', 'date'],
-            'address'       => ['nullable', 'string', 'max:500'],
-            'country_id'    => ['nullable', 'exists:countries,id'],
-            'city_id'       => ['nullable', 'exists:cities,id'],
-            'area_id'       => ['nullable', 'exists:areas,id'],
-            'diseases'      => ['required', 'array'],
-            'diseases.*'    => ['exists:diseases,id'],
+            'address' => ['nullable', 'string', 'max:500'],
+            'country_id' => ['nullable', 'exists:countries,id'],
+            'city_id' => ['nullable', 'exists:cities,id'],
+            'area_id' => ['nullable', 'exists:areas,id'],
+            'diseases' => ['required', 'array'],
+            'diseases.*' => ['exists:diseases,id'],
             'hear_about_us' => ['nullable', 'string', 'max:255'],
-            'old_password'  => ['nullable', 'string', 'min:8',new MatchOldPassword()],
-            'password'      => ['nullable', 'string', 'min:8', 'confirmed'],
+            'old_password' => ['nullable', 'string', 'min:8', new MatchOldPassword()],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'img_profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'marital_status' => 'required|string|in:single,married,divorced,widowed',
         ];
     }
 

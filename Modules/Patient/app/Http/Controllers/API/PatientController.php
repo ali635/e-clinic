@@ -5,6 +5,7 @@ namespace Modules\Patient\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Modules\Patient\Http\Requests\UpdatePatientProfileRequest;
 use Modules\Patient\Http\Resources\PatientResource;
 
@@ -17,7 +18,7 @@ class PatientController extends Controller
         if (!$patient) {
             return response()->json(['message' => __('Unauthorized')], 401);
         }
-        $patient->load(['country.translations', 'city.translations', 'diseasesMany.translations','referral']);
+        $patient->load(['country.translations', 'city.translations', 'diseasesMany.translations', 'referral']);
 
         return response()->json([
             'patient' => new PatientResource($patient),
@@ -35,7 +36,7 @@ class PatientController extends Controller
         // Determine reward rating
         $rating = 0;
         $nextVisit = 0;
-        $nextStar = 0 ;
+        $nextStar = 0;
         if ($completedVisits >= 15) {
             $rating = 4;
         } elseif ($completedVisits >= 10) {
@@ -74,10 +75,23 @@ class PatientController extends Controller
         }
 
         $data = $request->validated();
+
+        // Handle password
         if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']);
+        }
+        unset($data['old_password']); // Not a database column
+
+        // Handle profile image upload
+        if ($request->hasFile('img_profile')) {
+            // Delete old image if exists
+            if ($patient->img_profile && Storage::disk('local')->exists($patient->img_profile)) {
+                Storage::disk('local')->delete($patient->img_profile);
+            }
+            // Store new image
+            $data['img_profile'] = $request->file('img_profile')->store('patients/profiles', 'local');
         }
 
         $diseaseIds = $data['diseases'] ?? null;
@@ -91,7 +105,7 @@ class PatientController extends Controller
 
         return response()->json([
             'message' => __('Profile updated successfully'),
-            'data'    => new PatientResource(
+            'data' => new PatientResource(
                 $patient->fresh([
                     'country.translations',
                     'city.translations',
