@@ -107,7 +107,7 @@ class AuthController extends Controller
             return null;
         }
 
-        return $request->file('img_profile')->store('patients/profiles', 'public');
+        return $request->file('img_profile')->store('patients/profiles', 'local');
     }
 
 }
