@@ -92,7 +92,7 @@ class PatientController extends Controller
     public function showVisit($id)
     {
         $patient = auth('patient')->user();
-        $visit = Visit::with(['service', 'relatedService', 'relatedService.relatedService','feedback'])
+        $visit = Visit::with(['service', 'relatedService', 'relatedService.relatedService', 'feedback'])
             ->where('patient_id', $patient->id)
             ->find($id);
 
@@ -106,7 +106,7 @@ class PatientController extends Controller
     {
         $patient = auth('patient')->user();
 
-        $histories = Visit::select('doctor_description',  'created_at')
+        $histories = Visit::select('doctor_description', 'created_at')
             ->where('patient_id', $patient->id)->orderByDesc('created_at')
             ->get();
         return view('patient.visits.history', compact('patient', 'histories'));
@@ -140,7 +140,7 @@ class PatientController extends Controller
 
         $data = $request->validated();
 
-        if (!empty($data['password'])) {
+        if (!empty($data['password']) && !empty($data['old_password'])) {
             $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']);
@@ -150,11 +150,17 @@ class PatientController extends Controller
         unset($data['diseases']);
 
 
-        $patient->update($request->all());
+        // Also unset old_password as it's not a column in the patients table
+        unset($data['old_password']);
+
+        $patient->update($data);
 
         if (!empty($diseaseIds) && is_array($diseaseIds)) {
             $patient->diseasesMany()->sync($diseaseIds);
         }
+
+        ToastMagic::success(__('Data Updated successfully'));
+
         return redirect()->route('patient.profile')->with('success', __('Profile updated successfully'));
     }
 }

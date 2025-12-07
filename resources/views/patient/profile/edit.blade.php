@@ -96,6 +96,15 @@
                     @enderror
                 </div>
                 <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">{{ __('Email') }}</label>
+                    <input type="email" name="email" value="{{ $patient->email }}" class="form-input w-full" required>
+                    @error('email')
+                        <div class="text-red-600 text-sm mt-1">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="mb-4">
                     <label for="phone" class="block text-sm font-medium mb-1">{{ __('Phone') }}</label>
                     <input type="tel" id="phone" name="phone" value="{{ $patient->phone }}" class="form-input w-full">
                     @error('phone')
@@ -199,16 +208,38 @@
                     @enderror
                 </div>
 
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">{{ __('hear about us') }}</label>
-                    <input type="text" name="hear_about_us" value="{{ $patient->hear_about_us }}"
-                        class="form-input w-full">
-                    @error('hear_about_us')
+                 <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">{{ __('old password') }}</label>
+                    <input type="password" name="old_password" class="form-input w-full">
+                    @error('old_password')
                         <div class="text-red-600 text-sm mt-1">
                             {{ $message }}
                         </div>
                     @enderror
                 </div>
+
+                 <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">{{ __('new password') }}</label>
+                    <input type="password" name="password" class="form-input w-full">
+                    @error('password')
+                        <div class="text-red-600 text-sm mt-1">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">{{ __('confirm new password') }}</label>
+                    <input type="password" name="password_confirmation" class="form-input w-full">
+                    @error('password_confirmation')
+                        <div class="text-red-600 text-sm mt-1">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+               
+
                
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">{{ __('Diseases') }}</label>
