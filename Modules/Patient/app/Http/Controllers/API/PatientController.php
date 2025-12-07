@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Modules\Patient\Http\Requests\UpdatePatientProfileRequest;
+use Modules\Patient\Http\Requests\UpdatePatientProfileApiRequest;
 use Modules\Patient\Http\Resources\PatientResource;
 
 class PatientController extends Controller
@@ -67,7 +67,7 @@ class PatientController extends Controller
         ]);
     }
 
-    public function update(UpdatePatientProfileRequest $request)
+    public function update(UpdatePatientProfileApiRequest $request)
     {
         $patient = auth('api')->user();
         if (!$patient) {
@@ -87,11 +87,11 @@ class PatientController extends Controller
         // Handle profile image upload
         if ($request->hasFile('img_profile')) {
             // Delete old image if exists
-            if ($patient->img_profile && Storage::disk('local')->exists($patient->img_profile)) {
-                Storage::disk('local')->delete($patient->img_profile);
+            if ($patient->img_profile && Storage::disk('public')->exists($patient->img_profile)) {
+                Storage::disk('public')->delete($patient->img_profile);
             }
             // Store new image
-            $data['img_profile'] = $request->file('img_profile')->store('patients/profiles', 'local');
+            $data['img_profile'] = $request->file('img_profile')->store('patients/profiles', 'public');
         }
 
         $diseaseIds = $data['diseases'] ?? null;

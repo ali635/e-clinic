@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Devrabiul\ToastMagic\Facades\ToastMagic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Modules\Booking\Models\Feedback;
 use Modules\Booking\Models\Visit;
 use Modules\Location\Models\Area;
@@ -152,6 +153,16 @@ class PatientController extends Controller
 
         // Also unset old_password as it's not a column in the patients table
         unset($data['old_password']);
+
+          // Handle profile image upload
+        if ($request->hasFile('img_profile')) {
+            // Delete old image if exists
+            if ($patient->img_profile && Storage::disk('public')->exists($patient->img_profile)) {
+                Storage::disk('public')->delete($patient->img_profile);
+            }
+            // Store new image
+            $data['img_profile'] = $request->file('img_profile')->store('patients/profiles', 'public');
+        }
 
         $patient->update($data);
 

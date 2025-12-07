@@ -23,7 +23,7 @@ class PatientResource extends JsonResource
             'hear_about_us' => $this->hear_about_us,
             'referral' => $this->referral->name,
             'marital_status' => $this->marital_status,
-            'img_profile' => $this->img_profile ? Storage::disk('local')->path($this->img_profile) : null,
+            'img_profile' => $this->img_profile ? asset('storage/' . $this->img_profile) : null,
             'country' => $this->whenLoaded('country', function () {
                 return [
                     'id' => $this->country->id,

@@ -5,16 +5,16 @@
     <!-- Main Content -->
     <main class="flex-1 px-4 py-8 md:ml-0 ml-0">
         <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold flex items-center gap-2">
-            {{ __('Profile') }}
-            <span class="text-gray-600 text-sm">
-                ({{ $stars }} 
-                @for ($i = 0; $i < $stars; $i++)
-                    <span class="text-[#ffd700] text-2xl">★</span>
-                @endfor
-                {{__('Stars Member')}})
-            </span>
-        </h2>            <button id="editProfileBtn"
+            <h2 class="text-xl font-bold flex items-center gap-2">
+                {{ __('Profile') }}
+                <span class="text-gray-600 text-sm">
+                    ({{ $stars }}
+                    @for ($i = 0; $i < $stars; $i++)
+                        <span class="text-[#ffd700] text-2xl">★</span>
+                    @endfor
+                    {{ __('Stars Member') }})
+                </span>
+            </h2> <button id="editProfileBtn"
                 class="inline-flex items-center px-4 py-2 bg-primary text-white text-sm font-medium rounded hover:bg-primary/80 focus:outline-none">
                 <svg class="w-4 h-4 me-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -42,14 +42,15 @@
                     </div>
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('Date of Birth') }}:</dt>
-                        <dd class="text-end">{{ Carbon\Carbon::parse($patient->date_of_birth)->format('Y-m-d') ?? '-' }}</dd>
+                        <dd class="text-end">{{ Carbon\Carbon::parse($patient->date_of_birth)->format('Y-m-d') ?? '-' }}
+                        </dd>
                     </div>
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('gender') }}:</dt>
                         <dd class="text-end">{{ ucfirst($patient->gender ?? '-') }}</dd>
                     </div>
 
-                     <div class="flex justify-between">
+                    <div class="flex justify-between">
                         <dt class="font-medium">{{ __('marital status') }}:</dt>
                         <dd class="text-end">{{ ucfirst($patient->marital_status ?? '-') }}</dd>
                     </div>
@@ -76,8 +77,12 @@
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('Image') }}:</dt>
                         <dd class="text-end">
-                            <img src="{{ asset('storage/' . $patient->img_profile) }}" alt="{{ $patient->name }}"
-                                class="w-16 h-16 rounded-full">
+                            @if ($patient->img_profile)
+                                <img src="{{ asset('storage/' . $patient->img_profile) }}" alt="{{ $patient->name }}"
+                                    class="w-16 h-16 rounded-full">
+                            @else
+                                <span class="text-gray-400">{{ __('No image') }}</span>
+                            @endif
                         </dd>
                     </div>
                 </dl>
@@ -106,7 +111,8 @@
                 </div>
                 <div class="mb-4">
                     <label for="phone" class="block text-sm font-medium mb-1">{{ __('Phone') }}</label>
-                    <input type="tel" id="phone" name="phone" value="{{ $patient->phone }}" class="form-input w-full">
+                    <input type="tel" id="phone" name="phone" value="{{ $patient->phone }}"
+                        class="form-input w-full">
                     @error('phone')
                         <div class="text-red-600 text-sm mt-1">
                             {{ $message }}
@@ -115,7 +121,8 @@
                 </div>
                 <div class="mb-4">
                     <label for="other_phone" class="block text-sm font-medium mb-1">{{ __('Other Phone') }}</label>
-                    <input type="tel" id="other_phone" name="other_phone" value="{{ $patient->other_phone }}" class="form-input w-full">
+                    <input type="tel" id="other_phone" name="other_phone" value="{{ $patient->other_phone }}"
+                        class="form-input w-full">
                     @error('other_phone')
                         <div class="text-red-600 text-sm mt-1">
                             {{ $message }}
@@ -124,7 +131,8 @@
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">{{ __('Date of Birth') }}</label>
-                    <input type="date" name="date_of_birth" value="{{  Carbon\Carbon::parse($patient->date_of_birth)->format('Y-m-d') }}"
+                    <input type="date" name="date_of_birth"
+                        value="{{ Carbon\Carbon::parse($patient->date_of_birth)->format('Y-m-d') }}"
                         class="form-input w-full">
                     @error('date_of_birth')
                         <div class="text-red-600 text-sm mt-1">
@@ -148,7 +156,7 @@
                     @enderror
                 </div>
 
-                 <div class="mb-4">
+                <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">{{ __('marital status') }}</label>
                     <select name="marital_status" class="form-input w-full">
                         <option value="">{{ __('Select') }}</option>
@@ -167,7 +175,7 @@
                         </div>
                     @enderror
                 </div>
-                
+
                 <div class="mb-4">
                     <label for="city" class="block text-sm font-medium mb-1">{{ __('City') }}</label>
                     <select id="city" name="city" class="form-input w-full">
@@ -208,7 +216,7 @@
                     @enderror
                 </div>
 
-                 <div class="mb-4">
+                <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">{{ __('old password') }}</label>
                     <input type="password" name="old_password" class="form-input w-full">
                     @error('old_password')
@@ -218,7 +226,7 @@
                     @enderror
                 </div>
 
-                 <div class="mb-4">
+                <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">{{ __('new password') }}</label>
                     <input type="password" name="password" class="form-input w-full">
                     @error('password')
@@ -238,9 +246,22 @@
                     @enderror
                 </div>
 
-               
 
-               
+
+                <div class="space-y-2">
+                    <label for="street" class="block text-sm font-medium text-gray-700">
+                        {{ __('image profile') }}
+                    </label>
+                    <input id="img_profile" type="file" name="img_profile"  class="form-input"
+                        placeholder="{{ __('Enter img_profile') }}" value="{{ old('img_profile') }}">
+                    @error('img_profile')
+                        <div class="text-red-600 text-sm mt-1 ">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">{{ __('Diseases') }}</label>
                     @foreach ($diseases as $disease)
@@ -297,7 +318,7 @@
                 const area = document.querySelector("#area");
                 let optionsStr = `<option value="">{{ __('Select your area') }}</option>`;
                 area.innerHTML = optionsStr;
-                if(cityId){
+                if (cityId) {
                     fetch(`/api/v1/countries/${cityId}/areas?lang=${currentLocale}`)
                         .then(response => response.json())
                         .then(data => {

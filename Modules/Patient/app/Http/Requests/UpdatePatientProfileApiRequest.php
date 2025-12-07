@@ -5,7 +5,7 @@ namespace Modules\Patient\Http\Requests;
 use App\Rules\MatchOldPassword;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePatientProfileRequest extends FormRequest
+class UpdatePatientProfileApiRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,8 +15,8 @@ class UpdatePatientProfileRequest extends FormRequest
 
     public function rules(): array
     {
-        $id = auth('patient')->user()?->id;
-
+        $user = auth('api')->user();
+        $id = $user?->id;
         return [
             'name' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'unique:patients,email,' . $id],
@@ -28,7 +28,7 @@ class UpdatePatientProfileRequest extends FormRequest
             'country_id' => ['nullable', 'exists:countries,id'],
             'city_id' => ['nullable', 'exists:cities,id'],
             'area_id' => ['nullable', 'exists:areas,id'],
-            'diseases' => ['required', 'array'],
+            'diseases' => ['nullable', 'array'],
             'diseases.*' => ['exists:diseases,id'],
             'hear_about_us' => ['nullable', 'string', 'max:255'],
             'old_password' => ['nullable', 'string', 'min:8', new MatchOldPassword()],

@@ -151,7 +151,7 @@ class PatientForm
 
                 FileUpload::make('img_profile')
                     ->directory('patients/profiles')
-                    ->visibility('private')
+                    ->visibility('public')
                     ->label(__('img profile')),
 
                 Toggle::make('status')
