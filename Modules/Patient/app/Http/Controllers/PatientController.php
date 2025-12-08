@@ -12,6 +12,7 @@ use Modules\Booking\Models\Visit;
 use Modules\Location\Models\Area;
 use Modules\Location\Models\City;
 use Modules\Patient\Http\Requests\FeedbackRequest;
+use Modules\Patient\Http\Requests\UpdatePatientProfilePasswordRequest;
 use Modules\Patient\Http\Requests\UpdatePatientProfileRequest;
 use Modules\Patient\Models\Disease;
 
@@ -45,7 +46,7 @@ class PatientController extends Controller
         } elseif ($totalVisits >= 3) {
             $stars = 1;
         }
-        return view('patient.profile.edit', compact('patient', 'cities', 'areas', 'diseases', 'stars', 'totalVisits'));
+        return view('patient.profile.index', compact('patient', 'cities', 'areas', 'diseases', 'stars', 'totalVisits'));
     }
 
     public function statistical()
@@ -93,7 +94,7 @@ class PatientController extends Controller
     public function showVisit($id)
     {
         $patient = auth('patient')->user();
-        $visit = Visit::with(['service', 'relatedService', 'relatedService.relatedService', 'feedback','medicines.medicine'])
+        $visit = Visit::with(['service', 'relatedService', 'relatedService.relatedService', 'feedback', 'medicines.medicine'])
             ->where('patient_id', $patient->id)
             ->find($id);
 
@@ -154,7 +155,7 @@ class PatientController extends Controller
         // Also unset old_password as it's not a column in the patients table
         unset($data['old_password']);
 
-          // Handle profile image upload
+        // Handle profile image upload
         if ($request->hasFile('img_profile')) {
             // Delete old image if exists
             if ($patient->img_profile && Storage::disk('public')->exists($patient->img_profile)) {
@@ -172,6 +173,75 @@ class PatientController extends Controller
 
         ToastMagic::success(__('Data Updated successfully'));
 
-        return redirect()->route('patient.profile')->with('success', __('Profile updated successfully'));
+        return redirect()->route('patient.profile.data')->with('success', __('Profile updated successfully'));
     }
+
+    public function updatePasswordProfile(UpdatePatientProfilePasswordRequest $request)
+    {
+        $patient = auth('patient')->user();
+        $data = $request->validated();
+        if (!empty($data['password']) && !empty($data['old_password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+        unset($data['old_password']);
+
+        $patient->update($data);
+
+
+        ToastMagic::success(__('Password Updated successfully'));
+
+        return redirect()->route('patient.profile.data')->with('success', __('Password updated successfully'));
+    }
+
+    public function showFormUpdate()
+    {
+        $patient = auth('patient')->user();
+
+        $patient->load('city', 'area', 'diseasesMany');
+
+        $cities = City::where('status', 1)->orderBy('order', 'desc')->get();
+        $areas = Area::where('status', 1)->orderBy('order', 'desc')->get();
+        $diseases = Disease::get();
+
+
+        $visits = $patient->visits ?? collect(); // ensure collection
+        $totalVisits = $visits->where('status', 'complete')->count();
+
+        // Determine stars based on visits
+        $stars = 0;
+        if ($totalVisits >= 15) {
+            $stars = 4;
+        } elseif ($totalVisits >= 10) {
+            $stars = 3;
+        } elseif ($totalVisits >= 5) {
+            $stars = 2;
+        } elseif ($totalVisits >= 3) {
+            $stars = 1;
+        }
+        return view('patient.profile.edit', compact('patient', 'cities', 'areas', 'diseases', 'stars', 'totalVisits'));
+    }
+
+    public function showFormUpdatePassword()
+    {
+        $patient = auth('patient')->user();
+
+        $visits = $patient->visits ?? collect(); // ensure collection
+        $totalVisits = $visits->where('status', 'complete')->count();
+
+        // Determine stars based on visits
+        $stars = 0;
+        if ($totalVisits >= 15) {
+            $stars = 4;
+        } elseif ($totalVisits >= 10) {
+            $stars = 3;
+        } elseif ($totalVisits >= 5) {
+            $stars = 2;
+        } elseif ($totalVisits >= 3) {
+            $stars = 1;
+        }
+        return view('patient.profile.edit-password', compact('patient', 'stars', 'totalVisits'));
+    }
+
 }

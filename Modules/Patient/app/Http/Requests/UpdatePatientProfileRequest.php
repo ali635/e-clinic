@@ -31,8 +31,6 @@ class UpdatePatientProfileRequest extends FormRequest
             'diseases' => ['required', 'array'],
             'diseases.*' => ['exists:diseases,id'],
             'hear_about_us' => ['nullable', 'string', 'max:255'],
-            'old_password' => ['nullable', 'string', 'min:8', new MatchOldPassword()],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'img_profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'marital_status' => 'required|string|in:single,married,divorced,widowed',
         ];
