@@ -22,7 +22,7 @@ class PatientLoginRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'phone.exists' => __('No account found with this phone.'),
+            'phone.exists' => __('Phone or Password is Wrong.'),
             'password.min' => __('Password must be at least 6 characters long.'),
         ];
     }
