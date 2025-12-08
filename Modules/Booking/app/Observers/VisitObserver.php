@@ -12,7 +12,8 @@ class VisitObserver
     /**
      * Handle the VisitObserver "created" event.
      */
-    public function created(Visit $visit): void {
+    public function created(Visit $visit): void
+    {
 
         $admin = User::first();
         Notification::make()
@@ -20,7 +21,7 @@ class VisitObserver
             ->success()
             ->body(__(':service booked for :time', [
                 'service' => $visit->service->name,
-                'time'    => $visit->arrival_time,
+                'time' => $visit->arrival_time,
             ]))
             ->actions([
                 Action::make('view')
@@ -34,20 +35,28 @@ class VisitObserver
     /**
      * Handle the Visit "updated" event.
      */
-    public function updated(Visit $visit): void {}
+    public function updated(Visit $visit): void
+    {
+    }
 
     /**
      * Handle the Visit "deleted" event.
      */
-    public function deleted(Visit $visit): void {}
+    public function deleted(Visit $visit): void
+    {
+    }
 
     /**
      * Handle the Visit "restored" event.
      */
-    public function restored(Visit $visit): void {}
+    public function restored(Visit $visit): void
+    {
+    }
 
     /**
      * Handle the Visit "force deleted" event.
      */
-    public function forceDeleted(Visit $visit): void {}
+    public function forceDeleted(Visit $visit): void
+    {
+    }
 }

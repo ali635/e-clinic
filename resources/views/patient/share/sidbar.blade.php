@@ -7,8 +7,8 @@
                 <nav>
                     <ul class="space-y-6">
                         <li>
-                            <a href="{{ route('patient.profile') }}"
-                                class="sidebarMenu_item  @if (Route::currentRouteName() == 'patient.profile') active @endif">
+                            <a href="{{ route('patient.profile.data') }}"
+                                class="sidebarMenu_item  @if (Route::currentRouteName() == 'patient.profile.data') active @endif">
                                 <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     fill="currentColor">
                                     <path
