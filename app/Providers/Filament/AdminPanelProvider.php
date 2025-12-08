@@ -25,6 +25,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Moataz01\FilamentNotificationSound\FilamentNotificationSoundPlugin;
 use Modules\Booking\Filament\Widgets\VisitStatsOverview;
 use Modules\Patient\Filament\Widgets\Patient;
 use Modules\Patient\Filament\Widgets\PatientArea;
@@ -80,6 +81,8 @@ class AdminPanelProvider extends PanelProvider
                 \TomatoPHP\FilamentSettingsHub\FilamentSettingsHubPlugin::make()
                     ->allowSiteSettings()
                     ->allowSocialMenuSettings(false),
+
+                FilamentNotificationSoundPlugin::make(),
                 // \TomatoPHP\FilamentTranslationsGoogle\FilamentTranslationsGooglePlugin::make()
                 // FilamentFabricatorPlugin::make(),
             ])

@@ -11,6 +11,7 @@ use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Modules\Booking\Filament\Resources\Visits\VisitResource;
+use Modules\Booking\Models\Visit;
 
 class VisitsRelationManager extends RelationManager
 {
@@ -86,6 +87,28 @@ class VisitsRelationManager extends RelationManager
                 EditAction::make()
                     ->url(fn($record) => VisitResource::getUrl('edit', ['record' => $record])),
                 DeleteAction::make(),
+                Action::make('cancelled')
+                    ->label(__('Cancelled'))
+                    ->color('danger')
+                    ->icon('heroicon-o-x-circle')
+                    ->requiresConfirmation()
+                    ->modalHeading(__('Cancel Visit'))
+                    ->modalDescription(__('Are you sure you want to cancel this visit? Please provide a reason.'))
+                    ->modalSubmitActionLabel(__('Cancel Visit'))
+                    ->form([
+                        \Filament\Forms\Components\Textarea::make('cancel_reason')
+                            ->label(__('Cancellation Reason'))
+                            ->required()
+                            ->rows(3),
+                    ])
+                    ->action(function (Visit $record, array $data) {
+                        $record->update([
+                            'status' => 'cancelled',
+                            'is_arrival' => false,
+                            'cancel_reason' => $data['cancel_reason'],
+                        ]);
+                    })
+                    ->visible(fn(Visit $record) => $record->status === 'pending'),
             ]);
     }
     public function isReadOnly(): bool

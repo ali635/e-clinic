@@ -57,7 +57,6 @@ class ServicesTable
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
-                Action::make('activities')->url(fn($record) => ServiceResource::getUrl('activities', ['record' => $record]))
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -40,7 +40,6 @@ class RelatedServicesTable
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
-                Action::make('activities')->url(fn($record) => RelatedServiceResource::getUrl('activities', ['record' => $record]))
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
