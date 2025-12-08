@@ -27,7 +27,7 @@ class VisitHomeResource extends JsonResource
             'doctor_description' => $this->doctor_description,
             'treatment' => $this->treatment,
             // 'show_btn_feedback' => $this->feedback && (bool) $this->is_arrival ? false : true,
-            'show_btn_feedback' => $this->status == 'complete' && $this->feedback && (bool) $this->is_arrival && !$this->feedback->exists() ? true : false,
+            'show_btn_feedback' => $this->status == 'complete' &&  (bool) $this->is_arrival && !isset($this->feedback) ? true : false,
             // ✅ Service info (translated)
             'service' => $this->whenLoaded('service', function () use ($lang) {
                 return [
