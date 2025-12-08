@@ -10,8 +10,6 @@
 @section('twitter_description', __('Register a new account on the Dr Azad Hasan Clinic System to book appointments and access health services.'))
 
 @section('content')
-    <link rel="stylesheet" href="{{ asset('css/intelTelInput.css') }}">
-
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl w-full space-y-8">
             <div>
@@ -249,19 +247,8 @@
             </p>
         </div>
     </div>
-    <script src="{{ asset('js/intelTelInput.js') }}"></script>
+    
     <script>
-        const input = document.querySelector("#phone");
-        window.intlTelInput(input, {
-            loadUtils: () => import("{{ asset('js/intelUtilities.js') }}"),
-        });
-
-        const input2 = document.querySelector("#another_phone");
-        window.intlTelInput(input2, {
-            loadUtils: () => import("{{ asset('js/intelUtilities.js') }}"),
-        });
-
-
         const city = document.querySelector("#city");
         let currentLocale = "{{ app()->getLocale() }}";
         city.addEventListener("change", function() {

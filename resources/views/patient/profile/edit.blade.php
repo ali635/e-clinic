@@ -1,7 +1,5 @@
 @extends('patient.share.sidbar')
 @section('patient_content')
-    <link rel="stylesheet" href="{{ asset('css/intelTelInput.css') }}">
-
     <!-- Main Content -->
     <main class="flex-1 px-4 py-8 md:ml-0 ml-0">
         <div class="flex items-center justify-between mb-6">
@@ -28,6 +26,17 @@
             <!-- Profile Data -->
             <div id="profileDisplay" class="bg-white rounded-xl shadow p-6 animate-fade-in">
                 <dl class="space-y-4">
+                    <div class="flex justify-between">
+                        <!-- <dt class="font-medium">{{ __('Image') }}:</dt> -->
+                        <dd class="text-end">
+                            <img onerror="this.src={{ asset('storage/' . setting('site_logo')) }}" src="{{ asset('storage/' . $patient->img_profile) }}" alt="{{ $patient->name }}"
+                                    class="w-16 h-16 rounded-full">
+                            {{-- @if ($patient->img_profile)
+                            @else
+                                <span class="text-gray-400">{{ __('No image') }}</span>
+                            @endif --}}
+                        </dd>
+                    </div>
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('Name') }}:</dt>
                         <dd class="text-end">{{ $patient->name ?? '-' }}</dd>
@@ -73,17 +82,6 @@
                     <div class="flex justify-between">
                         <dt class="font-medium">{{ __('Hear About Us') }}:</dt>
                         <dd class="text-end">{{ $patient->hear_about_us ?? '-' }}</dd>
-                    </div>
-                    <div class="flex justify-between">
-                        <dt class="font-medium">{{ __('Image') }}:</dt>
-                        <dd class="text-end">
-                            @if ($patient->img_profile)
-                                <img src="{{ asset('storage/' . $patient->img_profile) }}" alt="{{ $patient->name }}"
-                                    class="w-16 h-16 rounded-full">
-                            @else
-                                <span class="text-gray-400">{{ __('No image') }}</span>
-                            @endif
-                        </dd>
                     </div>
                 </dl>
             </div>
@@ -285,7 +283,6 @@
                 </div>
             </form>
         </div>
-        <script src="{{ asset('js/intelTelInput.js') }}"></script>
         <script>
             let currentLocale = "{{ app()->getLocale() }}";
             const editProfileBtn = document.querySelector('#editProfileBtn');
@@ -300,17 +297,6 @@
             }
             editProfileBtn.addEventListener('click', toggleEditProfile);
             cancelEditProfileBtn.addEventListener('click', toggleEditProfile);
-
-
-            const input = document.querySelector("#phone");
-            window.intlTelInput(input, {
-                loadUtils: () => import("{{ asset('js/intelUtilities.js') }}"),
-            });
-
-            const input2 = document.querySelector("#other_phone");
-            window.intlTelInput(input2, {
-                loadUtils: () => import("{{ asset('js/intelUtilities.js') }}"),
-            });
 
             const city = document.querySelector("#city");
             city.addEventListener("change", function() {

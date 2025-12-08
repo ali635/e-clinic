@@ -8,7 +8,7 @@
         <div class="{{ $isProfileLayout ? 'px-3' : 'container' }} tablet:flex tablet:items-center tablet:justify-between">
             <div class="flex justify-between items-center">
                 <a href="/" class="font-bold text-xl text-primary">
-                    <img class="max-w-[150px] tablet:max-w-[200px]"  src="{{ asset('storage/' . setting('site_logo')) }}"
+                    <img class="max-w-[60px]"  src="{{ asset('storage/' . setting('site_logo')) }}"
                         alt="{{ setting('site_name') }}">
                 </a>
                 <div class="flex gap-1">

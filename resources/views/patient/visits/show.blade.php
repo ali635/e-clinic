@@ -41,17 +41,20 @@
                         <span class="font-semibold text-gray-700">{{ __('Date/Time') }}:</span>
                         {{ \Carbon\Carbon::parse($visit->arrival_time)->format('Y-m-d h:i A') }}
                     </p>
-                    <p class="mb-2">
-                        <span class="font-semibold text-gray-700">{{ __('Total price') }}:</span>
-                        {{ $visit->total_price }}<span class="text-primary font-bold m-1">{{ __('IQD') }}</span>
-
-                        @if ($visit->total_after_discount)
-                            <p class="mb-2">
-                                <span class="font-semibold text-gray-700">{{ __('Total price after discount') }}:</span>
-                                {{ $visit->total_after_discount }}<span
-                                    class="text-primary font-bold m-1">{{ __('IQD') }}</span>
-                            </p>
-                        @endif
+                    @if ($visit->total_after_discount)
+                        <p class="mb-2">
+                            <span class="font-semibold text-gray-700">{{ __('Total price') }}:</span>
+                            <span class="line-through text-gray-500">{{ $visit->total_price }}</span>
+                            {{ $visit->total_after_discount }}
+                            <span class="text-primary font-bold m-1">{{ __('IQD') }}</span>
+                        </p>
+                    @else
+                        <p class="mb-2">
+                            <span class="font-semibold text-gray-700">{{ __('Total price') }}:</span>
+                            <span>{{ $visit->total_price }}</span>
+                            <span class="text-primary font-bold m-1">{{ __('IQD') }}</span>
+                        </p>
+                    @endif
                 </div>
             </div>
         </section>
@@ -68,7 +71,7 @@
                     </svg>
                     {{ __('Lab Test \ X-Ray Images') }}
                 </h3>
-                <div class="flex flex-wrap gap-4">
+                <div class="flex flex-wrap gap-4 mb-4">
                     @foreach ($visit->lab_tests as $lab_img)
                         <div
                             class="w-32 h-32 rounded overflow-hidden border border-gray-200 flex items-center justify-center bg-gray-50 shadow">
@@ -78,16 +81,15 @@
                             </a>
                         </div>
                     @endforeach
-                    @if ($visit->notes)
-                        <div>
-                            <label class="block text-gray-700 font-semibold mb-2">{{ __('Notes') }}</label>
-                            <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                                {!! $visit->notes !!}
-                            </div>
-                        </div>
-                    @endif
-
                 </div>
+                @if ($visit->notes)
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">{{ __('Notes') }}</label>
+                        <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
+                            {!! $visit->notes !!}
+                        </div>
+                    </div>
+                @endif
             </section>
         @endif
 
@@ -104,17 +106,11 @@
                     </svg>
                     {{ __('medicines') }}
                 </h3>
-                <div class="flex flex-wrap gap-4">
+                <ul class="flex flex-wrap gap-2">
                     @foreach ($visit->medicines as $medicine)
-                        {{-- <div
-                            class="w-32 h-32 rounded overflow-hidden border border-gray-200 flex items-center justify-center bg-gray-50 shadow"> --}}
-                        <ul>
-                            <li>{{ $medicine->medicine->name }}</li>
-                        </ul>
-                        {{-- </div> --}}
+                        <li class="border px-4 py-1 rounded-sm bg-gray-50 text-gray-800">{{ $medicine->medicine->name }}</li>
                     @endforeach
-
-                </div>
+                </ul>
             </section>
         @endif
 
@@ -129,26 +125,28 @@
                     </svg>
                     {{ __('Blood Pressure') }}
                 </h3>
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-2">{{ __('Sys') }}</label>
-                    <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                        {{ $visit->sys }}
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">{{ __('Dia') }}</label>
-                    <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                        {{ $visit->dia }}
-                    </div>
-                </div>
-                @if ($visit->pulse_rate)
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
                     <div>
-                        <label class="block text-gray-700 font-semibold mb-2">{{ __('Pulse Rate') }}</label>
+                        <label class="block text-gray-700 font-semibold mb-2">{{ __('Sys') }}</label>
                         <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                            {{ $visit->pulse_rate }}
+                            {{ $visit->sys }}
                         </div>
                     </div>
-                @endif
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">{{ __('Dia') }}</label>
+                        <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
+                            {{ $visit->dia }}
+                        </div>
+                    </div>
+                    @if ($visit->pulse_rate)
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">{{ __('Pulse Rate') }}</label>
+                            <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
+                                {{ $visit->pulse_rate }}
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </section>
         @endif
 
@@ -164,26 +162,28 @@
                     </svg>
                     {{ __('Anthropometric Measurements') }}
                 </h3>
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-2">{{ __('Weight') }}</label>
-                    <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                        {{ $visit->weight }}
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">{{ __('Height') }}</label>
-                    <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                        {{ $visit->height }}
-                    </div>
-                </div>
-                @if ($visit->body_max_index)
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
                     <div>
-                        <label class="block text-gray-700 font-semibold mb-2">{{ __('Body Max Index') }}</label>
+                        <label class="block text-gray-700 font-semibold mb-2">{{ __('Weight') }}</label>
                         <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
-                            {{ $visit->body_max_index }}
+                            {{ $visit->weight }}
                         </div>
                     </div>
-                @endif
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">{{ __('Height') }}</label>
+                        <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
+                            {{ $visit->height }}
+                        </div>
+                    </div>
+                    @if ($visit->body_max_index)
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">{{ __('Body Max Index') }}</label>
+                            <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
+                                {{ $visit->body_max_index }}
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </section>
         @endif
 
@@ -205,14 +205,14 @@
                         {!! $visit->doctor_description !!}
                     </div>
                 </div>
-                <div>
+                <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">{{ __('Medicines') }}</label>
                     <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
                         {!! $visit->treatment !!}
                     </div>
                 </div>
                 @if ($visit->chief_complaint)
-                    <div>
+                    <div class="mb-4">
                         <label class="block text-gray-700 font-semibold mb-2">{{ __('Chief Complaint') }}</label>
                         <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
                             {!! $visit->chief_complaint !!}
@@ -220,7 +220,7 @@
                     </div>
                 @endif
                 @if ($visit->medical_history)
-                    <div>
+                    <div class="mb-4">
                         <label class="block text-gray-700 font-semibold mb-2">{{ __('Medical History') }}</label>
                         <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
                             {!! $visit->medical_history !!}
@@ -228,7 +228,7 @@
                     </div>
                 @endif
                 @if ($visit->diagnosis)
-                    <div>
+                    <div class="mb-4">
                         <label class="block text-gray-700 font-semibold mb-2">{{ __('Diagnosis') }}</label>
                         <div class="bg-gray-50 rounded p-3 border text-gray-800 shadow-inner min-h-[48px]">
                             {!! $visit->diagnosis !!}
