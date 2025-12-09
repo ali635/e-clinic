@@ -10,27 +10,28 @@
                     {{ __('Stars Member') }})
                 </span>
             </h2> 
-
+        </div>
+        <div class="flex items-center mb-6">
             <a href="{{ route('patient.profile.data') }}"
-                class="inline-flex items-center px-4 py-2 bg-primary text-white text-sm font-medium rounded hover:bg-primary/80 focus:outline-none @if (Route::is('patient.profile.data')) active @endif">
+                class="inline-flex items-center px-4 py-2 border border-primary @if (Route::is('patient.profile.data')) bg-[#EFEFEF] text-primary @else bg-primary text-white hover:bg-primary/80 @endif text-sm font-medium focus:outline-none"
                 <svg class="w-4 h-4 me-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M15.232 5.232l3.536 3.536m-2.036-5.036A2.5 2.5 0 1118.5 7.5L7 19H3v-4L15.732 3.732z" />
                 </svg>
                 {{ __('Profile information') }}
             </a>
-
-              <a href="{{ route('patient.profile.show.form') }}"
-                class="inline-flex items-center px-4 py-2 bg-primary text-white text-sm font-medium rounded hover:bg-primary/80 focus:outline-none @if (Route::is('patient.profile.show.form')) active @endif">
+    
+            <a href="{{ route('patient.profile.show.form') }}"
+                class="inline-flex items-center px-4 py-2 border border-primary @if (Route::is('patient.profile.show.form')) bg-[#EFEFEF] text-primary @else bg-primary text-white hover:bg-primary/80 @endif text-sm font-medium focus:outline-none">
                 <svg class="w-4 h-4 me-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M15.232 5.232l3.536 3.536m-2.036-5.036A2.5 2.5 0 1118.5 7.5L7 19H3v-4L15.732 3.732z" />
                 </svg>
                 {{ __('Edit Profile information') }}
             </a>
-
-              <a href="{{ route('patient.profile.show.form.password') }}"
-                class="inline-flex items-center px-4 py-2 bg-primary text-white text-sm font-medium rounded hover:bg-primary/80 focus:outline-none @if (Route::is('patient.profile.show.form.password')) active @endif">
+    
+            <a href="{{ route('patient.profile.show.form.password') }}"
+                class="inline-flex items-center px-4 py-2 border border-primary @if (Route::is('patient.profile.show.form.password')) bg-[#EFEFEF] text-primary @else bg-primary text-white hover:bg-primary/80 @endif text-sm font-medium focus:outline-none">
                 <svg class="w-4 h-4 me-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M15.232 5.232l3.536 3.536m-2.036-5.036A2.5 2.5 0 1118.5 7.5L7 19H3v-4L15.732 3.732z" />

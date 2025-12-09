@@ -43,17 +43,9 @@
                     @enderror
                 </div>
 
-
-
-           
-
-
-               
                 <div class="flex items-center justify-between">
                     <button type="submit"
                         class="px-4 py-2 bg-primary text-white rounded hover:bg-primary/80">{{ __('Save') }}</button>
-                    <button type="button" id="cancelEditProfileBtn"
-                        class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">{{ __('Cancel') }}</button>
                 </div>
             </form>
         </div>

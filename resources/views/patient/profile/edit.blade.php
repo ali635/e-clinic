@@ -135,39 +135,7 @@
                     @enderror
                 </div>
 
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">{{ __('old password') }}</label>
-                    <input type="password" name="old_password" class="form-input w-full">
-                    @error('old_password')
-                        <div class="text-red-600 text-sm mt-1">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">{{ __('new password') }}</label>
-                    <input type="password" name="password" class="form-input w-full">
-                    @error('password')
-                        <div class="text-red-600 text-sm mt-1">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">{{ __('confirm new password') }}</label>
-                    <input type="password" name="password_confirmation" class="form-input w-full">
-                    @error('password_confirmation')
-                        <div class="text-red-600 text-sm mt-1">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-
-
-
-                <div class="space-y-2">
+                <div class="mb-4 space-y-2">
                     <label for="street" class="block text-sm font-medium text-gray-700">
                         {{ __('image profile') }}
                     </label>
@@ -199,8 +167,6 @@
                 <div class="flex items-center justify-between">
                     <button type="submit"
                         class="px-4 py-2 bg-primary text-white rounded hover:bg-primary/80">{{ __('Save') }}</button>
-                    <button type="button" id="cancelEditProfileBtn"
-                        class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">{{ __('Cancel') }}</button>
                 </div>
             </form>
         </div>
