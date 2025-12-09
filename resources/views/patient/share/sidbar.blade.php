@@ -6,9 +6,10 @@
             <aside id="sidebarMenu" class="sidebarMenu">
                 <nav>
                     <ul class="space-y-6">
+
                         <li>
                             <a href="{{ route('patient.profile.data') }}"
-                                class="sidebarMenu_item  @if (Route::currentRouteName() == 'patient.profile.data') active @endif">
+                                class="sidebarMenu_item  @if (request()->routeIs('patient.profile.*')) active @endif">
                                 <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     fill="currentColor">
                                     <path
@@ -49,14 +50,20 @@
                                     fill="currentColor">
                                     <path
                                         d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z">
-                                   
+
                                 </svg>
                                 {{ __('History') }}
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('patient.feedback') }}" class="sidebarMenu_item @if (Route::currentRouteName() == 'patient.feedback') active @endif">
-                                <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM11 13V15H13V13H11ZM11 7V12H13V7H11Z"></path></svg>
+                            <a href="{{ route('patient.feedback') }}"
+                                class="sidebarMenu_item @if (Route::currentRouteName() == 'patient.feedback') active @endif">
+                                <svg class="me-2" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path
+                                        d="M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM11 13V15H13V13H11ZM11 7V12H13V7H11Z">
+                                    </path>
+                                </svg>
                                 {{ __('Feedback') }}
                             </a>
                         </li>
