@@ -3,7 +3,7 @@
     <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative py-16">
         
         <!-- Main Footer Content -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 mb-12">
             
             <!-- Logo & Description -->
             <div class="space-y-6">
@@ -58,7 +58,7 @@
 
             <!-- Quick Links -->
             <div class="space-y-4">
-                <h3 class="text-lg font-semibold text-white pb-3 relative">
+                <h3 class="text-lg font-semibold text-white pb-2 relative">
                     {{ __('About Us') }}
                     <span class="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary rounded-full"></span>
                 </h3>
@@ -84,7 +84,7 @@
 
             <!-- Contact Information -->
             <div class="space-y-4">
-                <h3 class="text-lg font-semibold text-white pb-3 relative">
+                <h3 class="text-lg font-semibold text-white pb-2 relative">
                     {{ __('Contact Us') }}
                     <span class="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary rounded-full"></span>
                 </h3>
@@ -126,7 +126,7 @@
 
             <!-- Newsletter/CTA -->
             {{-- <div class="space-y-4">
-                <h3 class="text-lg font-semibold text-white pb-3 relative">
+                <h3 class="text-lg font-semibold text-white pb-2 relative">
                     {{ __('Stay Updated') }}
                     <span class="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary rounded-full"></span>
                 </h3>
