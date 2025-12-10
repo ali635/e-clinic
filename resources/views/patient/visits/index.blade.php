@@ -205,7 +205,7 @@
                         </button>
                     </div>
 
-                    <form class="space-y-6" method="POST" action="{{ route('patient.feedback.store') }}">
+                    <form class="space-y-6 genericForm" method="POST" action="{{ route('patient.feedback.store') }}">
                         @csrf
                         <input id="visitId" name="visit_id" type="hidden">
                         <input id="rating" name="rating" type="hidden">
@@ -236,7 +236,6 @@
                             </button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -259,11 +258,11 @@
             function highlightStars(count) {
                 ratingItems.forEach((star, i) => {
                     if (i < count) {
-                        star.classList.add('text-yellow-400');
+                        star.classList.add('!text-[#ffd700]');
                         star.classList.remove('text-gray-300');
                     } else {
                         star.classList.add('text-gray-300');
-                        star.classList.remove('text-yellow-400');
+                        star.classList.remove('!text-[#ffd700]');
                     }
                 });
             }

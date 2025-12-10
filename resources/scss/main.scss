@@ -49,6 +49,10 @@ body {
     .btn-loading {
         @apply overflow-hidden !cursor-wait relative after:absolute after:inset-0 after:w-full after:h-full after:bg-white/70 ;
     }
+
+    button {
+        @apply cursor-pointer;
+    }
 }
 
 @layer utilities {
