@@ -66,7 +66,7 @@ class PatientController extends Controller
         $patient = auth('patient')->user();
         $visits = Visit::with(['service', 'relatedService', 'feedback'])
             ->where('patient_id', $patient->id)->orderByDesc('created_at')
-            ->get();
+            ->paginate(10);
 
         $totalVisits = $visits->where('status', 'complete')->count();
 
@@ -118,7 +118,7 @@ class PatientController extends Controller
     {
         $patient = auth('patient')->user();
 
-        $feedbacks = Feedback::query()->where('patient_id', $patient->id)->with(['visit', 'visit.service'])->get();
+        $feedbacks = Feedback::query()->where('patient_id', $patient->id)->with(['visit', 'visit.service'])->paginate(10);
 
         return view('patient.feedback.index', compact('feedbacks'));
     }

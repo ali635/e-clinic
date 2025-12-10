@@ -1,178 +1,248 @@
 @extends('patient.share.sidbar')
 @section('patient_content')
     <!-- Main Content -->
-    <main class="flex-1 px-4 py-8 md:ml-0 ml-0 overflow-x-auto">
-        <p class="px-4 py-2 bg-green-200 mb-4 flex items-center justify-between">
-            <span>
-                @if ($stars > 0)
-                    <span class="font-semibold">{{__('Your Reward Level')}}:</span>
-                    @for ($i = 0; $i < $stars; $i++)
-                        <span class="text-[#ffd700] text-2xl">★</span>
-                    @endfor
-                @else
-                    <span>{{__('You haven’t earned a star yet.')}}</span>
-                @endif
-            </span>
-
-            @if ($nextGoal)
-                <span>
-                    {{__('Complete')}} <strong>{{ $nextGoal - $totalVisits }}</strong> {{__('more
-                    visit')}}{{ $nextGoal - $totalVisits > 1 ? 's' : '' }}
-                    {{__('to earn your next')}}
-                    <span class="text-[#ffd700] text-2xl">★</span>
-                </span>
-            @else
-                <span class="text-green-700 font-semibold">🎉 {{__('You reached the top level (4 stars)!')}}</span>
-            @endif
-        </p>
-        <h2 class="text-xl font-bold mb-6">{{ __('Visits list') }}</h2>
-
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50  ">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            {{ __('Service name') }}
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            {{ __('Status') }}
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            {{ __('Total Price') }}
-                        </th>
-                         <th scope="col" class="px-6 py-3">
-                            {{ __('Total Price After Discount') }}
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            {{ __('Is Arrival') }}
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            {{ __('Arrival Time') }}
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            {{ __('Action') }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (isset($visits) && $visits->count() > 0)
-                        @foreach ($visits as $visit)
-                            <tr class="odd:bg-white even:bg-gray-50 border-b border-gray-200">
-
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {{ $visit->service->name }}
-                                </th>
-                                <td class="px-6 py-4 @if($visit->status == 'complete') text-green-500 @elseif($visit->status == 'pending') text-yellow-500 @else text-red-500 @endif">
-                                    {{ $visit->status }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $visit->total_price ?? $visit->price }}
-
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $visit->total_after_discount ?? '-' }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $visit->is_arrival ? __('Yes') : __('No') }}
-
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $visit->arrival_time }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="flex gap-2">
-                                        <a href="{{ route('patient.visits.show', $visit->id) }}"
-                                            class="font-medium text-primary hover:opacity-60">
-                                            <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                fill="currentColor">
-                                                <path
-                                                    d="M1.18164 12C2.12215 6.87976 6.60812 3 12.0003 3C17.3924 3 21.8784 6.87976 22.8189 12C21.8784 17.1202 17.3924 21 12.0003 21C6.60812 21 2.12215 17.1202 1.18164 12ZM12.0003 17C14.7617 17 17.0003 14.7614 17.0003 12C17.0003 9.23858 14.7617 7 12.0003 7C9.23884 7 7.00026 9.23858 7.00026 12C7.00026 14.7614 9.23884 17 12.0003 17ZM12.0003 15C10.3434 15 9.00026 13.6569 9.00026 12C9.00026 10.3431 10.3434 9 12.0003 9C13.6571 9 15.0003 10.3431 15.0003 12C15.0003 13.6569 13.6571 15 12.0003 15Z">
-                                                </path>
-                                            </svg>
-                                        </a>
-                                        @if ($visit->is_arrival && $visit->feedback == null && $visit->status == 'complete')
-                                            <a data-visit-id="{{ $visit->id }}" data-modal-target="feedback-modal"
-                                                data-modal-toggle="feedback-modal" href="javascript:;"
-                                                class="showFeedbackModalBtn font-medium text-primary hover:opacity-60">
-                                                <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                    fill="currentColor">
-                                                    <path
-                                                        d="M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM11 13V15H13V13H11ZM11 7V12H13V7H11Z">
-                                                    </path>
-                                                </svg>
-                                            </a>
-                                        @endif
-                                    </span>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-xl">
-                                <svg class="inline-block" width="20px" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24" fill="currentColor">
-                                    <path
-                                        d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z">
-                                    </path>
-                                </svg>
-                                {{ __('No visits found') }}
-                            </td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
-            <div id="feedback-modal" tabindex="-1" aria-hidden="true"
-                class="feedbackModalWrapper hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <div class="relative p-4 w-full max-w-2xl max-h-full">
-                    <!-- Modal content -->
-                    <div class="relative bg-white rounded-lg shadow-sm p-4">
-                        <h3 class="text-xl text-primary">{{ __('Rate the Visit') }}</h3>
-                        <!-- Modal body -->
-                        <form class="space-y-6" method="POST" action="{{ route('patient.feedback.store') }}">
-                            @csrf
-                            <div class="flex justify-end !mb-0">
-                                <button type="button"
-                                    class="cursor-pointer text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                    data-modal-hide="feedback-modal">
-                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 14 14">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                    </svg>
-                                    <span class="sr-only">{{ __('Close modal') }}</span>
-                                </button>
-                            </div>
-                            <div class="grid grid-cols-1 gap-3">
-                                <!-- Services Field -->
-                                <input id="visitId" name="visit_id" type="hidden" class="form-input" value="">
-                                <input id="rating" name="rating" type="hidden" class="form-input" value="">
-                                <div class="space-y-2">
-                                    <div class="rating">
-                                        <span class="rating-item cursor-pointer text-[#ddd] transition-all">★</span>
-                                        <span class="rating-item cursor-pointer text-[#ddd] transition-all">★</span>
-                                        <span class="rating-item cursor-pointer text-[#ddd] transition-all">★</span>
-                                        <span class="rating-item cursor-pointer text-[#ddd] transition-all">★</span>
-                                        <span class="rating-item cursor-pointer text-[#ddd] transition-all">★</span>
+    <main class="flex-1 px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+        <!-- Rewards Level Card -->
+        <div class="mb-8">
+            <div class="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-2xl p-6 shadow-sm">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <!-- Current Level -->
+                    <div class="flex items-center gap-4">
+                        <div class="flex-shrink-0">
+                            @if ($stars > 0)
+                                <div class="flex items-center gap-2">
+                                    <span class="text-3xl">🏆</span>
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-900">{{ __('Your Reward Level') }}:</p>
+                                        <div class="flex items-center gap-1">
+                                            @for ($i = 0; $i < $stars; $i++)
+                                                <span class="text-yellow-400 text-2xl animate-pulse">★</span>
+                                            @endfor
+                                            <span class="text-sm text-gray-600 ml-2">({{ $stars }} {{ __('Stars') }})</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="space-y-2">
-                                    <label for="feedback" class="block text-sm font-medium text-gray-700">
-                                        {{ __('Feedback') }}
-                                    </label>
-                                    <textarea class="form-input" placeholder="{{ __('Write Your Feedback') }}" name="comments" id="feedback"
-                                        rows="4"></textarea>
+                            @else
+                                <div class="flex items-center gap-3">
+                                    <span class="text-3xl">⭐</span>
+                                    <p class="text-sm font-medium text-gray-700">{{ __('You haven’t earned a star yet. Keep going!') }}</p>
                                 </div>
-                            </div>
+                            @endif
+                        </div>
+                    </div>
 
-                            <div>
-                                <button type="submit"
-                                    class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200 cursor-pointer max-w-sm mx-auto">
-                                    {{ __('Submit') }}
-                                </button>
+                    <!-- Next Goal -->
+                    <div class="flex-shrink-0">
+                        @if ($nextGoal)
+                            <div class="bg-white rounded-xl px-4 py-3 shadow-sm border border-gray-200">
+                                <p class="text-sm font-medium text-gray-700">
+                                    <span class="font-bold text-primary">{{ $nextGoal - $totalVisits }}</span> {{ __('more visit') }}{{ $nextGoal - $totalVisits > 1 ? 's' : '' }} {{ __('to earn your next') }} <span class="text-yellow-400 text-xl align-middle">★</span>
+                                </p>
                             </div>
-                        </form>
-                        <div class="success hidden text-center p-4 rounded bg-green-100 text-green-800 mt-4">
-                            {{ __('Thank you for submitting your feedback!') }}
+                        @else
+                            <div class="bg-gradient-to-r from-green-100 to-emerald-100 rounded-xl px-4 py-3 shadow-sm border border-green-200">
+                                <p class="text-sm font-semibold text-green-800 flex items-center gap-2">
+                                    <span class="text-xl">🎉</span> {{ __('You reached the top level (4 stars)!') }}
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+            <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                {{ __('Visits list') }}
+            </h2>
+
+            <div class="text-sm text-gray-600 bg-gray-100 rounded-lg px-3 py-2">
+                <span class="font-semibold">{{ $totalVisits ?? 0 }}</span> {{ __('Total Visits') }}
+            </div>
+        </div>
+
+        <!-- Visits Table -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead class="text-xs font-semibold text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th scope="col" class="px-6 py-4">{{ __('Service name') }}</th>
+                            <th scope="col" class="px-6 py-4">{{ __('Status') }}</th>
+                            <th scope="col" class="px-6 py-4">{{ __('Total Price') }}</th>
+                            <th scope="col" class="px-6 py-4">{{ __('Price After Discount') }}</th>
+                            <th scope="col" class="px-6 py-4">{{ __('Is Arrival') }}</th>
+                            <th scope="col" class="px-6 py-4">{{ __('Arrival Time') }}</th>
+                            <th scope="col" class="px-6 py-4 text-center">{{ __('Action') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @if (isset($visits) && $visits->count() > 0)
+                            @foreach ($visits as $visit)
+                                <tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100 transition-colors duration-150">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-2 h-2 rounded-full bg-primary/60"></div>
+                                            {{ $visit->service->name }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full
+                                            @if($visit->status == 'complete') bg-green-100 text-green-800
+                                            @elseif($visit->status == 'pending') bg-yellow-100 text-yellow-800
+                                            @else bg-red-100 text-red-800
+                                            @endif">
+                                            {{ ucfirst($visit->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 font-medium text-gray-900">
+                                        {{ __('IQD') }}{{ number_format($visit->total_price ?? $visit->price, 2) }}
+                                    </td>
+                                    <td class="px-6 py-4 font-medium text-primary">
+                                        @if($visit->total_after_discount)
+                                            {{ __('IQD') }}{{ number_format($visit->total_after_discount, 2) }}
+                                        @else
+                                            <span class="text-gray-400">-</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if($visit->is_arrival)
+                                            <span class="inline-flex items-center gap-1 text-green-600 font-medium">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                {{ __('Yes') }}
+                                            </span>
+                                        @else
+                                            <span class="text-gray-500">{{ __('No') }}</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-600">
+                                        {{ $visit->arrival_time ? \Carbon\Carbon::parse($visit->arrival_time)->format('Y-m-d H:i') : '-' }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex justify-center gap-2">
+                                            <a href="{{ route('patient.visits.show', $visit->id) }}"
+                                                class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-all duration-200"
+                                                title="{{ __('View Details') }}">
+                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M1.18164 12C2.12215 6.87976 6.60812 3 12.0003 3C17.3924 3 21.8784 6.87976 22.8189 12C21.8784 17.1202 17.3924 21 12.0003 21C6.60812 21 2.12215 17.1202 1.18164 12ZM12.0003 17C14.7617 17 17.0003 14.7614 17.0003 12C17.0003 9.23858 14.7617 7 12.0003 7C9.23884 7 7.00026 9.23858 7.00026 12C7.00026 14.7614 9.23884 17 12.0003 17ZM12.0003 15C10.3434 15 9.00026 13.6569 9.00026 12C9.00026 10.3431 10.3434 9 12.0003 9C13.6571 9 15.0003 10.3431 15.0003 12C15.0003 13.6569 13.6571 15 12.0003 15Z"/>
+                                                </svg>
+                                            </a>
+
+                                            @if ($visit->is_arrival && $visit->feedback == null && $visit->status == 'complete')
+                                                <button data-visit-id="{{ $visit->id }}" data-modal-target="feedback-modal"
+                                                    data-modal-toggle="feedback-modal"
+                                                    class="showFeedbackModalBtn inline-flex items-center justify-center w-9 h-9 rounded-lg bg-yellow-100 text-yellow-700 hover:bg-yellow-200 transition-all duration-200"
+                                                    title="{{ __('Leave Feedback') }}">
+                                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM11 13V15H13V13H11ZM11 7V12H13V7H11Z"/>
+                                                    </svg>
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="7" class="px-6 py-12 text-center">
+                                    <div class="flex flex-col items-center gap-4">
+                                        <svg class="w-16 h-16 text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z"/>
+                                        </svg>
+                                        <h3 class="text-lg font-semibold text-gray-700">{{ __('No visits found') }}</h3>
+                                        <p class="text-sm text-gray-500">{{ __('Your visit history will appear here') }}</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            @if (isset($visits) && $visits->hasPages())
+                <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                    {{ $visits->links() }}
+                </div>
+            @endif
+        </div>
+
+        <!-- Feedback Modal -->
+        <div id="feedback-modal" tabindex="-1" aria-hidden="true"
+            class="feedbackModalWrapper hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <div class="relative p-4 w-full max-w-2xl mx-4">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+                    <!-- Modal Header -->
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-primary flex items-center gap-3">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345l2.125-5.111z"/>
+                            </svg>
+                            {{ __('Rate the Visit') }}
+                        </h3>
+                        <button type="button" data-modal-hide="feedback-modal"
+                            class="w-9 h-9 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-all duration-200 flex items-center justify-center">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                            <span class="sr-only">{{ __('Close modal') }}</span>
+                        </button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <form class="space-y-6" method="POST" action="{{ route('patient.feedback.store') }}">
+                        @csrf
+                        <input id="visitId" name="visit_id" type="hidden" value="">
+                        <input id="rating" name="rating" type="hidden" value="">
+
+                        <!-- Rating Stars -->
+                        <div class="flex flex-col items-center gap-4">
+                            <p class="text-sm font-medium text-gray-700">{{ __('How was your experience?') }}</p>
+                            <div class="rating flex gap-2 text-4xl">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <button type="button" class="rating-item cursor-pointer text-gray-300 hover:text-yellow-400 transition-colors duration-150"
+                                            data-rating="{{ $i }}">★</button>
+                                @endfor
+                            </div>
+                        </div>
+
+                        <!-- Feedback Textarea -->
+                        <div class="space-y-2">
+                            <label for="feedback" class="block text-sm font-semibold text-gray-800">
+                                {{ __('Your Feedback') }}
+                            </label>
+                            <textarea class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 px-4 py-3"
+                                    placeholder="{{ __('Share your thoughts about this visit...') }}" name="comments" id="feedback" rows="5"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-4 border-t border-gray-200">
+                            <button type="submit"
+                                class="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-primary to-primary/80 text-white font-semibold rounded-lg hover:from-primary/90 hover:to-primary/70 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                                <span class="flex items-center justify-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    {{ __('Submit Feedback') }}
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Success Message -->
+                    <div class="success hidden text-center p-4 rounded-xl bg-green-50 text-green-800 mt-6">
+                        <div class="flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="font-semibold">{{ __('Thank you for submitting your feedback!') }}</span>
                         </div>
                     </div>
                 </div>
@@ -181,41 +251,72 @@
     </main>
 @endsection
 
+@push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const ratingItems = document.querySelectorAll('.rating-item');
         const ratingInput = document.querySelector('#rating');
         const visitIdInput = document.querySelector('#visitId');
-        const showFeedbackModal = document.querySelectorAll('.showFeedbackModalBtn');
+        const showFeedbackModalBtns = document.querySelectorAll('.showFeedbackModalBtn');
         let selectedRating = 0;
 
+        // Rating functionality
         ratingItems.forEach((item, index) => {
             item.addEventListener('click', () => {
-                selectedRating = index + 1;
+                selectedRating = parseInt(item.dataset.rating);
                 ratingInput.value = selectedRating;
-                ratingItems.forEach((star, idx) => {
-                    star.classList.toggle('active', idx < selectedRating);
-                });
+                updateRatingDisplay();
             });
 
-            item.addEventListener('mouseover', () => {
-                ratingItems.forEach((star, idx) => {
-                    star.classList.toggle('active', idx <= index);
-                });
-            });
-
-            item.addEventListener('mouseout', () => {
-                ratingItems.forEach((star, idx) => {
-                    star.classList.toggle('active', idx < selectedRating);
-                });
+            item.addEventListener('mouseenter', () => {
+                highlightStars(index + 1);
             });
         });
 
-        showFeedbackModal.forEach(item => {
-            item.addEventListener('click', function() {
-                const visitId = this.getAttribute('data-visit-id');
+        document.querySelector('.rating').addEventListener('mouseleave', () => {
+            updateRatingDisplay();
+        });
+
+        function highlightStars(count) {
+            ratingItems.forEach((star, idx) => {
+                star.classList.toggle('text-yellow-400', idx < count);
+                star.classList.toggle('text-gray-300', idx >= count);
+            });
+        }
+
+        function updateRatingDisplay() {
+            highlightStars(selectedRating);
+        }
+
+        // Modal functionality
+        showFeedbackModalBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const visitId = this.dataset.visitId;
                 visitIdInput.value = visitId;
-            })
-        })
-    })
+                document.getElementById('feedback-modal').classList.remove('hidden');
+            });
+        });
+
+        // Close modal
+        document.querySelector('[data-modal-hide="feedback-modal"]').addEventListener('click', function() {
+            document.getElementById('feedback-modal').classList.add('hidden');
+            // Reset form
+            selectedRating = 0;
+            ratingInput.value = '';
+            updateRatingDisplay();
+            document.querySelector('#feedback').value = '';
+        });
+
+        // Close on overlay click
+        document.getElementById('feedback-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+                selectedRating = 0;
+                ratingInput.value = '';
+                updateRatingDisplay();
+                document.querySelector('#feedback').value = '';
+            }
+        });
+    });
 </script>
+@endpush

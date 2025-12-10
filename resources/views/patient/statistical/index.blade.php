@@ -1,41 +1,125 @@
 @extends('patient.share.sidbar')
 @section('patient_content')
 <!-- Main Content -->
-<main class="flex-1 px-4 py-8 md:ml-0 ml-0">
-    <h2 class="text-xl font-bold mb-6">{{__('Statistics')}}</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Card 1: Number of Visits -->
-        <div class="bg-white rounded-xl shadow p-6 flex items-center space-x-4 animate-fade-in">
-            <div class="bg-primary/10 rounded-full p-3 text-3xl">
-                <svg class="fill-primary" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3ZM11 11H7V13H11V17H13V13H17V11H13V7H11V11Z"></path></svg>
-            </div>
-            <div>
-                <div class="text-3xl font-bold">{{$completedVisits}}</div>
-                <div class="text-gray-500 text-sm">{{__('Number of complete Visits')}}</div>
-            </div>
-        </div>
-        <!-- Card 2: Number of Services Used -->
-        <div class="bg-white rounded-xl shadow p-6 flex items-center space-x-4 animate-fade-in">
-            <div class="bg-blue-100 rounded-full p-3 text-3xl">
-                <svg class="fill-blue-600" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1C16.5523 1 17 1.44772 17 2V5H21C21.5523 5 22 5.44772 22 6V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V6C2 5.44772 2.44772 5 3 5H7V2C7 1.44772 7.44772 1 8 1H16ZM13 9H11V12H8V14H10.999L11 17H13L12.999 14H16V12H13V9ZM15 3H9V5H15V3Z"></path></svg>
-            </div>
-            <div>
-                <div class="text-3xl font-bold">{{ $notCompletedVisits }}</div>
-                <div class="text-gray-500 text-sm">{{__('Number of non-completed Visits')}}</div>
-            </div>
-        </div>
+<main class="flex-1 px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+            {{ __('Statistics') }}
+        </h2>
+        <p class="text-gray-600 mt-2">{{ __('Your health journey at a glance') }}</p>
     </div>
-    <div class="mt-8">
-        <h3 class="text-lg font-semibold mb-4">{{__('Quick Insights')}}</h3>
-        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <li class="bg-white rounded shadow p-4 flex items-center">
-                <svg class="me-3 fill-yellow-300" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 8H4V19H20V8ZM15.0355 10.136L16.4497 11.5503L11.5 16.5L7.96447 12.9645L9.37868 11.5503L11.5 13.6716L15.0355 10.136Z">
-                        </path>
+
+    <!-- Statistics Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        <!-- Completed Visits Card -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 flex items-center gap-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="bg-gradient-to-br from-green-100 to-green-200 rounded-full p-4 shadow-md">
+                <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <div class="flex-1">
+                <div class="text-3xl font-bold text-gray-900">{{ number_format($completedVisits) }}</div>
+                <div class="text-gray-500 font-medium">{{ __('Completed Visits') }}</div>
+                <div class="mt-1 text-sm text-green-600 font-semibold">{{ __('All finished appointments') }}</div>
+            </div>
+        </div>
+
+        <!-- Pending Visits Card -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 flex items-center gap-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="bg-gradient-to-br from-amber-100 to-amber-200 rounded-full p-4 shadow-md">
+                <svg class="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <div class="flex-1">
+                <div class="text-3xl font-bold text-gray-900">{{ number_format($notCompletedVisits) }}</div>
+                <div class="text-gray-500 font-medium">{{ __('Pending Visits') }}</div>
+                <div class="mt-1 text-sm text-amber-600 font-semibold">{{ __('In progress or scheduled') }}</div>
+            </div>
+        </div>
+
+        <!-- Success Rate Card -->
+        @if ($completedVisits + $notCompletedVisits > 0)
+            <div class="bg-white rounded-2xl shadow-lg p-6 flex items-center gap-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="bg-gradient-to-br from-primary/10 to-primary/20 rounded-full p-4 shadow-md">
+                    <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                     </svg>
-                {{__('Last visit:')}} <span class="font-semibold ms-2">{{$date_of_last_visit}}</span>
-            </li>
-        </ul>
+                </div>
+                <div class="flex-1">
+                    <div class="text-3xl font-bold text-gray-900">{{ round(($completedVisits / ($completedVisits + $notCompletedVisits)) * 100) }}%</div>
+                    <div class="text-gray-500 font-medium">{{ __('Completion Rate') }}</div>
+                    <div class="mt-1 text-sm text-primary font-semibold">{{ __('Visit completion ratio') }}</div>
+                </div>
+            </div>
+        @endif
+    </div>
+
+    <!-- Quick Insights -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
+        <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+            {{ __('Quick Insights') }}
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex items-center gap-4 p-5 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200">
+                <div class="bg-yellow-100 rounded-full p-3">
+                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-600">{{ __('Last Visit') }}</p>
+                    <p class="text-lg font-semibold text-gray-900">{{ $date_of_last_visit ?: __('No visits yet') }}</p>
+                </div>
+            </div>
+
+            @if ($completedVisits > 0)
+                <div class="flex items-center gap-4 p-5 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200">
+                    <div class="bg-green-100 rounded-full p-3">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-600">{{ __('Total Visits') }}</p>
+                        <p class="text-lg font-semibold text-gray-900">{{ number_format($completedVisits + $notCompletedVisits) }} {{ __('visits') }}</p>
+                    </div>
+                </div>
+            @endif
+
+            <div class="flex items-center gap-4 p-5 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200">
+                <div class="bg-blue-100 rounded-full p-3">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-600">{{ __('Account Status') }}</p>
+                    <p class="text-lg font-semibold text-green-600">{{ __('Active') }}</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 p-5 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200">
+                <div class="bg-purple-100 rounded-full p-3">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-600">{{ __('Health Score') }}</p>
+                    <p class="text-lg font-semibold text-purple-600">{{ min(100, $completedVisits * 10) }}/100</p>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 @endsection
