@@ -74,7 +74,7 @@
                         <div>
                             <p class="text-sm font-semibold text-gray-700">{{ __('Total Price') }}:</p>
                             <div class="flex items-center gap-2">
-                                @if ($visit->total_after_discount)
+                                @if ($visit->total_after_discount || $visit->total_after_discount == 0)
                                     <span class="line-through text-gray-500">${{ number_format($visit->total_price, 0) }}</span>
                                     <span class="text-green-600 font-bold">${{ number_format($visit->total_after_discount, 0) }}</span>
                                 @else
