@@ -7,6 +7,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 // use Filament\Forms\Components\CKEditor;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -18,6 +19,8 @@ use Modules\Service\Models\RelatedService;
 use Modules\Service\Models\Service;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Modules\Booking\Models\Visit;
+
 class VisitForm
 {
     public static function configure(Schema $schema): Schema
@@ -284,45 +287,44 @@ class VisitForm
                 ->columns(1)
                 ->columnSpan(2)
                 ->schema([
-                    Repeater::make('medicines')
-                        ->relationship('medicines')
-                        ->collapsible()
-                        ->addActionLabel(__('Add medicines'))
-                        ->schema([
-                            Select::make('medicine_id')
-                                ->label(__('Medicines'))
-                                ->searchable(true)
-                                ->relationship('medicine', 'name')
-                                ->createOptionForm([
-                                    TextInput::make('name')->required(),
-                                ])
-                                ->required(),
-                        ]),
+                    TagsInput::make('medicines_list')
+                        ->label(__('Medicines'))
+                        ->separator(',')
+                        ->suggestions(fn() => self::getMedicineSuggestions())
+                        ->helperText(__('Type medicine names, suggestions from previous visits')),
 
-                    CKEditor::make('chief_complaint')
+                    TagsInput::make('chief_complaint')
                         ->label(__('chief complaint'))
+                        ->separator(',')
                         ->required()
+                        ->suggestions(fn() => self::getSuggestionsForField('chief_complaint'))
                         ->helperText(__('chief complaint')),
 
-                    CKEditor::make('medical_history')
+                    TagsInput::make('medical_history')
                         ->label(__('past medical history'))
+                        ->separator(',')
                         ->required()
+                        ->suggestions(fn() => self::getSuggestionsForField('medical_history'))
                         ->helperText(__('past medical history')),
 
-                    CKEditor::make('diagnosis')
+                    TagsInput::make('diagnosis')
                         ->label(__('diagnosis'))
+                        ->separator(',')
                         ->required()
+                        ->suggestions(fn() => self::getSuggestionsForField('diagnosis'))
                         ->helperText(__('diagnosis')),
 
+                    TagsInput::make('treatment')
+                        ->label(__('Drugs / Medications'))
+                        ->separator(',')
+                        ->required()
+                        ->suggestions(fn() => self::getSuggestionsForField('treatment'))
+                        ->helperText(__('Treatment plan and instructions')),
                     CKEditor::make('doctor_description')
                         ->label(__('Doctor Description'))
                         ->required()
                         ->helperText(__('Clinical notes and observations')),
 
-                    CKEditor::make('treatment')
-                        ->label(__('Drugs / Medications'))
-                        ->required()
-                        ->helperText(__('Treatment plan and instructions')),
                 ]),
 
             // ===== Secretary & Patient Notes =====
@@ -400,5 +402,55 @@ class VisitForm
                 $set('body_max_index', $bmi);
             }
         }
+    }
+
+    /**
+     * Get unique suggestions for a TagsInput field from previous visits.
+     *
+     * @param string $field The field name to get suggestions for
+     * @return array Array of unique suggestions
+     */
+    protected static function getSuggestionsForField(string $field): array
+    {
+        return Visit::query()
+            ->whereNotNull($field)
+            ->pluck($field)
+            ->flatten()
+            ->flatMap(function ($value) {
+                // If value is a string, split by comma
+                if (is_string($value)) {
+                    return array_map('trim', explode(',', $value));
+                }
+                // If value is already an array, return as is
+                return is_array($value) ? $value : [$value];
+            })
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+    }
+
+    /**
+     * Get medicine suggestions from Medicine model and previous visit medicines.
+     *
+     * @return array Array of unique medicine suggestions
+     */
+    protected static function getMedicineSuggestions(): array
+    {
+        // Get medicine names from the Medicine model
+        $medicineNames = \Modules\Medicine\Models\Medicine::query()
+            ->pluck('name')
+            ->toArray();
+
+        // Get medicine names from previous visits' medicines_list
+        $visitMedicines = self::getSuggestionsForField('medicines_list');
+
+        // Combine and return unique values
+        return collect($medicineNames)
+            ->merge($visitMedicines)
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
     }
 }
