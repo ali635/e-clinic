@@ -3,91 +3,227 @@
     $isProfileLayout = request()->routeIs('patient.*');
 @endphp
 
-<header>
-    <nav class="bg-white py-2 tablet:py-4">
-        <div class="{{ $isProfileLayout ? 'px-3' : 'container' }} tablet:flex tablet:items-center tablet:justify-between">
-            <div class="flex justify-between items-center">
-                <a href="/" class="font-bold text-xl text-primary">
-                    <img class="max-w-[60px]"  src="{{ asset('storage/' . setting('site_logo')) }}"
-                        alt="{{ setting('site_name') }}">
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
+    <nav class="py-3 {{ $isProfileLayout ? 'px-4' : 'container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8' }}">
+        <div class="flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <a href="/" class="block">
+                    <img class="w-16 h-16 object-contain transition-transform duration-200 hover:scale-105" 
+                         src="{{ asset('storage/' . setting('site_logo')) }}" 
+                         alt="{{ setting('site_name') }}">
                 </a>
-                <div class="flex gap-1">
-                    <div class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 relative group border border-gray-200 tablet:hidden">
-                        <span class="capitalize flex items-center gap-2">
-                            <img width="25px" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$locales->where('lang_code', App::getLocale())->first()->lang_flag}}.svg" />
-                            {{ App::getLocale() }}
-                        </span>
-                        <ul class="absolute bg-white py-2 w-52 ltr:right-0 rtl:left-0 top-full transform scale-0 group-focus:scale-100 group-hover:scale-100 hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg z-[9]">
-                            @foreach ($locales as $localeCode => $local)
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden lg:flex items-center gap-2">
+                <a href="/"
+                   class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+                          @if (Route::currentRouteName() == 'home')
+                              bg-primary text-white shadow-md
+                          @else
+                              text-gray-700 hover:bg-gray-100 hover:text-primary
+                          @endif">
+                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    {{ __('Home') }}
+                </a>
+
+                <a href="{{ route('services') }}"
+                   class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+                          @if (Route::currentRouteName() == 'services')
+                              bg-primary text-white shadow-md
+                          @else
+                              text-gray-700 hover:bg-gray-100 hover:text-primary
+                          @endif">
+                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14-7l-2 2m0 0l-2-2m2 2V3m2 4H5m14 10l-2-2m0 0l-2 2m2-2v2M9 3v2m3 0v2m3 0v2"/>
+                    </svg>
+                    {{ __('Services') }}
+                </a>
+
+                <a href="{{ route('posts') }}"
+                   class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+                          @if (Route::currentRouteName() == 'posts')
+                              bg-primary text-white shadow-md
+                          @else
+                              text-gray-700 hover:bg-gray-100 hover:text-primary
+                          @endif">
+                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                    </svg>
+                    {{ __('Blogs') }}
+                </a>
+
+                <!-- Language Switcher -->
+                <div class="relative group">
+                    <button class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-all duration-200 border border-gray-200">
+                        <img class="w-5 h-4 object-cover rounded shadow-sm" 
+                             src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$locales->where('lang_code', App::getLocale())->first()->lang_flag ?? 'us'}}.svg" 
+                             alt="{{ App::getLocale() }}">
+                        <span>{{ App::getLocale() == 'ar' ? 'العربية' : ($locales->where('lang_code', App::getLocale())->first()->lang_name ?? App::getLocale()) }}</span>
+                        <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <ul class="absolute bg-white py-2 w-56 ltr:right-0 rtl:left-0 top-full transform scale-0 group-hover:scale-100 transition duration-200 ease-out origin-top shadow-2xl rounded-xl border border-gray-200 z-50">
+                        @foreach ($locales as $localeCode => $local)
                             <li>
-                                <a class="px-3 text-sm hover:bg-slate-100 leading-8 flex items-center gap-2 capitalize" href="{{ LaravelLocalization::getLocalizedURL($local->lang_code, null, [], true) }}">
-                                    <img width="25px" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$local->lang_flag}}.svg" />
+                                <a class="px-4 py-2 text-sm hover:bg-gray-50 leading-6 flex items-center gap-3 rounded-lg mx-2 transition-colors duration-150" 
+                                   href="{{ LaravelLocalization::getLocalizedURL($local->lang_code, null, [], true) }}">
+                                    <img class="w-5 h-4 object-cover rounded shadow-sm" 
+                                         src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$local->lang_flag}}.svg" 
+                                         alt="{{ $local->lang_name }}">
                                     {{ $local->lang_name }}
                                 </a>
                             </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <button
-                        class="border border-solid border-primary px-2 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 tablet:hidden"
-                        id="navbar-toggle">
-                        <svg class="fill-primary" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                            width="24px">
-                            <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <div class="hidden tablet:flex flex-col tablet:flex-row mt-3 tablet:mt-0"
-                id="navbar-collapse">
-                <a href="/"
-                    class="p-2 web:px-4 tablet:mx-2  @if (Route::currentRouteName() == 'home') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif">{{ __('Home') }}</a>
-                {{-- <a href="{{ route('about') }}"
-                    class="p-2 web:px-4 tablet:mx-2 @if (Route::currentRouteName() == 'about') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif ">{{ __('About') }}</a> --}}
-                <a href="{{ route('services') }}"
-                    class="p-2 web:px-4 tablet:mx-2 @if (Route::currentRouteName() == 'services') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif">{{ __('Services') }}</a>
-                <a href="{{ route('posts') }}"
-                    class="p-2 web:px-4 tablet:mx-2 @if (Route::currentRouteName() == 'posts') text-white rounded bg-primary @else text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 @endif">{{ __('Blogs') }}</a>
-                
-                <div class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 relative group border border-gray-200 max-tablet:hidden">
-                    <span class="capitalize flex items-center gap-2">
-                        <img width="25px" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$locales->where('lang_code', App::getLocale())->first()->lang_flag}}.svg" />
-                        {{ App::getLocale() == 'ar' ? 'العربية' : ($locales->where('lang_code', App::getLocale())->first()->lang_name ?? App::getLocale()) }}
-                    </span>
-                    <ul class="absolute bg-white py-2 w-52 ltr:right-0 rtl:left-0 top-full transform scale-0 group-hover:scale-100 hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg z-[9]">
-                        @foreach ($locales as $localeCode => $local)
-                        <li>
-                            <a class="px-3 text-sm hover:bg-slate-100 leading-8 flex items-center gap-2 capitalize" href="{{ LaravelLocalization::getLocalizedURL($local->lang_code, null, [], true) }}">
-                                <img width="25px" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$local->lang_flag}}.svg" />
-                                {{ $local->lang_name }}
-                            </a>
-                        </li>
                         @endforeach
                     </ul>
                 </div>
 
+                <!-- User Menu -->
                 @auth('patient')
-                    <div class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 relative group">
-                        <span class="flex items-center gap-1">
-                            <svg width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13Z"></path></svg>
-                            <span>{{auth('patient')->user()->name }}</span>
-                        </span>
-                        <ul class="absolute bg-white py-2 w-52 ltr:right-0 rtl:left-0 top-full transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg z-[9]">
+                    <div class="relative group">
+                        <button class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-all duration-200">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary/10 to-primary/20 flex items-center justify-center">
+                                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                            <span class="hidden xl:inline font-semibold">{{ auth('patient')->user()->name }}</span>
+                            <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <ul class="absolute bg-white py-2 w-56 ltr:right-0 rtl:left-0 top-full transform scale-0 group-hover:scale-100 transition duration-200 ease-out origin-top shadow-2xl rounded-xl border border-gray-200 z-50">
                             <li>
-                                <a class="px-3 text-sm hover:bg-slate-100 leading-8 block" href="{{ route('patient.dashboard') }}"> {{__('Profile')}} </a>
+                                <a class="px-4 py-2 text-sm hover:bg-gray-50 leading-6 flex items-center gap-3 rounded-lg mx-2 transition-colors duration-150" 
+                                   href="{{ route('patient.dashboard') }}">
+                                    <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h18v18H3V3zm4 4v10h10V7H7z"/>
+                                    </svg>
+                                    {{ __('Profile') }}
+                                </a>
                             </li>
                             <li>
-                                <a class="px-3 text-sm hover:bg-slate-100 leading-8 block" href="{{ route('patient.logout') }}" onclick="event.preventDefault();document.getElementById('logout.form').submit();">{{ __('logout') }}</a>
-                                <form id="logout.form" action="{{ route('patient.logout') }}" method="POST" style="display: none;">
+                                <button onclick="event.preventDefault(); confirmLogout()" 
+                                        class="w-full text-left px-4 py-2 text-sm hover:bg-red-50 leading-6 flex items-center gap-3 rounded-lg mx-2 transition-colors duration-150 text-red-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                    </svg>
+                                    {{ __('Logout') }}
+                                </button>
+                                <form id="logout-form" action="{{ route('patient.logout') }}" method="POST" class="hidden">
                                     @csrf
                                 </form>
                             </li>
                         </ul>
                     </div>
                 @else
-                    <a href="{{ route('patient.login') }}" class="p-2 web:px-4 tablet:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300 capitalize">
-                        {{ __('Sign in') }}
+                    <a href="{{ route('patient.login') }}" 
+                       class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-primary to-primary/80 shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        {{ __('Sign In') }}
+                    </a>
+                @endauth
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="lg:hidden flex items-center gap-2">
+                <!-- Mobile Language Switcher -->
+                <div class="p-2 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors duration-300 relative group">
+                    <span class="capitalize flex items-center gap-2">
+                        <img class="w-5 h-4 object-cover rounded shadow-sm" 
+                             src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$locales->where('lang_code', App::getLocale())->first()->lang_flag ?? 'us'}}.svg" 
+                             alt="{{ App::getLocale() }}">
+                        <span class="text-sm">{{ App::getLocale() }}</span>
+                    </span>
+                    <ul class="absolute bg-white py-2 w-48 ltr:right-0 rtl:left-0 top-full transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-xl rounded-lg border border-gray-200">
+                        @foreach ($locales as $localeCode => $local)
+                            <li>
+                                <a class="px-3 py-2 text-sm hover:bg-gray-50 leading-5 flex items-center gap-2 rounded-md mx-1 transition-colors duration-150" 
+                                   href="{{ LaravelLocalization::getLocalizedURL($local->lang_code, null, [], true) }}">
+                                    <img class="w-5 h-4 object-cover rounded shadow-sm" 
+                                         src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{$local->lang_flag}}.svg" 
+                                         alt="{{ $local->lang_name }}">
+                                    {{ $local->lang_name }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                
+                <button class="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors duration-300 border border-gray-200"
+                        id="navbar-toggle">
+                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="hidden lg:hidden mt-4 pb-4 border-t border-gray-100"
+             id="navbar-collapse">
+            <div class="flex flex-col gap-2 pt-4">
+                <a href="/"
+                   class="px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 
+                          @if (Route::currentRouteName() == 'home')
+                              bg-primary text-white
+                          @else
+                              text-gray-700 hover:bg-gray-100 hover:text-primary
+                          @endif">
+                    {{ __('Home') }}
+                </a>
+                <a href="{{ route('services') }}"
+                   class="px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 
+                          @if (Route::currentRouteName() == 'services')
+                              bg-primary text-white
+                          @else
+                              text-gray-700 hover:bg-gray-100 hover:text-primary
+                          @endif">
+                    {{ __('Services') }}
+                </a>
+                <a href="{{ route('posts') }}"
+                   class="px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 
+                          @if (Route::currentRouteName() == 'posts')
+                              bg-primary text-white
+                          @else
+                              text-gray-700 hover:bg-gray-100 hover:text-primary
+                          @endif">
+                    {{ __('Blogs') }}
+                </a>
+
+                @auth('patient')
+                    <div class="border-t border-gray-100 pt-2 mt-2">
+                        <a href="{{ route('patient.dashboard') }}" 
+                           class="px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-all duration-200 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 000-7z"/>
+                            </svg>
+                            {{ __('Profile') }}
+                        </a>
+                        <button onclick="confirmLogout()" 
+                                class="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-all duration-200 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            {{ __('Logout') }}
+                        </button>
+                        <form id="logout-form" action="{{ route('patient.logout') }}" method="POST" class="hidden">
+                            @csrf
+                        </form>
+                    </div>
+                @else
+                    <a href="{{ route('patient.login') }}" 
+                       class="mt-2 px-4 py-3 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-primary to-primary/80 shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        {{ __('Sign In') }}
                     </a>
                 @endauth
             </div>
@@ -95,7 +231,15 @@
     </nav>
 </header>
 
+<!-- Logout Confirmation Script -->
 <script>
+    function confirmLogout() {
+        if (confirm('{{ __("Are you sure you want to logout?") }}')) {
+            document.getElementById('logout-form').submit();
+        }
+    }
+
+    // Mobile toggle functionality
     let toggleBtn = document.querySelector("#navbar-toggle");
     let collapse = document.querySelector("#navbar-collapse");
 
@@ -103,4 +247,12 @@
         collapse.classList.toggle("hidden");
         collapse.classList.toggle("flex");
     };
+
+    // Close mobile menu on window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024) {
+            collapse.classList.add('hidden');
+            collapse.classList.remove('flex');
+        }
+    });
 </script>
