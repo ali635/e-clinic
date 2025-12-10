@@ -47,7 +47,8 @@ class Visit extends Model
         'discount_amount',
         'total_after_discount',
         'diagnosis',
-        'cancel_reason'
+        'cancel_reason',
+        'medicines_list'
     ];
 
     protected function casts(): array
@@ -55,6 +56,11 @@ class Visit extends Model
         return [
             'lab_tests' => 'array',
             'x_rays' => 'array',
+            'chief_complaint' => 'array',
+            'medical_history' => 'array',
+            'diagnosis' => 'array',
+            'treatment' => 'array',
+            'medicines_list' => 'array',
         ];
     }
     public function service()

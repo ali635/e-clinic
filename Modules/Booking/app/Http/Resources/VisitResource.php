@@ -16,7 +16,7 @@ class VisitResource extends JsonResource
             'id' => $this->id,
             'price' => $this->price,
             'total_price' => $this->total_price,
-            'total_after_discount'=> $this->total_after_discount,
+            'total_after_discount' => $this->total_after_discount,
             'currency_lang' => __('IQD'),
             'arrival_time' => $this->arrival_time,
             'is_arrival' => (bool) $this->is_arrival,
@@ -27,27 +27,30 @@ class VisitResource extends JsonResource
             'notes' => $this->notes,
             'patient_description' => $this->patient_description,
 
-            'chief_complaint'=> $this->chief_complaint,
-            'medical_history'=> $this->medical_history,
-            'diagnosis'=> $this->diagnosis,
-            'sys'=> $this->sys,
-            'dia'=> $this->dia,
-            'pulse_rate'=> $this->pulse_rate,
-            'weight'=> $this->weight,
-            'height'=> $this->height,
-            'body_max_index'=> $this->body_max_index,
-            'payment_method'=> $this->payment_method,
-            
-            
+            'chief_complaint' => $this->chief_complaint,
+            'medical_history' => $this->medical_history,
+            'diagnosis' => $this->diagnosis,
+            'sys' => $this->sys,
+            'dia' => $this->dia,
+            'pulse_rate' => $this->pulse_rate,
+            'weight' => $this->weight,
+            'height' => $this->height,
+            'body_max_index' => $this->body_max_index,
+            'payment_method' => $this->payment_method,
+
+
             // ✅ Service info (translated)
-            'medicines' => $this->whenLoaded('medicines', function () use ($lang) {
-                return $this->medicines->map(function ($medicine) use ($lang) {
-                    return [
-                        'id' => $medicine->id,
-                        'name' => $medicine->medicine->name ?? '',
-                    ];
-                });
-            }),
+            // 'medicines' => $this->whenLoaded('medicines', function () use ($lang) {
+            //     return $this->medicines->map(function ($medicine) use ($lang) {
+            //         return [
+            //             'id' => $medicine->id,
+            //             'name' => $medicine->medicine->name ?? '',
+            //         ];
+            //     });
+            // }),
+
+            // Medicines as TagsInput array
+            'medicines_list' => $this->medicines_list,
 
             'service' => $this->whenLoaded('service', function () use ($lang) {
                 return [
