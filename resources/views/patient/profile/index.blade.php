@@ -14,7 +14,7 @@
                         <!-- Profile Image -->
                         <div class="flex-shrink-0">
                             <div class="relative">
-                                <img onerror="this.src='{{ asset('storage/' . setting('site_logo')) }}'"
+                                <img onerror="if(!this.dataset.fallback){this.dataset.fallback=true;this.src='{{ asset('storage/' . setting('site_logo')) }}';}else{this.onerror=null;}"
                                     src="{{ asset('storage/' . $patient->img_profile) }}" 
                                     alt="{{ $patient->name }}"
                                     class="w-24 h-24 rounded-full object-cover ring-4 ring-primary/10 shadow-lg">

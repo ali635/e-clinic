@@ -8,7 +8,7 @@
                 <div class="p-6 border-b border-gray-200 bg-gradient-to-br from-primary/5 to-transparent">
                     <div class="flex items-center gap-4">
                         <div class="relative flex-shrink-0">
-                            <img onerror="this.src='{{ asset('storage/' . setting('site_logo')) }}'"
+                            <img onerror="if(!this.dataset.fallback){this.dataset.fallback=true;this.src='{{ asset('storage/' . setting('site_logo')) }}';}else{this.onerror=null;}"
                                 src="{{ asset('storage/' . auth('patient')->user()->img_profile ?? '') }}" 
                                 alt="{{ auth('patient')->user()->name ?? 'User' }}"
                                 class="w-14 h-14 rounded-full object-cover ring-2 ring-primary/20 shadow-md">
