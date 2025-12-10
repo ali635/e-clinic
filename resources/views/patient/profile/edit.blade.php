@@ -130,7 +130,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="city" class="block text-sm font-semibold text-gray-800 mb-2">{{ __('City') }}</label>
-                            <select id="city" name="city"
+                            <select id="city" name="city_id"
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3">
                                 <option value="">{{ __('Select City') }}</option>
                                 @foreach ($cities as $city)
@@ -148,7 +148,7 @@
 
                         <div>
                             <label for="area" class="block text-sm font-semibold text-gray-800 mb-2">{{ __('Area') }}</label>
-                            <select id="area" name="area"
+                            <select id="area" name="area_id"
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3">
                                 <option value="">{{ __('Select Area') }}</option>
                                 @foreach ($areas as $area)
