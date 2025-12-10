@@ -22,14 +22,17 @@ class VisitResource extends JsonResource
             'is_arrival' => (bool) $this->is_arrival,
             'status' => (bool) $this->is_arrival && $this->status == 'complete' ? __('completed') : ($this->arrival_time > Carbon::now() && $this->status == 'pending' ? __('pending') : __('cancelled')),
             'doctor_description' => $this->doctor_description,
-            'treatment' => $this->treatment,
             'secretary_description' => $this->secretary_description,
             'notes' => $this->notes,
             'patient_description' => $this->patient_description,
 
+            'treatment' => $this->treatment,
             'chief_complaint' => $this->chief_complaint,
             'medical_history' => $this->medical_history,
             'diagnosis' => $this->diagnosis,
+            'medicines' => $this->medicines_list,
+
+
             'sys' => $this->sys,
             'dia' => $this->dia,
             'pulse_rate' => $this->pulse_rate,
@@ -50,7 +53,6 @@ class VisitResource extends JsonResource
             // }),
 
             // Medicines as TagsInput array
-            'medicines_list' => $this->medicines_list,
 
             'service' => $this->whenLoaded('service', function () use ($lang) {
                 return [
