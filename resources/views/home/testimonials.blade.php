@@ -23,7 +23,7 @@
             {{-- Testimonials Grid --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
                 @foreach($feedbacks as $feedback)
-                    <div class="relative bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-200 overflow-hidden group">
+                    <div class="relative bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-200 overflow-hidden group reveal-up">
                         
                         <!-- Decorative Quote -->
                         <div class="absolute top-4 right-4 text-primary/20 group-hover:text-primary/40 transition-colors duration-300">

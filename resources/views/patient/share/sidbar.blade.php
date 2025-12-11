@@ -123,7 +123,7 @@
         const btn = document.getElementById('sidebarToggleBtn');
         const overlay = document.createElement('div');
         overlay.id = 'sidebarOverlay';
-        overlay.className = 'fixed inset-0 bg-black/30 z-40 hidden md:hidden';
+        overlay.className = 'fixed inset-0 bg-black/30 z-50 hidden md:hidden';
         document.body.appendChild(overlay);
 
         btn.addEventListener('click', function(e) {

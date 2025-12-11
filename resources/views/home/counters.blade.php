@@ -16,7 +16,7 @@
         @if (setting_lang('counter_settings'))
             <div id="funFactsSection" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
                 @foreach (setting_lang('counter_settings') as $counter)
-                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 text-center group">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 text-center group reveal-up">
                         
                         <!-- Icon -->
                         <div class="mx-auto mb-6 w-20 h-20 rounded-full bg-gradient-to-br from-primary/10 to-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">

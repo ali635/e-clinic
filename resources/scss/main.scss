@@ -53,6 +53,16 @@ body {
     button {
         @apply cursor-pointer;
     }
+
+    .reveal-up {
+        opacity: 0.5;
+        transform: translateY(100px) !important;
+        transition: 1s;
+        &.active {
+            opacity: 1;
+            transform: translateY(0) !important;
+        }
+    }
 }
 
 @layer utilities {
@@ -182,14 +192,14 @@ body {
     }
 
     .sidebarToggleBtn {
-        @apply flex items-center justify-center tablet:hidden absolute top-[50px] ltr:left-full rtl:right-full z-30 bg-primary text-white rounded p-2 shadow focus:outline-none transition-all opacity-70 ;
+        @apply flex items-center justify-center tablet:hidden absolute top-[100px] ltr:left-full rtl:right-full z-30 bg-primary text-white rounded p-2 shadow focus:outline-none transition-all opacity-80 ;
         &:hover {
             @apply opacity-100;
         }
     }
 
     .sidebarMenu {
-        @apply w-[220px] bg-white px-3 py-8 web:p-3 z-20 tablet:block max-tablet:ltr:-translate-x-full max-tablet:rtl:translate-x-full fixed tablet:static top-0 ltr:left-0 rtl:right-0 h-full tablet:h-auto transition-all;
+        @apply w-[220px] bg-white px-3 py-8 web:p-3 z-[99] tablet:block max-tablet:ltr:-translate-x-full max-tablet:rtl:translate-x-full fixed tablet:static top-0 ltr:left-0 rtl:right-0 h-full tablet:h-auto transition-all;
         &.menuOpened {
             @apply translate-x-0;
         }
@@ -297,4 +307,3 @@ body[dir="rtl"] {
         --dp-direction: rtl;
     }
 }
-

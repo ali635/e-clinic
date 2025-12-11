@@ -9,7 +9,7 @@
         </div>
         <div class="grid grid-cols-1 tablet:grid-cols-2 web:grid-cols-4 gap-4">
             @foreach ($posts as $post)
-                <article class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 relative border border-gray-100">
+                <article class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 relative border border-gray-100 reveal-up">
                             
                             <!-- Image Section -->
                             <div class="relative h-56 md:h-64 overflow-hidden">
