@@ -15,7 +15,7 @@
                     </a>
                 </div>
                 
-                <p class="text-gray-300 text-sm leading-relaxed max-w-xs text-center md:text-left">
+                <p class="text-gray-300 text-sm leading-relaxed max-w-xs text-center md:text-start">
                     {{ strip_tags(setting_lang("about_us")) }}
                 </p>
 
@@ -60,7 +60,7 @@
             <div class="space-y-4">
                 <h3 class="text-lg font-semibold text-white pb-2 relative">
                     {{ __('About Us') }}
-                    <span class="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary rounded-full"></span>
+                    <span class="absolute -bottom-1 start-0 w-12 h-0.5 bg-primary rounded-full"></span>
                 </h3>
                 <nav>
                     <ul class="space-y-3">
@@ -86,7 +86,7 @@
             <div class="space-y-4">
                 <h3 class="text-lg font-semibold text-white pb-2 relative">
                     {{ __('Contact Us') }}
-                    <span class="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary rounded-full"></span>
+                    <span class="absolute -bottom-1 start-0 w-12 h-0.5 bg-primary rounded-full"></span>
                 </h3>
                 
                 <ul class="space-y-3">
@@ -128,7 +128,7 @@
             {{-- <div class="space-y-4">
                 <h3 class="text-lg font-semibold text-white pb-2 relative">
                     {{ __('Stay Updated') }}
-                    <span class="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary rounded-full"></span>
+                    <span class="absolute -bottom-1 start-0 w-12 h-0.5 bg-primary rounded-full"></span>
                 </h3>
                 <p class="text-gray-400 text-sm">
                     {{ __('Subscribe to our newsletter for health tips and updates') }}
@@ -147,7 +147,7 @@
         <!-- Footer Bottom -->
         <div class="mt-12 pt-8 border-t border-white/10">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-                <div class="text-center lg:text-left">
+                <div class="text-center lg:text-start">
                     <p class="text-sm text-gray-400">
                         &copy; {{ date('Y') }} <span class="font-semibold text-white">{{ setting('site_name') }}</span>. {{ __('All rights reserved.') }}
                     </p>

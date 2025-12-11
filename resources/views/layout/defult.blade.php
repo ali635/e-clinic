@@ -119,7 +119,7 @@
 <body dir="{{ getDirection() }}">
     <div id="loader-overlay" class="fixed inset-0 flex items-center justify-center bg-white transition-opacity duration-700 z-[99]">
         <div class="flex flex-col items-center">
-            <img src="{{ asset('logo.png') }}" alt="Logo" class="md:w-[200px] md:h-[200px] w-[100px] h-[100px] animate-bounce" />
+            <img src="{{ asset('storage/' . setting('site_logo')) }}" alt="{{ setting('site_name') }}" class="md:w-[200px] md:h-[200px] w-[100px] h-[100px] animate-bounce" />
         </div>
     </div>
 
