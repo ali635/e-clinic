@@ -31,7 +31,7 @@
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:title" content="@yield('og_title', $title ?? __('Dr Azad Hasan'))">
 
-<meta property="og:description" content="@yield('og_description',  __('E-Clinic - Your trusted healthcare partner'))">
+    <meta property="og:description" content="@yield('og_description',  __('E-Clinic - Your trusted healthcare partner'))">
     <meta property="og:url" content="@yield('og_url', url()->current())">
     <meta property="og:site_name" content="@yield('og_site_name', __('Dr Azad Hasan'))">
     <meta property="og:image" content="@yield('og_image', asset('storage/' . setting('site_logo')))">
@@ -117,6 +117,12 @@
 
 
 <body dir="{{ getDirection() }}">
+    <div id="loader-overlay" class="fixed inset-0 flex items-center justify-center bg-white transition-opacity duration-700 z-[99]">
+        <div class="flex flex-col items-center">
+            <img src="{{ asset('logo.png') }}" alt="Logo" class="md:w-[200px] md:h-[200px] w-[100px] h-[100px] animate-bounce" />
+        </div>
+    </div>
+
     @include('share.header')
     @yield('content')
     @include('share.footer')
@@ -128,6 +134,18 @@
         <script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
     @endif
     {!! ToastMagic::scripts() !!}
+
+    <script>
+        window.addEventListener('load', function () {
+            const loader = document.getElementById('loader-overlay');
+            if(loader){
+                document.body.classList.add('pageLoaded');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 800);
+            }
+        });
+    </script>
 </body>
 
 </html>

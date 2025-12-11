@@ -49,7 +49,7 @@
                                     <a href="{{ route('post.show', $post->slug) }}"
                                        class="inline-flex items-center gap-2 text-primary font-semibold hover:text-primary/80 transition-all duration-300 group/read">
                                         <span class="group-hover/read:translate-x-1 transition-transform duration-300">{{ __('View Article') }}</span>
-                                        <svg class="w-4 h-4 transition-transform duration-300 group-hover/read:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4 transition-transform duration-300 group-hover/read:translate-x-1 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                                         </svg>
                                     </a>
