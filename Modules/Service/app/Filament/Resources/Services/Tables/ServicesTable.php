@@ -39,7 +39,7 @@ class ServicesTable
                     ->searchable(),
 
                 TextColumn::make('price')
-                    ->label(__('price'))
+                    ->label(__('Price'))
                     ->searchable(),
 
                 TextColumn::make('patient_time_minute')

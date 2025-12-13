@@ -26,7 +26,7 @@ class PatientForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label(__('Name'))
+                    ->label(__('Patient Name'))
                     ->maxLength(255)
                     ->required(),
 
@@ -50,7 +50,7 @@ class PatientForm
                         'female' => 'female'
                     ])->required(),
 
-                Select::make('marital_status')
+                Select::make('marital_status')->label(__('Marital Status'))
                     ->options(MaritalStatus::options()),
 
                 Select::make('referral_id')
@@ -120,7 +120,7 @@ class PatientForm
                             ->toArray();
                     }),
                 Select::make('area_id')
-                    ->label(__('areas'))
+                    ->label(__('Areas'))
                     ->options(function () {
                         return Area::with('translations')
                             ->get()
@@ -133,7 +133,7 @@ class PatientForm
                     ->maxLength(255),
 
                 Select::make('disease_id')
-                    ->label(__('diseases'))
+                    ->label(__('Diseases'))
                     ->options(function () {
                         return Disease::with('translations')
                             ->get()

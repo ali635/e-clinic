@@ -47,7 +47,7 @@ class ServiceForm
                     ->unique(Service::class, 'slug', ignoreRecord: true),
 
                 TextInput::make('price')
-                    ->label(__('price'))
+                    ->label(__('Price'))
                     ->numeric()
                     ->required(),
 
@@ -92,14 +92,16 @@ class ServiceForm
                     ->columnSpan(2)
                     ->schema([
                         Repeater::make('schedules')
+                        ->label(__('schedules'))
                             ->relationship()
                             ->schema([
                                 Select::make('day_of_week')
+                                    ->label(__('day of week'))
                                     ->options(DayOfWeek::options())
                                     ->required(),
-                                TimePicker::make('start_time')->required(),
-                                TimePicker::make('end_time')->required(),
-                                Toggle::make('is_active')->default(true),
+                                TimePicker::make('start_time')->label(__('start time'))->required(),
+                                TimePicker::make('end_time')->label(__('end time'))->required(),
+                                Toggle::make('is_active')->label(__('is active'))->default(true),
                             ])
                             ->columns(4)
                             ->collapsible(),

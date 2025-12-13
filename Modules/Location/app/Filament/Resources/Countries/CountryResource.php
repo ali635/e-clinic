@@ -32,25 +32,25 @@ class CountryResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('Countries');
+        return __('countries');
     }
 
     // ✅ TRANSLATABLE plural label (used in list page titles)
     public static function getPluralLabel(): string
     {
-        return __('Countries');
+        return __('countries');
     }
 
     // ✅ TRANSLATABLE singular label (used in forms)
     public static function getModelLabel(): string
     {
-        return __('Country');
+        return __('country');
     }
 
     // ✅ TRANSLATABLE breadcrumb (top navigation)
     public static function getBreadcrumb(): string
     {
-        return __('Countries');
+        return __('countries');
     }
 
     public static function form(Schema $schema): Schema

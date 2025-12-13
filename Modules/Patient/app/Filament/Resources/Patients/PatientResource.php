@@ -33,13 +33,13 @@ class PatientResource extends Resource
     // ✅ TRANSLATABLE navigation label (sidebar)
     public static function getNavigationLabel(): string
     {
-        return __('Patients');
+        return __('patients');
     }
 
     // ✅ TRANSLATABLE plural label (used in list page titles)
     public static function getPluralLabel(): string
     {
-        return __('Patients');
+        return __('patients');
     }
 
     // ✅ TRANSLATABLE singular label (used in forms)
@@ -51,7 +51,7 @@ class PatientResource extends Resource
     // ✅ TRANSLATABLE breadcrumb (top navigation)
     public static function getBreadcrumb(): string
     {
-        return __('Patients');
+        return __('patients');
     }
 
     public static function form(Schema $schema): Schema

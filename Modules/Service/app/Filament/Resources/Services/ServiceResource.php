@@ -33,19 +33,19 @@ class ServiceResource extends Resource
     }
     public static function getNavigationLabel(): string
     {
-        return __('Services');
+        return __('services');
     }
 
     // ✅ TRANSLATABLE plural label (used in list page titles)
     public static function getPluralLabel(): string
     {
-        return __('Services');
+        return __('services');
     }
 
     // ✅ TRANSLATABLE singular label (used in forms)
     public static function getModelLabel(): string
     {
-        return __('Service');
+        return __('service');
     }
 
     // ✅ TRANSLATABLE breadcrumb (top navigation)

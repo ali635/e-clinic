@@ -32,25 +32,25 @@ class CityResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('Cities');
+        return __('cities');
     }
 
     // ✅ TRANSLATABLE plural label (used in list page titles)
     public static function getPluralLabel(): string
     {
-        return __('Cities');
+        return __('cities');
     }
 
     // ✅ TRANSLATABLE singular label (used in forms)
     public static function getModelLabel(): string
     {
-        return __('City');
+        return __('city');
     }
 
     // ✅ TRANSLATABLE breadcrumb (top navigation)
     public static function getBreadcrumb(): string
     {
-        return __('Cities');
+        return __('cities');
     }
 
 

@@ -83,7 +83,7 @@ class AdminPanelProvider extends PanelProvider
                     ->allowSocialMenuSettings(false),
 
                 FilamentNotificationSoundPlugin::make(),
-                // \TomatoPHP\FilamentTranslationsGoogle\FilamentTranslationsGooglePlugin::make()
+                \TomatoPHP\FilamentTranslationsGoogle\FilamentTranslationsGooglePlugin::make()
                 // FilamentFabricatorPlugin::make(),
             ])
             ->databaseNotifications()
