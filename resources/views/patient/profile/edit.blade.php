@@ -15,7 +15,7 @@
                     <!-- Name & Email Row -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-800 mb-2">{{ __('Name') }}</label>
+                            <label class="block text-sm font-semibold text-gray-800 mb-2">{{ __('Full Name') }}</label>
                             <input type="text" name="name" value="{{ old('name', $patient->name) }}" 
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3" 
                                 required>
@@ -27,7 +27,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-semibold text-gray-800 mb-2">{{ __('Email') }}</label>
+                            <label class="block text-sm font-semibold text-gray-800 mb-2">{{ __('email') }}</label>
                             <input type="email" name="email" value="{{ old('email', $patient->email) }}"
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"
                                 required>
@@ -42,8 +42,8 @@
                     <!-- Phone Numbers Row -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="phone" class="block text-sm font-semibold text-gray-800 mb-2">{{ __('Phone') }}</label>
-                            <input type="tel" id="phone" name="phone" value="{{ old('phone', $patient->phone) }}"
+                            <label for="phone" class="block text-sm font-semibold text-gray-800 mb-2">{{ __('phone') }}</label>
+                            <input type="number" id="phone" name="phone" value="{{ old('phone', $patient->phone) }}"
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3">
                             @error('phone')
                                 <div class="mt-2 text-red-600 text-sm font-medium bg-red-50 rounded-md px-3 py-2">
@@ -53,8 +53,8 @@
                         </div>
 
                         <div>
-                            <label for="other_phone" class="block text-sm font-semibold text-gray-800 mb-2">{{ __('Other Phone') }}</label>
-                            <input type="tel" id="other_phone" name="other_phone" value="{{ old('other_phone', $patient->other_phone) }}"
+                            <label for="other_phone" class="block text-sm font-semibold text-gray-800 mb-2">{{ __('other phone') }}</label>
+                            <input type="number" id="other_phone" name="other_phone" value="{{ old('other_phone', $patient->other_phone) }}"
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3">
                             @error('other_phone')
                                 <div class="mt-2 text-red-600 text-sm font-medium bg-red-50 rounded-md px-3 py-2">
@@ -67,7 +67,7 @@
                     <!-- Date of Birth & Gender Row -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-800 mb-2">{{ __('Date of Birth') }}</label>
+                            <label class="block text-sm font-semibold text-gray-800 mb-2">{{ __('date of birth') }}</label>
                             <input type="date" name="date_of_birth"
                                 value="{{ old('date_of_birth', $patient->date_of_birth ? Carbon\Carbon::parse($patient->date_of_birth)->format('Y-m-d') : '') }}"
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3">
@@ -79,7 +79,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-semibold text-gray-800 mb-2">{{ __('Gender') }}</label>
+                            <label class="block text-sm font-semibold text-gray-800 mb-2">{{ __('gender') }}</label>
                             <select name="gender"
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3">
                                 <option value="">{{ __('Select Gender') }}</option>
@@ -114,7 +114,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-semibold text-gray-800 mb-2">{{ __('Address') }}</label>
+                            <label class="block text-sm font-semibold text-gray-800 mb-2">{{ __('address') }}</label>
                             <input type="text" name="address" value="{{ old('address', $patient->address) }}"
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"
                                 placeholder="{{ __('Enter your address') }}">
@@ -129,7 +129,7 @@
                     <!-- City & Area Row -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="city" class="block text-sm font-semibold text-gray-800 mb-2">{{ __('City') }}</label>
+                            <label for="city" class="block text-sm font-semibold text-gray-800 mb-2">{{ __('city') }}</label>
                             <select id="city" name="city_id"
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3">
                                 <option value="">{{ __('Select City') }}</option>

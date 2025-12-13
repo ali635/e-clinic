@@ -21,8 +21,9 @@
                   <a href="{{ route('services') }}"
                       class="inline-flex items-center px-8 py-4 bg-white text-blue-900 font-semibold rounded-full hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
                       <span>{{ __('Book an Appointment') }}</span>
-                      <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                      <svg class="w-4 h-4 transition-transform duration-300 group-hover/read:translate-x-1 rtl:rotate-180"
+                          fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                       </svg>
                   </a>
               </div>

@@ -78,9 +78,9 @@
                 <table class="w-full text-sm text-left">
                     <thead class="text-xs font-semibold text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th scope="col" class="px-6 py-4">{{ __('Service name') }}</th>
-                            <th scope="col" class="px-6 py-4">{{ __('Status') }}</th>
-                            <th scope="col" class="px-6 py-4">{{ __('Total Price') }}</th>
+                            <th scope="col" class="px-6 py-4">{{ __('Service Name') }}</th>
+                            <th scope="col" class="px-6 py-4">{{ __('status') }}</th>
+                            <th scope="col" class="px-6 py-4">{{ __('Total price') }}</th>
                             <th scope="col" class="px-6 py-4">{{ __('Price After Discount') }}</th>
                             <th scope="col" class="px-6 py-4">{{ __('Is Arrival') }}</th>
                             <th scope="col" class="px-6 py-4">{{ __('Arrival Time') }}</th>
@@ -197,7 +197,7 @@
 
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-2xl font-bold text-primary flex items-center gap-3">
-                            Rate the Visit
+                            {{ __('rate the visit') }}
                         </h3>
                         <button type="button" data-modal-hide="feedback-modal"
                             class="w-9 h-9 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-all duration-200 flex items-center justify-center">
@@ -211,7 +211,7 @@
                         <input id="rating" name="rating" type="hidden">
 
                         <div class="flex flex-col items-center gap-4">
-                            <p class="text-sm font-medium text-gray-700">How was your experience?</p>
+                            <p class="text-sm font-medium text-gray-700">{{ __('how was your experience ?') }}</p>
 
                             <div class="rating flex gap-2 text-4xl">
                                 @for ($i = 1; $i <= 5; $i++)
@@ -223,7 +223,7 @@
                         </div>
 
                         <div class="space-y-2">
-                            <label for="feedback" class="block text-sm font-semibold text-gray-800">Your Feedback</label>
+                            <label for="feedback" class="block text-sm font-semibold text-gray-800">{{ ('your Feedback') }}</label>
                             <textarea id="feedback" name="comments" rows="5"
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 px-4 py-3"
                                 placeholder="Share your thoughts..."></textarea>
@@ -232,7 +232,7 @@
                         <div class="pt-4 border-t border-gray-200">
                             <button type="submit"
                                 class="w-full px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all">
-                                Submit Feedback
+                                {{ __('submit feedback') }}
                             </button>
                         </div>
                     </form>

@@ -106,7 +106,7 @@
                             </svg>
                             {{ __('Phone Number') }}
                         </label>
-                        <input id="phone" name="phone" type="tel"
+                        <input id="phone" name="phone" type="number"
                             class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"
                             placeholder="{{ __('Enter your phone number') }}" value="{{ old('phone') }}">
                         @error('phone')
@@ -126,7 +126,7 @@
                             </svg>
                             {{ __('Another Phone Number') }}
                         </label>
-                        <input id="other_phone" name="other_phone" type="tel"
+                        <input id="other_phone" name="other_phone" type="number"
                             class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"
                             placeholder="{{ __('Enter another phone number') }}" value="{{ old('other_phone') }}">
                         @error('other_phone')
@@ -144,7 +144,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            {{ __('Date of Birth') }}
+                            {{ __('date of birth') }}
                         </label>
                         <input id="date" name="date_of_birth" type="date" value="{{ old('date_of_birth') }}"
                             class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3">
@@ -163,7 +163,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
-                            {{ __('Gender') }}
+                            {{ __('gender') }}
                         </label>
                         <select id="gender" name="gender"
                             class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3">
@@ -224,7 +224,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            {{ __('City') }}
+                            {{ __('city') }}
                         </label>
                         <select id="city" name="city_id"
                             class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3">
@@ -283,7 +283,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5A2.5 2.5 0 0013.5 5.5V3.935M7 3h10a2 2 0 012 2v2m-6 10h4a2 2 0 002-2v-2M7 17h4m-4 0a2 2 0 11-4 0m0 0V6a2 2 0 012-2h4a2 2 0 012 2v11m0 0a2 2 0 11-4 0" />
                             </svg>
-                            {{ __('Address') }}
+                            {{ __('address') }}
                         </label>
                         <input id="street" name="address" required
                             class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"
@@ -303,7 +303,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>
-                            {{ __('Password') }}
+                            {{ __('password') }}
                         </label>
                         <input id="password" name="password" type="password" required
                             class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"

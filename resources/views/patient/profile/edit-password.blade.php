@@ -35,7 +35,7 @@
                                 <input type="password" id="old_password" name="old_password" 
                                     class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"
                                     placeholder="{{ __('Enter your current password') }}" required>
-                                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                                <button type="button" class="absolute inset-y-0 end-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
                                     onclick="togglePassword('old_password')">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -59,7 +59,7 @@
                                 <input type="password" id="password" name="password" 
                                     class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"
                                     placeholder="{{ __('Enter your new password') }}" required>
-                                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                                <button type="button" class="absolute inset-y-0 end-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
                                     onclick="togglePassword('password')">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -83,7 +83,7 @@
                                 <input type="password" id="password_confirmation" name="password_confirmation" 
                                     class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"
                                     placeholder="{{ __('Confirm your new password') }}" required>
-                                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                                <button type="button" class="absolute inset-y-0 end-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
                                     onclick="togglePassword('password_confirmation')">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
