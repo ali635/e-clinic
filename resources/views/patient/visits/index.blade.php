@@ -223,10 +223,10 @@
                         </div>
 
                         <div class="space-y-2">
-                            <label for="feedback" class="block text-sm font-semibold text-gray-800">{{ ('your Feedback') }}</label>
+                            <label for="feedback" class="block text-sm font-semibold text-gray-800">{{ __('your Feedback') }}</label>
                             <textarea id="feedback" name="comments" rows="5"
                                 class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 px-4 py-3"
-                                placeholder="Share your thoughts..."></textarea>
+                                placeholder="{{ __('Share your thoughts...') }}"></textarea>
                         </div>
 
                         <div class="pt-4 border-t border-gray-200">
