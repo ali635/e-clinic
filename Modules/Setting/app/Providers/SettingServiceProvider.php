@@ -8,6 +8,7 @@ use Modules\Setting\Filament\Pages\AboutSetting;
 use Modules\Setting\Filament\Pages\FooterSocialSetting;
 use Modules\Setting\Filament\Pages\CounterSettings;
 use Modules\Setting\Filament\Pages\GeneralSetting;
+use Modules\Setting\Filament\Pages\PrescriptionSetting;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -72,6 +73,17 @@ class SettingServiceProvider extends ServiceProvider
             ->route('filament.admin.pages.general-setting')
             ->page(GeneralSetting::class)
             ->description(__('General Settings'))
+            ->group('General'),
+        ]);
+
+        FilamentSettingsHub::register([
+            SettingHold::make()
+            ->order(2)
+            ->label(__('Prescription Settings'))
+            ->icon('heroicon-o-cog')
+            ->route('filament.admin.pages.prescription-setting')
+            ->page(PrescriptionSetting::class)
+            ->description(__('Prescription Settings'))
             ->group('General'),
         ]);
 

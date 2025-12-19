@@ -9,7 +9,7 @@ if (!function_exists('setting_lang')) {
      * @param string|null $group Optional group to filter settings (e.g., 'about')
      * @return mixed The setting value or the default value
      */
-    function setting_lang(string $key, mixed $default = null, ?string $group = null): mixed
+    function setting_lang(string $key, mixed $default = null, $lang = null , ?string $group = null): mixed
     {
         try {
             // Build the query for the settings table
@@ -33,7 +33,7 @@ if (!function_exists('setting_lang')) {
             // Check if the payload is an array and contains locale-like keys
             $availableLocales = config('app.available_locales', [config('app.fallback_locale', 'en')]);
             if (is_array($value) && !empty(array_intersect(array_keys($value), $availableLocales))) {
-                $locale = app()->getLocale();
+                $locale = $lang ?? app()->getLocale();
                 // Return the translated value or fall back to the default locale or default value
                 return $value[$locale] ?? $value[config('app.fallback_locale')] ?? $default;
             }
