@@ -287,11 +287,6 @@ class VisitForm
                 ->columns(1)
                 ->columnSpan(2)
                 ->schema([
-                    TagsInput::make('medicines_list')
-                        ->label(__('Medicines'))
-                        ->separator(',')
-                        ->suggestions(fn() => self::getMedicineSuggestions())
-                        ->helperText(__('Type medicine names, suggestions from previous visits')),
 
                     TagsInput::make('chief_complaint')
                         ->label(__('chief complaint'))
@@ -300,12 +295,23 @@ class VisitForm
                         ->suggestions(fn() => self::getSuggestionsForField('chief_complaint'))
                         ->helperText(__('chief complaint')),
 
+                    CKEditor::make('doctor_description')
+                        ->label(__('Doctor Description'))
+                        ->required()
+                        ->helperText(__('Clinical notes and observations')),
+
                     TagsInput::make('medical_history')
                         ->label(__('past medical history'))
                         ->separator(',')
                         ->required()
                         ->suggestions(fn() => self::getSuggestionsForField('medical_history'))
                         ->helperText(__('past medical history')),
+
+                    TagsInput::make('medicines_list')
+                        ->label(__('Past drug hiatory'))
+                        ->separator(',')
+                        ->suggestions(fn() => self::getMedicineSuggestions())
+                        ->helperText(__('Type medicine names, suggestions from previous visits')),
 
                     TagsInput::make('diagnosis')
                         ->label(__('diagnosis'))
@@ -315,15 +321,12 @@ class VisitForm
                         ->helperText(__('diagnosis')),
 
                     TagsInput::make('treatment')
-                        ->label(__('Drugs / Medications'))
+                        ->label(__('prescription'))
                         ->separator(',')
                         ->required()
                         ->suggestions(fn() => self::getSuggestionsForField('treatment'))
                         ->helperText(__('Treatment plan and instructions')),
-                    CKEditor::make('doctor_description')
-                        ->label(__('Doctor Description'))
-                        ->required()
-                        ->helperText(__('Clinical notes and observations')),
+
 
                 ]),
 
