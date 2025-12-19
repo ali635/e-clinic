@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Patient\Models\Patient;
+use Modules\Room\Models\Room;
 use Modules\Service\Models\Service;
 use Illuminate\Notifications\Notifiable;
 use Modules\Booking\Observers\VisitObserver;
@@ -48,7 +49,8 @@ class Visit extends Model
         'total_after_discount',
         'diagnosis',
         'cancel_reason',
-        'medicines_list'
+        'medicines_list',
+        'room_id',
     ];
 
     protected function casts(): array
@@ -83,6 +85,14 @@ class Visit extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class)->where('status', 1);
+    }
+
+    /**
+     * Get the room this visit is assigned to.
+     */
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
     }
 
 }

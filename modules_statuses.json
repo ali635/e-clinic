@@ -9,5 +9,6 @@
     "AdvancedLanguage": true,
     "User": true,
     "Setting": true,
-    "Medicine": true
+    "Medicine": true,
+    "Room": true
 }

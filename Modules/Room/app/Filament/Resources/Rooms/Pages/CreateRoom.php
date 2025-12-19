@@ -1,0 +1,16 @@
+<?php
+
+namespace Modules\Room\Filament\Resources\Rooms\Pages;
+
+use Filament\Resources\Pages\CreateRecord;
+use Modules\Room\Filament\Resources\Rooms\RoomResource;
+
+class CreateRoom extends CreateRecord
+{
+    protected static string $resource = RoomResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+}
