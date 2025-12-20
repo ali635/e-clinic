@@ -90,9 +90,8 @@ class RoomView extends Page
             try {
                 // Get the full Visit record
                 $visit = $this->room->currentVisit;
-
                 // Only process if AI result hasn't been generated yet
-                if (empty($visit->result_ai)) {
+                if (empty($visit->result_ai) || $visit->result_ai == '<p></p>') {
                     Log::info('Triggering Gemini AI analysis for completed visit', [
                         'visit_id' => $visit->id,
                         'patient_id' => $visit->patient_id
@@ -129,7 +128,7 @@ class RoomView extends Page
             
             $this->room->currentVisit->update([
                 'status' => 'complete',
-                'result_ai' => $result_ai ?? null
+                'result_ai' => $result_ai ?? null,
             ]);
 
 

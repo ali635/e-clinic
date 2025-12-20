@@ -2,11 +2,13 @@
 
 namespace Modules\Room\Filament\Pages;
 
+use App\Services\GeminiAIService;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\Log;
 use Modules\Booking\Models\Visit;
 use Modules\Room\Models\Room;
 use BackedEnum;
@@ -111,7 +113,48 @@ class RoomsDashboard extends Page
 
         // Complete the visit and free the room
         if ($room->currentVisit) {
-            $room->currentVisit->update(['status' => 'complete']);
+             try {
+                // Get the full Visit record
+                $visit = $room->currentVisit;
+                // Only process if AI result hasn't been generated yet
+                if (empty($visit->result_ai) || $visit->result_ai == '<p></p>') {
+                    Log::info('Triggering Gemini AI analysis for completed visit', [
+                        'visit_id' => $visit->id,
+                        'patient_id' => $visit->patient_id
+                    ]);
+
+                    // Use the Gemini AI Service to analyze the visit
+                    $geminiService = new GeminiAIService();
+                    $aiResult = $geminiService->analyzeVisit($visit);
+
+                    // Store the AI result if successfully generated
+                    if ($aiResult) {
+                        $result_ai = $aiResult;
+                        Log::info('Gemini AI analysis completed and stored', [
+                            'visit_id' => $visit->id
+                        ]);
+                    } else {
+                        Log::warning('Gemini AI analysis returned empty result', [
+                            'visit_id' => $visit->id
+                        ]);
+                    }
+                } else {
+                    Log::info('Skipping AI analysis - result already exists', [
+                        'visit_id' => $visit->id
+                    ]);
+                }
+            } catch (\Exception $e) {
+                // Log error but don't block the form from loading
+                Log::error('Failed to process Gemini AI analysis', [
+                    'visit_id' => $room->currentVisit->id ?? null,
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+            }
+            $room->currentVisit->update([
+                'status' => 'complete',
+                'result_ai' => $result_ai ?? null,
+            ]);
         }
 
         $room->update([
