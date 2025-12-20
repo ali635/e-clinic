@@ -6,6 +6,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 // use Filament\Forms\Components\CKEditor;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
@@ -334,6 +335,16 @@ class VisitForm
                         ->directory('visit')
                         ->columnSpanFull()
                         ->helperText(__('Patient attachments')),
+                ]),
+
+                Section::make(__('AI Assistant'))
+                ->columns(1)
+                ->columnSpan(2)
+                ->schema([
+                    RichEditor::make('result_ai')
+                        ->label(__('AI Assistant Result'))
+                        ->helperText(__('Administrative notes, reminders')),
+
                 ]),
         ]);
     }

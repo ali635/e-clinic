@@ -5,6 +5,7 @@ namespace Modules\Setting\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Setting\Filament\Pages\AboutSetting;
+use Modules\Setting\Filament\Pages\AiAssistantSetting;
 use Modules\Setting\Filament\Pages\FooterSocialSetting;
 use Modules\Setting\Filament\Pages\CounterSettings;
 use Modules\Setting\Filament\Pages\GeneralSetting;
@@ -86,6 +87,18 @@ class SettingServiceProvider extends ServiceProvider
             ->description(__('Prescription Settings'))
             ->group('General'),
         ]);
+
+        FilamentSettingsHub::register([
+             SettingHold::make()
+            ->order(2)
+            ->label(__('Ai Assistant Settings'))
+            ->icon('heroicon-o-cog')
+            ->route('filament.admin.pages.ai-assistant-setting')
+            ->page(AiAssistantSetting::class)
+            ->description(__('Ai Assistant Settings'))
+            ->group('General'),
+        ]);
+
 
         
 
