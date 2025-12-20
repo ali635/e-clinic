@@ -42,4 +42,4 @@ document.querySelectorAll(".reveal-up").forEach((el) => {
     observer.observe(el);
 });
 
-
+import '../../vendor/alperenersoy/filament-export/resources/js/filament-export.js';
