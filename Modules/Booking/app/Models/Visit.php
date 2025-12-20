@@ -63,6 +63,7 @@ class Visit extends Model
             'diagnosis' => 'array',
             'treatment' => 'array',
             'medicines_list' => 'array',
+            'arrival_time' => 'datetime',
         ];
     }
     public function service()
@@ -94,5 +95,10 @@ class Visit extends Model
     {
         return $this->belongsTo(Room::class);
     }
+
+    public function isDelayed(): bool
+{
+    return $this->arrival_time && \Carbon\Carbon::parse($this->arrival_time)->diffInMinutes(now()) > 30;
+}
 
 }

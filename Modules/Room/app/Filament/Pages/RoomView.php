@@ -50,44 +50,53 @@ class RoomView extends Page
         return route('filament.admin.pages.room-view', $parameters, $isAbsolute);
     }
 
-    public function markReady(): void
+    public function markAssistantDone(): void
     {
-        $this->room->update(['is_ready' => true]);
+        if ($this->room->doctor_stage !== 'waiting_assistant') {
+            Notification::make()
+                ->title(__('Invalid action'))
+                ->body(__('Room is not waiting for assistant doctor'))
+                ->warning()
+                ->send();
+            return;
+        }
+
+        $this->room->update(['doctor_stage' => 'waiting_main']);
         $this->room->refresh();
 
         Notification::make()
-            ->title(__('Room marked as ready'))
+            ->title(__('Assistant doctor finished'))
+            ->body(__('Room is now ready for main doctor'))
             ->success()
             ->send();
     }
 
-    public function markNotReady(): void
+    public function markMainDone(): void
     {
-        $this->room->update(['is_ready' => false]);
-        $this->room->refresh();
+        if ($this->room->doctor_stage !== 'waiting_main') {
+            Notification::make()
+                ->title(__('Invalid action'))
+                ->body(__('Room is not waiting for main doctor'))
+                ->warning()
+                ->send();
+            return;
+        }
 
-        Notification::make()
-            ->title(__('Room marked as not ready'))
-            ->warning()
-            ->send();
-    }
-
-    public function completeVisit(): void
-    {
+        // Complete the visit and free the room
         if ($this->room->currentVisit) {
             $this->room->currentVisit->update(['status' => 'complete']);
         }
 
         $this->room->update([
             'current_visit_id' => null,
-            'is_ready' => true,
+            'doctor_stage' => 'available',
         ]);
 
         $this->room->refresh();
 
         Notification::make()
-            ->title(__('Visit completed successfully'))
-            ->body(__('The room is now available for the next patient'))
+            ->title(__('Main doctor finished'))
+            ->body(__('Visit completed, room is now available'))
             ->success()
             ->send();
 

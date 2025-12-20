@@ -43,12 +43,19 @@ class RoomForm
                             ->rows(3)
                             ->placeholder(__('Optional description of the room')),
 
-                        Toggle::make('is_ready')
-                            ->label(__('Is Ready'))
-                            ->helperText(__('Indicates if the room is ready for the next patient'))
-                            ->default(true),
+                        Select::make('doctor_stage')
+                            ->label(__('Doctor Stage'))
+                            ->options([
+                                'available' => __('Available'),
+                                'waiting_assistant' => __('With Assistant Doctor'),
+                                'waiting_main' => __('With Main Doctor'),
+                            ])
+                            ->default('available')
+                            ->required()
+                            ->helperText(__('Current stage in the doctor workflow')),
                     ])
-                    ->columns(2),
+                    ->columns(1)
+                    ->columnSpan(2),
             ]);
     }
 }

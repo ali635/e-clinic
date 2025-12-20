@@ -36,7 +36,6 @@ class VisitForm
                         ->label(__('patients'))
                         ->relationship('patient', 'name')
                         ->searchable()
-                        ->required()
                         ->default(fn() => request()->query('patient_id'))
                         ->columnSpan(1),
 
@@ -61,7 +60,6 @@ class VisitForm
                             self::updateTotals($get, $set);
                         })
                         ->searchable()
-                        ->required()
                         ->columnSpan(1),
 
                     TextInput::make('price')
@@ -137,14 +135,12 @@ class VisitForm
                             'cancelled' => __('Cancelled'),
                         ])
                         ->default('pending')
-                        ->required()
                         ->columnSpan(1),
 
                     Select::make('payment_method')
                         ->label(__('Payment Method'))
                         ->options(PaymentMethod::options())
                         ->default(PaymentMethod::Cash)
-                        ->required()
                         ->columnSpan(1),
 
                     Toggle::make('is_arrival')
@@ -187,8 +183,7 @@ class VisitForm
                                     // recompute totals for whole form
                                     self::updateTotals($get, $set);
                                 })
-                                ->searchable()
-                                ->required(),
+                                ->searchable(),
 
                             TextInput::make('price_related_service')
                                 ->label(__('Related Service Price'))
@@ -211,8 +206,7 @@ class VisitForm
                                     // store unit price (not multiplied)
                                     $set('price_related_service', $unitPrice);
                                     self::updateTotals($get, $set);
-                                })
-                                ->required(),
+                                }),
                         ]),
                 ]),
 
@@ -221,14 +215,11 @@ class VisitForm
                 ->columnSpan(2)
                 ->schema([
                     TextInput::make('sys')
-                        ->numeric()
-                        ->required(),
+                        ->numeric(),
                     TextInput::make('dia')
-                        ->numeric()
-                        ->required(),
+                        ->numeric(),
                     TextInput::make('pulse_rate')
-                        ->numeric()
-                        ->required(),
+                        ->numeric(),
                 ]),
 
 
@@ -238,7 +229,6 @@ class VisitForm
                 ->schema([
                     TextInput::make('weight')
                         ->numeric()
-                        ->required()
                         ->suffix('kg')
                         ->minValue(1)
                         ->maxValue(500)
@@ -248,7 +238,6 @@ class VisitForm
 
                     TextInput::make('height')
                         ->numeric()
-                        ->required()
                         ->suffix('cm')
                         ->minValue(50)
                         ->maxValue(300)
@@ -258,7 +247,6 @@ class VisitForm
 
                     TextInput::make('body_max_index')
                         ->numeric()
-                        ->required()
                         ->suffix('kg/m²')
                         ->helperText('Auto-calculated from weight and height')
                         ->placeholder('Calculated automatically')
@@ -291,19 +279,16 @@ class VisitForm
                     TagsInput::make('chief_complaint')
                         ->label(__('chief complaint'))
                         ->separator(',')
-                        ->required()
                         ->suggestions(fn() => self::getSuggestionsForField('chief_complaint'))
                         ->helperText(__('chief complaint')),
 
                     CKEditor::make('doctor_description')
                         ->label(__('Doctor Description'))
-                        ->required()
                         ->helperText(__('Clinical notes and observations')),
 
                     TagsInput::make('medical_history')
                         ->label(__('past medical history'))
                         ->separator(',')
-                        ->required()
                         ->suggestions(fn() => self::getSuggestionsForField('medical_history'))
                         ->helperText(__('past medical history')),
 
@@ -316,14 +301,12 @@ class VisitForm
                     TagsInput::make('diagnosis')
                         ->label(__('diagnosis'))
                         ->separator(',')
-                        ->required()
                         ->suggestions(fn() => self::getSuggestionsForField('diagnosis'))
                         ->helperText(__('diagnosis')),
 
                     TagsInput::make('treatment')
                         ->label(__('prescription'))
                         ->separator(',')
-                        ->required()
                         ->suggestions(fn() => self::getSuggestionsForField('treatment'))
                         ->helperText(__('Treatment plan and instructions')),
 

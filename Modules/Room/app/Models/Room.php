@@ -19,14 +19,7 @@ class Room extends Model
         'status',
         'description',
         'current_visit_id',
-        'is_ready',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     */
-    protected $casts = [
-        'is_ready' => 'boolean',
+        'doctor_stage',
     ];
 
     /**
@@ -43,5 +36,55 @@ class Room extends Model
     public function visits()
     {
         return $this->hasMany(Visit::class);
+    }
+
+    /**
+     * Check if room is available for new patients.
+     */
+    public function isAvailable(): bool
+    {
+        return $this->doctor_stage === 'available';
+    }
+
+    /**
+     * Check if room is waiting for assistant doctor.
+     */
+    public function isWaitingAssistant(): bool
+    {
+        return $this->doctor_stage === 'waiting_assistant';
+    }
+
+    /**
+     * Check if room is waiting for main doctor.
+     */
+    public function isWaitingMain(): bool
+    {
+        return $this->doctor_stage === 'waiting_main';
+    }
+
+    /**
+     * Get the status color for badges.
+     */
+    public function getStatusColor(): string
+    {
+        return match ($this->doctor_stage) {
+            'available' => 'success',
+            'waiting_assistant' => 'info',
+            'waiting_main' => 'warning',
+            default => 'gray',
+        };
+    }
+
+    /**
+     * Get human-readable status label.
+     */
+    public function getStatusLabel(): string
+    {
+        return match ($this->doctor_stage) {
+            'available' => __('Available'),
+            'waiting_assistant' => __('With Assistant Dr.'),
+            'waiting_main' => __('With Main Dr.'),
+            default => __('Unknown'),
+        };
     }
 }
