@@ -1,65 +1,5 @@
 <x-filament-panels::page>
-    {{-- Pending Visits Section --}}
-    <x-filament::section icon="heroicon-o-clock" icon-color="warning" :heading="__('Pending Visits (Arrived)')" :description="__('Patients who have arrived and are waiting for assignment')" class="mb-8">
-        <x-slot:headerActions>
-            <x-filament::badge color="warning" size="lg">
-                {{ trans_choice(':count arrived patient|:count arrived patients', $this->getPendingVisits()->count()) }}
-            </x-filament::badge>
-        </x-slot:headerActions>
 
-        @if ($this->getPendingVisits()->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                @foreach ($this->getPendingVisits() as $visit)
-                    <x-filament::card
-                        class="bg-gradient-to-br from-white to-amber-50 dark:from-gray-800 dark:to-amber-900/10 border-amber-200 dark:border-amber-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                        <div class="flex items-center gap-3 mb-4">
-                            {{-- <x-filament::avatar :initials="strtoupper(substr($visit->patient->name ?? 'P', 0, 1))" color="warning" size="lg" /> --}}
-
-                            <div class="flex-1 min-w-0">
-                                <p class="font-bold text-gray-900 dark:text-white text-lg truncate">
-                                    {{ $visit->patient->name ?? __('Unknown') }}
-                                </p>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <x-filament::badge color="warning" size="sm">
-                                        {{ __('Visit') }} #{{ $visit->id }}
-                                    </x-filament::badge>
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">{{ __('Waiting') }}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-2 mb-4">
-                            <div class="flex items-center gap-2 text-sm">
-                                <x-filament::icon icon="heroicon-o-beaker" class="w-4 h-4 text-blue-500" />
-                                <span class="text-gray-500 dark:text-gray-400">{{ __('Service') }}:</span>
-                                <span class="font-medium text-gray-900 dark:text-white truncate">
-                                    {{ $visit->service->name ?? __('N/A') }}
-                                </span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm">
-                                <x-filament::icon icon="heroicon-o-calendar" class="w-4 h-4 text-emerald-500" />
-                                <span class="text-gray-500 dark:text-gray-400">{{ __('Arrival') }}:</span>
-                                <span class="font-medium text-gray-900 dark:text-white">
-                                    @if ($visit->arrival_time)
-                                        {{ \Carbon\Carbon::parse($visit->arrival_time)->diffForHumans() }}
-                                    @else
-                                        {{ __('N/A') }}
-                                    @endif
-                                </span>
-                            </div>
-                        </div>
-
-                        <x-filament::button wire:click="assignFirstRoom({{ $visit->id }})" color="warning"
-                            icon="heroicon-o-arrow-right-circle" class="w-full">
-                            {{ __('Assign to Room') }}
-                        </x-filament::button>
-                    </x-filament::card>
-                @endforeach
-            </div>
-        @else
-            <x-filament::empty-state icon="heroicon-o-inbox" :heading="__('All Clear!')" :description="__('No pending visits at the moment. All patients have been attended to.')" />
-        @endif
-    </x-filament::section>
 
     {{-- Rooms Status Section --}}
     <x-filament::section icon="heroicon-o-building-office-2" :heading="__('Rooms Status')" :description="__('Real-time room availability and patient assignments')">
@@ -81,7 +21,9 @@
         </x-slot:headerActions>
 
         @if ($this->getRooms()->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" wire:poll.5s>
+
+            <div class="gap-3" wire:poll.5s
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
                 @foreach ($this->getRooms() as $room)
                     @php
                         $statusColor = $room->getStatusColor();
@@ -100,13 +42,16 @@
                     @endphp
 
                     <x-filament::card
-                        class="bg-gradient-to-br {{ $bgColor }} {{ $borderColor }} hover:shadow-xl transition-all duration-300 hover:-translate-y-1" style="margin-bottom: 10px;">
+                        class="h-full flex flex-col {{ $borderColor }} bg-gradient-to-br {{ $bgColor }}"
+                        style="margin: 10px;">
                         {{-- Room Header --}}
                         <div class="flex items-start justify-between mb-4">
                             <div class="flex-1 min-w-0">
-                                <p class="font-bold text-gray-900 dark:text-white text-lg truncate">{{ $room->name }}
+                                <p class="font-bold text-gray-900 dark:text-white text-lg truncate">
+                                    {{ $room->name }}
                                 </p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $room->code ?? __('No Code') }}
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    {{ $room->code ?? __('No Code') }}
                                 </p>
                             </div>
                             <x-filament::badge :color="$statusColor" size="sm">
@@ -145,7 +90,8 @@
                         @else
                             <div class="text-center py-6 mb-4">
                                 <x-filament::icon icon="heroicon-o-user" class="w-12 h-12 mx-auto text-gray-400 mb-2" />
-                                <p class="font-medium text-gray-700 dark:text-gray-300">{{ __('No patient assigned') }}
+                                <p class="font-medium text-gray-700 dark:text-gray-300">
+                                    {{ __('No patient assigned') }}
                                 </p>
                                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                                     {{ __('Ready for next patient') }}</p>
@@ -170,7 +116,17 @@
                                         </x-filament::button>
                                     @endif
                                 </div>
+                                <x-filament::button tag="a" :href="route('filament.admin.pages.room-view', ['roomId' => $room->id])" color="gray"
+                                    icon="heroicon-o-eye" outlined class="w-full" size="sm"
+                                    style="margin-bottom: 5px;margin-top: 5px;">
+                                    {{ __('View Details') }}
+                                </x-filament::button>
                             @else
+                                <x-filament::button tag="a" :href="route('filament.admin.pages.room-view', ['roomId' => $room->id])" color="gray"
+                                    icon="heroicon-o-eye" outlined class="w-full" size="sm"
+                                    style="margin-bottom: 5px;margin-top: 5px;">
+                                    {{ __('View Details') }}
+                                </x-filament::button>
                                 @if ($this->getPendingVisits()->count() > 0)
                                     <div x-data="{ open: false }" class="relative">
                                         <x-filament::button @click="open = !open" color="warning"
@@ -218,10 +174,10 @@
                                                             <div class="flex items-center gap-3">
                                                                 {{-- Avatar --}}
                                                                 <div class="relative flex-shrink-0">
-                                                                    <div
-                                                                        class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-shadow">
-                                                                        {{ strtoupper(substr($visit->patient->name ?? 'P', 0, 1)) }}
-                                                                    </div>
+                                                                    {{-- <div
+                                                                            class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-shadow">
+                                                                            {{ strtoupper(substr($visit->patient->name ?? 'P', 0, 1)) }}
+                                                                        </div> --}}
                                                                     <div
                                                                         class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-gray-800">
                                                                     </div>
@@ -239,21 +195,22 @@
                                                                             #{{ $visit->id }}
                                                                         </x-filament::badge>
                                                                     </div>
-                                                                    <div
-                                                                        class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                                                                        <x-filament::icon icon="heroicon-o-beaker"
-                                                                            class="w-3.5 h-3.5" />
-                                                                        <span
-                                                                            class="truncate">{{ $visit->service->name ?? __('No service') }}</span>
-                                                                    </div>
-                                                                    @if ($visit->arrival_time)
-                                                                        <div
-                                                                            class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                                            <x-filament::icon icon="heroicon-o-clock"
+                                                                    {{-- <div
+                                                                            class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                                                                            <x-filament::icon icon="heroicon-o-beaker"
                                                                                 class="w-3.5 h-3.5" />
-                                                                            <span>{{ \Carbon\Carbon::parse($visit->arrival_time)->diffForHumans() }}</span>
+                                                                            <span
+                                                                                class="truncate">{{ $visit->service->name ?? __('No service') }}</span>
                                                                         </div>
-                                                                    @endif
+                                                                        @if ($visit->arrival_time)
+                                                                            <div
+                                                                                class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                                                <x-filament::icon
+                                                                                    icon="heroicon-o-clock"
+                                                                                    class="w-3.5 h-3.5" />
+                                                                                <span>{{ \Carbon\Carbon::parse($visit->arrival_time)->diffForHumans() }}</span>
+                                                                            </div>
+                                                                        @endif --}}
                                                                 </div>
 
                                                                 {{-- Arrow Icon --}}
@@ -274,10 +231,7 @@
                             @endif
 
                             {{-- View Details Button --}}
-                            <x-filament::button tag="a" :href="route('filament.admin.pages.room-view', ['roomId' => $room->id])" color="gray" icon="heroicon-o-eye"
-                                outlined class="w-full" size="sm" style="margin-top: 5px;">
-                                {{ __('View Details') }}
-                            </x-filament::button>
+
                         </div>
                     </x-filament::card>
                 @endforeach
