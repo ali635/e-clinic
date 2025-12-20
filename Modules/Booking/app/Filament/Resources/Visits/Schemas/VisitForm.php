@@ -337,13 +337,15 @@ class VisitForm
                         ->helperText(__('Patient attachments')),
                 ]),
 
-                Section::make(__('AI Assistant'))
+            Section::make(__('AI Assistant'))
                 ->columns(1)
                 ->columnSpan(2)
+                ->visible(fn(?Visit $record): bool => $record !== null && !empty($record->result_ai) && $record->result_ai !== '<p></p>')
                 ->schema([
                     RichEditor::make('result_ai')
                         ->label(__('AI Assistant Result'))
-                        ->helperText(__('Administrative notes, reminders')),
+                        ->helperText(__('AI-generated medical analysis and insights'))
+                        ->disabled(),
 
                 ]),
         ]);
