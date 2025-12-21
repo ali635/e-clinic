@@ -56,8 +56,8 @@ class Patient extends Authenticatable implements OAuthenticatable
     {
         return Attribute::make(
             get: fn() => $this->date_of_birth
-                ? $this->date_of_birth->age
-                : null,
+            ? $this->date_of_birth->age
+            : null,
         );
     }
 
@@ -99,5 +99,10 @@ class Patient extends Authenticatable implements OAuthenticatable
     public function referral()
     {
         return $this->belongsTo(Referral::class);
+    }
+
+    public function patientInfo()
+    {
+        return $this->hasOne(\Modules\Firebase\Models\PatientInfo::class);
     }
 }
