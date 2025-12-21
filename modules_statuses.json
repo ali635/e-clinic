@@ -10,5 +10,6 @@
     "User": true,
     "Setting": true,
     "Medicine": true,
-    "Room": true
+    "Room": true,
+    "Firebase": true
 }
