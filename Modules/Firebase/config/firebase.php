@@ -1,5 +1,7 @@
 <?php
 
+dd(storage_path('app/private/firebase/firebase-credentials.json'));
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -10,7 +12,7 @@ return [
     | Download this from Firebase Console > Project Settings > Service Accounts
     |
     */
-    'credentials_path' => env('FIREBASE_CREDENTIALS_PATH', base_path('firebase-credentials.json')),
+    'credentials_path' => storage_path('app/private/firebase/firebase-credentials.json'),
 
     /*
     |--------------------------------------------------------------------------
