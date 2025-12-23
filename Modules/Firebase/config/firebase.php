@@ -1,6 +1,5 @@
 <?php
 
-dd(storage_path('app/private/firebase/firebase-credentials.json'));
 
 return [
     /*
