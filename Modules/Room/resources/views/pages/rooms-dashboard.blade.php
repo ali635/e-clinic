@@ -47,7 +47,7 @@
                         {{-- Room Header --}}
                         <div class="flex items-start justify-between mb-4">
                             <div class="flex-1 min-w-0">
-                                <p class="font-bold text-gray-900 dark:text-white text-lg truncate">
+                                <p class="font-bold text-gray-900 dark:text-white text-lg truncate" style="color: black;">
                                     {{ $room->name }}
                                 </p>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -68,21 +68,21 @@
                                 <div class="flex items-center gap-2 text-sm">
                                     <x-filament::icon icon="heroicon-o-user" class="w-4 h-4 text-blue-500" />
                                     <span class="text-gray-500 dark:text-gray-400">{{ __('Name') }}:</span>
-                                    <span class="font-medium text-gray-900 dark:text-white truncate">
+                                    <span class="font-medium text-gray-900 dark:text-white truncate" style="color: black;">
                                         {{ $room->currentVisit->patient->name }}
                                     </span>
                                 </div>
                                 <div class="flex items-center gap-2 text-sm">
                                     <x-filament::icon icon="heroicon-o-hashtag" class="w-4 h-4 text-blue-500" />
                                     <span class="text-gray-500 dark:text-gray-400">{{ __('Visit') }}:</span>
-                                    <span class="font-medium text-gray-900 dark:text-white">
+                                    <span class="font-medium text-gray-900 dark:text-white" style="color: black;">
                                         #{{ $room->currentVisit->id }}
                                     </span>
                                 </div>
                                 <div class="flex items-center gap-2 text-sm">
                                     <x-filament::icon icon="heroicon-o-beaker" class="w-4 h-4 text-blue-500" />
                                     <span class="text-gray-500 dark:text-gray-400">{{ __('Service') }}:</span>
-                                    <span class="font-medium text-gray-900 dark:text-white truncate">
+                                    <span class="font-medium text-gray-900 dark:text-white truncate" style="color: black;">
                                         {{ $room->currentVisit->service->name ?? __('N/A') }}
                                     </span>
                                 </div>
@@ -149,9 +149,9 @@
                                                     class="p-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white">
                                                     <div class="flex items-center justify-between">
                                                         <div>
-                                                            <h3 class="font-bold text-sm">
+                                                            <h3 class="font-bold text-sm" style="color: black;">
                                                                 {{ __('Select Patient to Assign') }}</h3>
-                                                            <p class="text-xs text-white/80 mt-0.5">
+                                                            <p class="text-xs text-white/80 mt-0.5" style="color: black;">
                                                                 {{ $this->getPendingVisits()->count() }}
                                                                 {{ trans_choice('patient waiting|patients waiting', $this->getPendingVisits()->count()) }}
                                                             </p>
@@ -187,7 +187,7 @@
                                                                 <div class="flex-1 min-w-0">
                                                                     <div class="flex items-center gap-2 mb-1">
                                                                         <p
-                                                                            class="font-semibold text-gray-900 dark:text-white truncate">
+                                                                            class="font-semibold text-gray-900 dark:text-white truncate" style="color: black;">
                                                                             {{ $visit->patient->name ?? __('Unknown Patient') }}
                                                                         </p>
                                                                         <x-filament::badge color="warning"
