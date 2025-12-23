@@ -25,7 +25,7 @@ class FirebaseNotificationLogsTable
                 TextColumn::make('patient.name')
                     ->searchable(),
 
-                TextColumn::make('firebaseNotification.name')
+                TextColumn::make('firebaseNotification.title')
                     ->searchable(),
 
                 BooleanColumn::make('is_sent'),
