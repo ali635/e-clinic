@@ -23,6 +23,7 @@ class FirebaseNotification extends Model
         'message',
         'image',
         'screen_event',
+        'data',
         'send_date',
         'is_sent',
     ];
@@ -33,6 +34,7 @@ class FirebaseNotification extends Model
     protected $casts = [
         'send_date' => 'datetime',
         'is_sent' => 'boolean',
+        'data' => 'array',
     ];
 
     /**

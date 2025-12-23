@@ -58,7 +58,7 @@ class SendFirebaseNotificationJob implements ShouldQueue
         $fcmToken = $patientInfo->fcm_token;
 
         // Prepare notification data
-        $data = [];
+        $data = $this->notification->data ?? [];
 
         if ($this->notification->screen_event) {
             $data['screen'] = $this->notification->screen_event;
@@ -66,6 +66,18 @@ class SendFirebaseNotificationJob implements ShouldQueue
 
         // Add notification ID for tracking
         $data['notification_id'] = (string) $this->notification->id;
+
+        // Ensure dependent IDs are passed as top-level keys if needed, or keep them in data
+        // For example if visit_details expects visit_id at top level of data:
+        if (isset($data['visit_id'])) {
+            $data['id'] = (string) $data['visit_id'];
+        }
+        if (isset($data['post_id'])) {
+            $data['id'] = (string) $data['post_id'];
+        }
+        if (isset($data['service_id'])) {
+            $data['id'] = (string) $data['service_id'];
+        }
 
         try {
             // Send notification with or without image
