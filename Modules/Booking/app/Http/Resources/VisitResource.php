@@ -18,7 +18,7 @@ class VisitResource extends JsonResource
             'total_price' => $this->total_price,
             'total_after_discount' => $this->total_after_discount,
             'currency_lang' => __('IQD'),
-            'arrival_time' => $this->arrival_time,
+            'arrival_time' => Carbon::parse($this->arrival_time)->format('Y-m-d H:i:s'),
             'is_arrival' => (bool) $this->is_arrival,
             'status' => (bool) $this->is_arrival && $this->status == 'complete' ? __('completed') : ($this->arrival_time > Carbon::now() && $this->status == 'pending' ? __('pending') : __('cancelled')),
             'doctor_description' => $this->doctor_description,
