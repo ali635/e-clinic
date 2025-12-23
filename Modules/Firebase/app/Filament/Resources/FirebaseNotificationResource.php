@@ -112,18 +112,18 @@ class FirebaseNotificationResource extends Resource
 
                     Select::make('data.post_id')
                         ->label('Select Post')
-                        ->options(fn() => \Modules\Blog\Models\Post::latest()->take(50)->pluck('name', 'id')) // Assuming 'name' is translatable, might need handling
+                        ->options(fn() => \Modules\Blog\Models\Post::latest()->take(50)->get()->pluck('name', 'id'))
                         ->searchable()
-                        ->getSearchResultsUsing(fn(string $search) => \Modules\Blog\Models\Post::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id'))
+                        ->getSearchResultsUsing(fn(string $search) => \Modules\Blog\Models\Post::whereTranslationLike('name', "%{$search}%")->limit(50)->get()->pluck('name', 'id'))
                         ->visible(fn($get) => $get('screen_event') == 'feed_details')
                         ->required(fn($get) => $get('screen_event') == 'feed_details')
                         ->columnSpan(1),
 
                     Select::make('data.service_id')
                         ->label('Select Service')
-                        ->options(fn() => \Modules\Service\Models\Service::latest()->take(50)->pluck('name', 'id'))
+                        ->options(fn() => \Modules\Service\Models\Service::latest()->take(50)->get()->pluck('name', 'id'))
                         ->searchable()
-                        ->getSearchResultsUsing(fn(string $search) => \Modules\Service\Models\Service::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id'))
+                        ->getSearchResultsUsing(fn(string $search) => \Modules\Service\Models\Service::whereTranslationLike('name', "%{$search}%")->limit(50)->get()->pluck('name', 'id'))
                         ->visible(fn($get) => $get('screen_event') == 'service_details')
                         ->required(fn($get) => $get('screen_event') == 'service_details')
                         ->columnSpan(1),
