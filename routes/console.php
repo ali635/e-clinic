@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 \Illuminate\Support\Facades\Schedule::command('firebase:send-birthday-notifications')->dailyAt('10:00');
+\Illuminate\Support\Facades\Schedule::command('firebase:send-visit-reminders')->dailyAt('09:00');
