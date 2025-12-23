@@ -5,6 +5,7 @@ namespace Modules\Firebase\Filament\Resources\FirebaseNotificationResource\Pages
 use Modules\Firebase\Filament\Resources\FirebaseNotificationResource;
 use Modules\Firebase\Jobs\SendFirebaseNotificationJob;
 use Modules\Patient\Models\Patient;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +24,10 @@ class CreateFirebaseNotification extends CreateRecord
         // If send_date is set and in the future, don't send now
         if ($notification->send_date && $notification->send_date->isFuture()) {
             // Notification will be sent by scheduled command
-            $this->notify('success', 'Notification scheduled successfully!');
+            Notification::make()
+                ->title('Notification scheduled successfully!')
+                ->success()
+                ->send();
             return;
         }
 
@@ -38,7 +42,10 @@ class CreateFirebaseNotification extends CreateRecord
                 SendFirebaseNotificationJob::dispatch($notification, $patient);
             }
 
-            $this->notify('success', "Notification dispatched to {$patients->count()} patients!");
+            Notification::make()
+                ->title("Notification dispatched to {$patients->count()} patients!")
+                ->success()
+                ->send();
         } else {
             // Send to specific patients
             $patients = $notification->patients()
@@ -51,7 +58,10 @@ class CreateFirebaseNotification extends CreateRecord
                 SendFirebaseNotificationJob::dispatch($notification, $patient);
             }
 
-            $this->notify('success', "Notification dispatched to {$patients->count()} selected patient(s)!");
+            Notification::make()
+                ->title("Notification dispatched to {$patients->count()} selected patient(s)!")
+                ->success()
+                ->send();
         }
 
         // Mark as sent if not scheduled
