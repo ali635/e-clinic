@@ -90,10 +90,10 @@ class FirebaseNotificationResource extends Resource
                             'home' => 'Home',
                             'services' => 'Services',
                             'visits' => 'Visits',
-                            'feeds' => 'Feeds',
+                            'feeds' => 'Posts',
                             'profile' => 'Profile',
                             'visit_details' => 'Visit Details',
-                            'feed_details' => 'Feed Details',
+                            'feed_details' => 'Post Details',
                             'service_details' => 'Service Details',
                         ])
                         ->placeholder('Select screen or event')
@@ -106,8 +106,8 @@ class FirebaseNotificationResource extends Resource
                         ->options(fn() => \Modules\Booking\Models\Visit::latest()->take(50)->pluck('id', 'id')->map(fn($id) => "Visit #$id"))
                         ->searchable()
                         ->getSearchResultsUsing(fn(string $search) => \Modules\Booking\Models\Visit::where('id', 'like', "%{$search}%")->limit(50)->pluck('id', 'id')->map(fn($id) => "Visit #$id"))
-                        ->visible(fn($get) => $get('screen_event') === 'visit_details')
-                        ->required(fn($get) => $get('screen_event') === 'visit_details')
+                        ->visible(fn($get) => $get('screen_event') == 'visit_details')
+                        ->required(fn($get) => $get('screen_event') == 'visit_details')
                         ->columnSpan(1),
 
                     Select::make('data.post_id')
@@ -115,8 +115,8 @@ class FirebaseNotificationResource extends Resource
                         ->options(fn() => \Modules\Blog\Models\Post::latest()->take(50)->pluck('name', 'id')) // Assuming 'name' is translatable, might need handling
                         ->searchable()
                         ->getSearchResultsUsing(fn(string $search) => \Modules\Blog\Models\Post::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id'))
-                        ->visible(fn($get) => $get('screen_event') === 'feed_details')
-                        ->required(fn($get) => $get('screen_event') === 'feed_details')
+                        ->visible(fn($get) => $get('screen_event') == 'feed_details')
+                        ->required(fn($get) => $get('screen_event') == 'feed_details')
                         ->columnSpan(1),
 
                     Select::make('data.service_id')
@@ -124,8 +124,8 @@ class FirebaseNotificationResource extends Resource
                         ->options(fn() => \Modules\Service\Models\Service::latest()->take(50)->pluck('name', 'id'))
                         ->searchable()
                         ->getSearchResultsUsing(fn(string $search) => \Modules\Service\Models\Service::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id'))
-                        ->visible(fn($get) => $get('screen_event') === 'service_details')
-                        ->required(fn($get) => $get('screen_event') === 'service_details')
+                        ->visible(fn($get) => $get('screen_event') == 'service_details')
+                        ->required(fn($get) => $get('screen_event') == 'service_details')
                         ->columnSpan(1),
 
                     DateTimePicker::make('send_date')
