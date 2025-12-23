@@ -61,7 +61,7 @@ class SendFirebaseNotificationJob implements ShouldQueue
         $data = [];
 
         if ($this->notification->screen_event) {
-            $data['screen_event'] = $this->notification->screen_event;
+            $data['screen'] = $this->notification->screen_event;
         }
 
         // Add notification ID for tracking

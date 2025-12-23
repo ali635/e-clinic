@@ -226,7 +226,7 @@ $firebaseService->sendNotification(
     fcmToken: 'token',
     title: 'Test',
     message: 'Message',
-    data: ['screen_event' => 'home']
+    data: ['screen' => 'home']
 );
 
 // Send notification with image
