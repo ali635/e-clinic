@@ -349,7 +349,7 @@
 
             <div class="medicine-list">
                 @php
-                    $medicines = collect((array) $record->medicines_list)
+                    $medicines = collect((array) $record->treatment)
                         ->flatMap(fn($item) => is_string($item) ? array_map('trim', explode(',', $item)) : [$item])
                         ->filter()
                         ->unique()
