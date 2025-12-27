@@ -9,6 +9,8 @@ use Modules\Setting\Filament\Pages\AiAssistantSetting;
 use Modules\Setting\Filament\Pages\FooterSocialSetting;
 use Modules\Setting\Filament\Pages\CounterSettings;
 use Modules\Setting\Filament\Pages\GeneralSetting;
+use Modules\Setting\Filament\Pages\NotificationBirthdaySetting;
+use Modules\Setting\Filament\Pages\NotificationVisitRemindersSetting;
 use Modules\Setting\Filament\Pages\PrescriptionSetting;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -81,7 +83,7 @@ class SettingServiceProvider extends ServiceProvider
             SettingHold::make()
             ->order(2)
             ->label(__('Prescription Settings'))
-            ->icon('heroicon-o-cog')
+            ->icon('heroicon-o-clipboard-document-list')
             ->route('filament.admin.pages.prescription-setting')
             ->page(PrescriptionSetting::class)
             ->description(__('Prescription Settings'))
@@ -92,14 +94,34 @@ class SettingServiceProvider extends ServiceProvider
              SettingHold::make()
             ->order(2)
             ->label(__('Ai Assistant Settings'))
-            ->icon('heroicon-o-cog')
+            ->icon('heroicon-o-cube-transparent')
             ->route('filament.admin.pages.ai-assistant-setting')
             ->page(AiAssistantSetting::class)
             ->description(__('Ai Assistant Settings'))
             ->group('General'),
         ]);
 
+        FilamentSettingsHub::register([
+            SettingHold::make()
+            ->order(2)
+            ->label(__('Notification Birthday Settings'))
+            ->icon('heroicon-o-cake')
+            ->route('filament.admin.pages.notification-birthday-setting')
+            ->page(NotificationBirthdaySetting::class)
+            ->description(__('Birthday Configration Settings'))
+            ->group('General'),
+        ]);
 
+         FilamentSettingsHub::register([
+            SettingHold::make()
+            ->order(2)
+            ->label(__('Notification Visit Reminder Settings'))
+            ->icon('heroicon-o-eye')
+            ->route('filament.admin.pages.notification-visit-reminders-setting')
+            ->page(NotificationVisitRemindersSetting::class)
+            ->description(__('Visit Reminder Configration Settings'))
+            ->group('General'),
+        ]);
         
 
     }

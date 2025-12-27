@@ -38,7 +38,7 @@ class SendVisitRemindersCommand extends Command
             ->whereHas('patient.patientInfo', function ($query) {
                 $query->whereNotNull('fcm_token');
             })
-            ->with(['patient'])
+            ->with(['patient','patient.patientInfo'])
             ->get();
 
         if ($visits->isEmpty()) {
@@ -53,12 +53,12 @@ class SendVisitRemindersCommand extends Command
 
         foreach ($visits as $visit) {
             $patient = $visit->patient;
-
+            $currentLanguage = $patient->patientInfo->current_lang ?? config('app.locale'); 
             // Create a specific notification for this user
             // We create a new notification record for each to keep it personalized and link to specific visit_id
             $notification = FirebaseNotification::create([
-                'title' => 'Upcoming Appointment 🗓️',
-                'message' => "Reminder: You have an appointment scheduled for " . $visit->arrival_time->format('M d, h:i A') . ". We look forward to seeing you!",
+                'title' => setting_lang('visit_reminder_title',null,$currentLanguage),
+                'message' => setting_lang('visit_reminder_description',null,$currentLanguage) . ' '. $visit->arrival_time->format('M d, h:i A') ,
                 'screen_event' => 'visit_details',
                 'data' => ['visit_id' => $visit->id],
                 'is_sent' => false,

@@ -34,12 +34,12 @@ class SendBirthdayNotificationsCommand extends Command
         $today = Carbon::today();
 
         // Find patients whose birthday is today (month and day match)
-        // Note: date_of_birth is a date field, so we compare month and day
         $patients = Patient::whereMonth('date_of_birth', $today->month)
             ->whereDay('date_of_birth', $today->day)
             ->whereHas('patientInfo', function ($query) {
                 $query->whereNotNull('fcm_token');
             })
+            ->with('patientInfo')
             ->get();
 
         if ($patients->isEmpty()) {
@@ -49,31 +49,36 @@ class SendBirthdayNotificationsCommand extends Command
 
         $this->info("Found {$patients->count()} patients with birthday today.");
 
-        // Create the notification record
-        $notification = FirebaseNotification::create([
-            'title' => 'Happy Birthday! 🎂',
-            'message' => 'We wish you a wonderful birthday filled with joy and happiness from Dr Azad Clinic!',
-            'screen_event' => 'profile',
-            'is_sent' => false, // Will be marked sent/logged via job? Actually job marks log, parent notification status usually reflects bulk. 
-            // Reuse existing flow: One notification record sent to many people. 
-            // Ideally we create one "Campaign" notification.
-            'data' => [],
-        ]);
-
-        $this->info("Created notification record #{$notification->id}. Dispatching jobs...");
+        // Group patients by language
+        $groupedPatients = $patients->groupBy(function ($patient) {
+            return $patient->patientInfo->current_lang ?? config('app.locale');
+        });
 
         $bar = $this->output->createProgressBar($patients->count());
         $bar->start();
 
-        foreach ($patients as $patient) {
-            SendFirebaseNotificationJob::dispatch($notification, $patient);
-            $bar->advance();
+        foreach ($groupedPatients as $lang => $group) {
+            // Create the notification record for this language group
+            $notification = FirebaseNotification::create([
+                'title' => setting_lang('birthday_title', null, $lang),
+                'message' => setting_lang('birthday_description', null, $lang),
+                'screen_event' => 'profile',
+                'is_sent' => false,
+                'data' => [],
+            ]);
+
+            $this->info("Created notification record #{$notification->id} for language: {$lang}. Dispatching jobs...");
+
+            foreach ($group as $patient) {
+                SendFirebaseNotificationJob::dispatch($notification, $patient);
+                $bar->advance();
+            }
+
+            $notification->update(['is_sent' => true]);
         }
 
         $bar->finish();
         $this->newLine();
-
-        $notification->update(['is_sent' => true]);
 
         $this->info('All birthday notifications dispatched successfully!');
     }
