@@ -2,6 +2,7 @@
 
 namespace Modules\Booking\Filament\Resources\Visits\Schemas;
 
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
@@ -120,7 +121,7 @@ class VisitForm
 
             // ===== Arrival info =====
             Section::make(__('Arrival Information'))
-                ->columns(2)
+                ->columns(1)
                 ->columnSpan(1)
                 ->schema([
                     DateTimePicker::make('arrival_time')
@@ -146,6 +147,11 @@ class VisitForm
 
                     Toggle::make('is_arrival')
                         ->label(__('Is arrival?')),
+
+                    DatePicker::make('next_visit')
+                        ->label(__('Next Visit'))
+                        ->helperText(__('Expected / actual next visit time'))
+                        ->columnSpan(1),
                 ]),
 
             // ===== Related services repeater =====

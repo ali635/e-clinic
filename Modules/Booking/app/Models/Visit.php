@@ -51,7 +51,8 @@ class Visit extends Model
         'cancel_reason',
         'medicines_list',
         'room_id',
-        'result_ai'
+        'result_ai',
+        'next_visit'
     ];
 
     protected function casts(): array
