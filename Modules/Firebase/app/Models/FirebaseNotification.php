@@ -25,6 +25,7 @@ class FirebaseNotification extends Model
         'screen_event',
         'data',
         'send_date',
+        'star_count',
         'is_sent',
     ];
 

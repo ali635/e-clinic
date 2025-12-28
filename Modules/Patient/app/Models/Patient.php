@@ -105,4 +105,28 @@ class Patient extends Authenticatable implements OAuthenticatable
     {
         return $this->hasOne(\Modules\Firebase\Models\PatientInfo::class);
     }
+
+    /**
+     * Calculate the patient's star rating based on completed visits.
+     * Uses the loyalty program logic: 0-2 visits = 0 stars, 3-4 = 1 star, 
+     * 5-9 = 2 stars, 10-14 = 3 stars, 15+ = 4 stars
+     *
+     * @return int Star rating (0-4)
+     */
+    public function getStarRating(): int
+    {
+        $completedVisits = $this->visits()->where('is_arrival', true)->count();
+
+        if ($completedVisits >= 15) {
+            return 4;
+        } elseif ($completedVisits >= 10) {
+            return 3;
+        } elseif ($completedVisits >= 5) {
+            return 2;
+        } elseif ($completedVisits >= 3) {
+            return 1;
+        }
+
+        return 0;
+    }
 }

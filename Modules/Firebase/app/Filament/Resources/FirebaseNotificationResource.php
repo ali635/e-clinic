@@ -145,6 +145,17 @@ class FirebaseNotificationResource extends Resource
                         ->preload()
                         ->helperText('Optional: Select specific patients to receive this notification. Leave empty to send to ALL patients.')
                         ->columnSpanFull(),
+
+                    Select::make('star_count')
+                        ->label('Minimum Star Rating (Optional)')
+                        ->options([
+                            '1' => '1 Star (3+ visits)',
+                            '2' => '2 Stars (5+ visits)',
+                            '3' => '3 Stars (10+ visits)',
+                            '4' => '4 Stars (15+ visits)',
+                        ])
+                        ->helperText('Filter patients by their loyalty star rating. Only patients with this star level or higher will receive the notification.')
+                        ->columnSpanFull(),
                 ]),
         ]);
     }

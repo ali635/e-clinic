@@ -54,6 +54,12 @@ class ScheduleFirebaseNotificationsCommand extends Command
                     $query->whereNotNull('fcm_token');
                 })->get();
 
+                if ($notification->star_count) {
+                    $patients = $patients->filter(function ($patient) use ($notification) {
+                        return $patient->getStarRating() >= $notification->star_count;
+                    });
+                }
+
                 $this->info("  Sending to all patients with FCM tokens ({$patients->count()} patients)");
 
                 foreach ($patients as $patient) {
@@ -66,6 +72,13 @@ class ScheduleFirebaseNotificationsCommand extends Command
                         $query->whereNotNull('fcm_token');
                     })
                     ->get();
+
+                // Filter patients based on their calculated star rating
+                if ($notification->star_count) {
+                    $patients = $patients->filter(function ($patient) use ($notification) {
+                        return $patient->getStarRating() >= $notification->star_count;
+                    });
+                }
 
                 $this->info("  Sending to {$patients->count()} specific patient(s)");
 
