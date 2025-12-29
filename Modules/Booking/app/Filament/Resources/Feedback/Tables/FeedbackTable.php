@@ -20,13 +20,13 @@ class FeedbackTable
                 TextColumn::make('id')
                     ->label(__('ID'))
                     ->sortable(),
-                TextColumn::make('patient.name')
+                TextColumn::make('patient.name')->label(__('Patient Name'))
                     ->searchable(),
 
-                TextColumn::make('visit.service.name')
+                TextColumn::make('visit.service.name')->label(__('Service Name'))
                     ->searchable(),
 
-                TextColumn::make('comments')
+                TextColumn::make('comments')->label(__('Comments'))
                     ->searchable(),
                 RatingColumn::make('rating')
                     ->color('warning')

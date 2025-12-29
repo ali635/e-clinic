@@ -6,6 +6,7 @@ use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Modules\Booking\Models\Visit;
+use Modules\Booking\Models\VisitFollow;
 
 class VisitObserver
 {
@@ -37,6 +38,32 @@ class VisitObserver
      */
     public function updated(Visit $visit): void
     {
+        if ($visit->status == 'complete') {
+            $checkFollowVisit = VisitFollow::where('visit_id', $visit->id)->exists();
+            if (!$checkFollowVisit) {
+                // First follow-up: 10 days after arrival_time
+                $visitFollow = new VisitFollow();
+                $visitFollow->visit_id = $visit->id;
+                $visitFollow->patient_id = $visit->patient_id;
+                $visitFollow->date = $visit->arrival_time->addDays(10);
+                $visitFollow->save();
+
+                // Second follow-up: 1 month after arrival_time
+                $visitFollow = new VisitFollow();
+                $visitFollow->visit_id = $visit->id;
+                $visitFollow->patient_id = $visit->patient_id;
+                $visitFollow->date = $visit->arrival_time->addMonth();
+                $visitFollow->save();
+
+                // Third follow-up: 2 months after arrival_time
+                $visitFollow = new VisitFollow();
+                $visitFollow->visit_id = $visit->id;
+                $visitFollow->patient_id = $visit->patient_id;
+                $visitFollow->date = $visit->arrival_time->addMonths(2);
+                $visitFollow->save();
+            }
+
+        }
     }
 
     /**

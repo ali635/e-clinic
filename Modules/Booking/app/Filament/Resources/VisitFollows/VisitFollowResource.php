@@ -20,9 +20,34 @@ class VisitFollowResource extends Resource
 {
     protected static ?string $model = VisitFollow::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+   public static function getNavigationGroup(): ?string
+    {
+        return __('Patient Information');
+    }
 
-    protected static ?string $recordTitleAttribute = 'dispaly_name';
+    // ✅ TRANSLATABLE navigation label (sidebar)
+    public static function getNavigationLabel(): string
+    {
+        return __('Visit Follows');
+    }
+
+    // ✅ TRANSLATABLE plural label (used in list page titles)
+    public static function getPluralLabel(): string
+    {
+        return __('Visit Follows');
+    }
+
+    // ✅ TRANSLATABLE singular label (used in forms)
+    public static function getModelLabel(): string
+    {
+        return __('Follows');
+    }
+
+    // ✅ TRANSLATABLE breadcrumb (top navigation)
+    public static function getBreadcrumb(): string
+    {
+        return __('Visit Follows');
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -50,9 +75,9 @@ class VisitFollowResource extends Resource
     {
         return [
             'index' => ListVisitFollows::route('/'),
-            'create' => CreateVisitFollow::route('/create'),
+            // 'create' => CreateVisitFollow::route('/create'),
             'view' => ViewVisitFollow::route('/{record}'),
-            'edit' => EditVisitFollow::route('/{record}/edit'),
+            // 'edit' => EditVisitFollow::route('/{record}/edit'),
         ];
     }
 }
