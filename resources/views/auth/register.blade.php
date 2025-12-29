@@ -58,18 +58,58 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Full Name Field -->
                     <div class="space-y-2">
-                        <label for="full_name" class="block text-sm font-semibold text-gray-800 flex items-center gap-2">
+                        <label for="first_name" class="block text-sm font-semibold text-gray-800 flex items-center gap-2">
                             <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" stroke-width="2"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
-                            {{ __('Full Name') }}
+                            {{ __('First Name') }}
                         </label>
-                        <input id="full_name" name="name" type="text" required
+                        <input id="first_name" name="first_name" type="text" required
                             class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"
-                            placeholder="{{ __('Enter your full name') }}" value="{{ old('name') }}">
-                        @error('name')
+                            placeholder="{{ __('Enter your First name') }}" value="{{ old('first_name') }}">
+                        @error('first_name')
+                            <div class="text-red-600 text-sm font-medium bg-red-50 rounded-md px-3 py-2">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Last Name Field -->
+                    <div class="space-y-2">
+                        <label for="middle_name" class="block text-sm font-semibold text-gray-800 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            {{ __('Middle Name') }}
+                        </label>
+                        <input id="middle_name" name="middle_name" type="text" required
+                            class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"
+                            placeholder="{{ __('Enter your Middle name') }}" value="{{ old('middle_name') }}">
+                        @error('middle_name')
+                            <div class="text-red-600 text-sm font-medium bg-red-50 rounded-md px-3 py-2">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Last Name Field -->
+                    <div class="space-y-2">
+                        <label for="last_name" class="block text-sm font-semibold text-gray-800 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            {{ __('Last Name') }}
+                        </label>
+                        <input id="last_name" name="last_name" type="text" required
+                            class="form-input w-full rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 transition-colors duration-200 px-4 py-3"
+                            placeholder="{{ __('Enter your Last name') }}" value="{{ old('last_name') }}">
+                        @error('last_name')
                             <div class="text-red-600 text-sm font-medium bg-red-50 rounded-md px-3 py-2">
                                 {{ $message }}
                             </div>

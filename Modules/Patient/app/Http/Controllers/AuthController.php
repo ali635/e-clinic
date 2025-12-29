@@ -72,7 +72,7 @@ class AuthController extends Controller
         
         // Create patient with mass assignment
         $patient = Patient::create([
-            'name' => $validated['name'],
+            'name' => $validated['first_name'] . ' ' . $validated['middle_name'] . ' ' . $validated['last_name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'],
             'other_phone' => $validated['other_phone'] ?? null,

@@ -7,6 +7,7 @@ use Devrabiul\ToastMagic\Facades\ToastMagic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Modules\Booking\Models\Feedback;
 use Modules\Booking\Models\Visit;
 use Modules\Location\Models\Area;
@@ -123,17 +124,30 @@ class PatientController extends Controller
         return view('patient.feedback.index', compact('feedbacks'));
     }
 
-    public function storeFeedback(FeedbackRequest $request)
-    {
+   public function storeFeedback(FeedbackRequest $request)
+{
+    try {
         $patient = auth('patient')->user();
         $data = $request->validated();
         $data['patient_id'] = $patient->id;
+        
         Feedback::create($data);
 
         ToastMagic::success(__('Feedback sent successfully'));
 
         return redirect()->route('patient.feedback')->with('success', __('Feedback sent successfully'));
+    } catch (ValidationException $e) {
+        // Convert validation errors to toast messages
+        foreach ($e->validator->errors()->all() as $error) {
+            ToastMagic::error($error);
+        }
+        return redirect()->back()->withInput();
+    } catch (\Exception $e) {
+        // Handle any unexpected errors
+        ToastMagic::error(__('An error occurred while submitting your feedback.'));
+        return redirect()->back()->withInput();
     }
+}
 
 
     public function updateProfile(UpdatePatientProfileRequest $request)

@@ -14,7 +14,10 @@ class PatientRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:50',
+            'middle_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
+
             'email' => 'required|email|unique:patients,email',
             'password' => 'required|string|min:6|confirmed',
             'phone' => 'required|string|max:20|unique:patients,phone',

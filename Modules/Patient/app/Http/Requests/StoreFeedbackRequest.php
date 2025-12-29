@@ -17,8 +17,8 @@ class StoreFeedbackRequest extends FormRequest
     {
         return [
             'visit_id' => ['required', 'integer', 'exists:visits,id'],
-            'comments' => ['nullable', 'string', 'max:1000'],
             'rating'   => ['required', 'integer', 'min:1', 'max:10'],
+            'comments' => ['required_unless:rating,10'],
         ];
     }
 
