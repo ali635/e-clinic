@@ -30,9 +30,17 @@ class VisitFollowsTable
                 TextColumn::make('patient.name')->label(__('Patient Name'))
                     ->searchable(),
                 TextColumn::make('patient.phone')->label(__('Patient Phone'))
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn($record) => $record->patient?->phone ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $record->patient->phone) : null)
+                    ->openUrlInNewTab()
+                    ->icon('heroicon-o-chat-bubble-left-right')
+                    ->color('success'),
                 TextColumn::make('patient.other_phone')->label(__('Patient Other Phone'))
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn($record) => $record->patient?->other_phone ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $record->patient->other_phone) : null)
+                    ->openUrlInNewTab()
+                    ->icon('heroicon-o-chat-bubble-left-right')
+                    ->color('success'),
                 TextColumn::make('type')->label(__('Type'))
                     ->searchable(),
 
@@ -67,9 +75,11 @@ class VisitFollowsTable
                 Filter::make('date')
                     ->form([
                         \Filament\Forms\Components\DatePicker::make('date_from')
-                            ->label(__('Date From')),
+                            ->label(__('Date From'))
+                            ->default(now()),
                         \Filament\Forms\Components\DatePicker::make('date_until')
-                            ->label(__('Date Until')),
+                            ->label(__('Date Until'))
+                            ->default(now()),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
