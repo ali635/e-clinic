@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Kurdish Font - Noto Sans Arabic supports Kurdish well -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700;900&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --primary-text: #000000;
@@ -298,6 +301,13 @@
             font-size: 9px;
             font-weight: 600;
         }
+
+        /* Kurdish font support */
+        .kurdish-text,
+        [lang="ku"],
+        .text-kurdish {
+            font-family: 'Noto Sans Arabic', 'Cairo', sans-serif !important;
+        }
     </style>
 </head>
 
@@ -393,7 +403,7 @@
                 </div>
 
                 <div class="text-right" style="direction: rtl;">
-                    <div>{{ strip_tags(setting_lang('address', null, 'ku')) }}</div>
+                    <div class="kurdish-text">{{ strip_tags(setting_lang('address', null, 'ku')) }}</div>
                     <div>{{ strip_tags(setting_lang('address', null, 'ar')) }}</div>
                 </div>
             </div>
