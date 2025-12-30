@@ -60,7 +60,7 @@ class AboutSetting extends SettingsPage
                                             ->required()
                                             ->label(__('About Us (English)'))
                                             ->columnSpan(2),
-                                        TextInput::make('address.en')
+                                        RichEditor::make('address.en')
                                             ->required()
                                             ->label(__('Address (English)'))
                                             ->columnSpan(2),
@@ -72,7 +72,7 @@ class AboutSetting extends SettingsPage
                                             ->required()
                                             ->label(__('About Us (Arabic)'))
                                             ->columnSpan(2),
-                                        TextInput::make('address.ar')
+                                        RichEditor::make('address.ar')
                                             ->required()
                                             ->label(__('Address (Arabic)'))
                                             ->columnSpan(2),
@@ -85,7 +85,7 @@ class AboutSetting extends SettingsPage
                                             ->required()
                                             ->label(__('About Us (Kurdish)'))
                                             ->columnSpan(2),
-                                        TextInput::make('address.ku')
+                                        RichEditor::make('address.ku')
                                             ->required()
                                             ->label(__('Address (Kurdish)'))
                                             ->columnSpan(2),
