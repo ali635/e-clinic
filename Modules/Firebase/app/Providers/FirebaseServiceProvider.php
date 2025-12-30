@@ -50,6 +50,9 @@ class FirebaseServiceProvider extends ServiceProvider
     {
         $this->commands([
             \Modules\Firebase\Console\Commands\ScheduleFirebaseNotificationsCommand::class,
+            \Modules\Firebase\Console\Commands\SendBirthdayNotificationsCommand::class,
+            \Modules\Firebase\Console\Commands\SendNextVisitRemindersCommand::class,
+            \Modules\Firebase\Console\Commands\SendVisitRemindersCommand::class,
         ]);
     }
 
@@ -61,6 +64,9 @@ class FirebaseServiceProvider extends ServiceProvider
         $this->app->booted(function () {
             $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
             $schedule->command('firebase:schedule-notifications')->everyMinute();
+            $schedule->command('firebase:send-birthday-notifications')->daily();
+            $schedule->command('firebase:send-next-visit-reminders')->daily();
+            $schedule->command('firebase:send-visit-reminders')->daily();
         });
     }
 
