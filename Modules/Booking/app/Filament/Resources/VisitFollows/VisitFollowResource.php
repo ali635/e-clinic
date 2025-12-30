@@ -26,25 +26,25 @@ class VisitFollowResource extends Resource
     // ✅ TRANSLATABLE navigation label (sidebar)
     public static function getNavigationLabel(): string
     {
-        return __('Visit Follows');
+        return __('Follow up');
     }
 
     // ✅ TRANSLATABLE plural label (used in list page titles)
     public static function getPluralLabel(): string
     {
-        return __('Visit Follows');
+        return __('Follow up');
     }
 
     // ✅ TRANSLATABLE singular label (used in forms)
     public static function getModelLabel(): string
     {
-        return __('Follows');
+        return __('Follow up');
     }
 
     // ✅ TRANSLATABLE breadcrumb (top navigation)
     public static function getBreadcrumb(): string
     {
-        return __('Visit Follows');
+        return __('Follow up');
     }
 
     public static function form(Schema $schema): Schema
