@@ -393,8 +393,8 @@
                 </div>
 
                 <div class="text-right" style="direction: ltr;">
-                    <div>{{ setting_lang('address', null, 'ku') }}</div>
-                    <div>{{ setting_lang('address', null, 'ar') }}</div>
+                    <div>{{ strip_tags(setting_lang('address', null, 'ku')) }}</div>
+                    <div>{{ strip_tags(setting_lang('address', null, 'ar')) }}</div>
                 </div>
             </div>
 
