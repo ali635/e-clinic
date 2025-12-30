@@ -21,12 +21,18 @@ class VisitFollowInfolist
 
                         TextEntry::make('patient.phone')
                             ->label(__('Phone'))
-                            ->icon('heroicon-o-phone'),
+                            ->icon('heroicon-o-chat-bubble-left-right')
+                            ->color('success')
+                            ->url(fn($record) => $record->patient?->phone ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $record->patient->phone) : null)
+                            ->openUrlInNewTab(),
 
                         TextEntry::make('patient.other_phone')
                             ->label(__('Other Phone'))
-                            ->icon('heroicon-o-phone')
-                            ->placeholder(__('Not provided')),
+                            ->icon('heroicon-o-chat-bubble-left-right')
+                            ->color('success')
+                            ->placeholder(__('Not provided'))
+                            ->url(fn($record) => $record->patient?->other_phone ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $record->patient->other_phone) : null)
+                            ->openUrlInNewTab(),
                     ])
                     ->columns(3),
 
