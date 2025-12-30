@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('patient_id')->nullable()->constrained('patients', 'id')->onDelete('cascade');
             $table->foreignId('visit_id')->nullable()->constrained('visits', 'id')->onDelete('cascade');
             $table->date('date')->nullable();
+            $table->string('type')->nullable();
             $table->enum('status', ['answer', 'not_answer'])->nullable();
             $table->text('comments')->nullable();
             $table->timestamps();

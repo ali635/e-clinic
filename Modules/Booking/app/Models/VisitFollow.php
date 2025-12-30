@@ -14,6 +14,7 @@ class VisitFollow extends Model
         'patient_id',
         'visit_id',
         'date',
+        'type',
         'status',
         'comments',
     ];
