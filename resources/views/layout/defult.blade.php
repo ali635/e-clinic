@@ -12,9 +12,9 @@
     <link rel="shortcut icon" href="{{ asset('storage/' . setting('site_logo')) }}" type="image/x-icon">
 
     {{-- Basic Meta Tags --}}
-    <meta name="description" content="@yield('meta_description', __( 'E-Clinic - Your trusted healthcare partner'))">
-    <meta name="keywords" content="@yield('meta_keywords', __( 'healthcare, clinic, medical, doctor, appointment'))">
-    <meta name="author" content="@yield('meta_author', __( 'E-Clinic'))">
+    <meta name="description" content="@yield('meta_description', __('E-Clinic - Your trusted healthcare partner'))">
+    <meta name="keywords" content="@yield('meta_keywords', __('healthcare, clinic, medical, doctor, appointment'))">
+    <meta name="author" content="@yield('meta_author', __('E-Clinic'))">
     <meta name="robots" content="@yield('meta_robots', 'index, follow')">
     <meta name="language" content="{{ str_replace('_', '-', app()->getLocale()) }}">
     <meta name="revisit-after" content="7 days">
@@ -31,7 +31,7 @@
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:title" content="@yield('og_title', $title ?? __('Dr Azad Hasan'))">
 
-    <meta property="og:description" content="@yield('og_description',  __('E-Clinic - Your trusted healthcare partner'))">
+    <meta property="og:description" content="@yield('og_description', __('E-Clinic - Your trusted healthcare partner'))">
     <meta property="og:url" content="@yield('og_url', url()->current())">
     <meta property="og:site_name" content="@yield('og_site_name', __('Dr Azad Hasan'))">
     <meta property="og:image" content="@yield('og_image', asset('storage/' . setting('site_logo')))">
@@ -43,14 +43,14 @@
 
     {{-- Twitter Card Meta Tags --}}
     <meta name="twitter:card" content="@yield('twitter_card', 'summary_large_image')">
-    <meta name="twitter:site" content="@yield('twitter_site',  __('Dr Azad Hasan'))">
-    <meta name="twitter:creator" content="@yield('twitter_creator',  __('Dr Azad Hasan'))">
+    <meta name="twitter:site" content="@yield('twitter_site', __('Dr Azad Hasan'))">
+    <meta name="twitter:creator" content="@yield('twitter_creator', __('Dr Azad Hasan'))">
     <meta name="twitter:title" content="@yield('twitter_title', __('Dr Azad Hasan'))">
     <meta name="twitter:description" content="@yield('twitter_description', __('E-Clinic - Your trusted healthcare partner'))">
     <meta name="twitter:image" content="@yield('twitter_image', asset('storage/' . setting('site_logo')))">
     <meta name="twitter:image:alt" content="@yield('twitter_image_alt', __('Dr Azad Hasan'))">
-    <meta name="twitter:domain" content="@yield('twitter_domain', request()->getHost())"> 
-    
+    <meta name="twitter:domain" content="@yield('twitter_domain', request()->getHost())">
+
     {{-- Mobile App Meta Tags --}}
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -64,7 +64,7 @@
     @yield('page_seo')
 
 
-    @if($isProductionMode)
+    @if ($isProductionMode)
         @php
             $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
         @endphp
@@ -72,54 +72,70 @@
     @else
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
-    
+
+    {{-- Kurdish Font Support --}}
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
     {!! ToastMagic::styles() !!}
     @php
         $languagesFonts = [
             'ar' => 'Cairo',
-            'ku' => 'Cairo',
+            'ku' => 'Noto Sans Arabic',
             'en' => 'Inter',
         ];
 
         $currentFont = $languagesFonts[str_replace('_', '-', app()->getLocale())];
+        $isKurdish = str_replace('_', '-', app()->getLocale()) === 'ku';
     @endphp
     <style>
-        @font-face {
-            font-family: {{ $currentFont }};
-            src: url("{{ asset('fonts/' . $currentFont . '-Regular.ttf') }}") format("truetype");
-            font-weight: 400;
-            font-display: swap;
-        }
-        
-        @font-face {
-            font-family: {{ $currentFont }};
-            src: url("{{ asset('fonts/' . $currentFont . '-Medium.ttf') }}") format("truetype");
-            font-weight: 500;
-            font-display: swap;
-        }
+        @if (!$isKurdish)
+            @font-face {
+                font-family: {{ $currentFont }};
+                src: url("{{ asset('fonts/' . $currentFont . '-Regular.ttf') }}") format("truetype");
+                font-weight: 400;
+                font-display: swap;
+            }
 
-        @font-face {
-            font-family: {{ $currentFont }};
-            src: url("{{ asset('fonts/' . $currentFont . '-SemiBold.ttf') }}") format("truetype");
-            font-weight: 600;
-            font-display: swap;
-        }
+            @font-face {
+                font-family: {{ $currentFont }};
+                src: url("{{ asset('fonts/' . $currentFont . '-Medium.ttf') }}") format("truetype");
+                font-weight: 500;
+                font-display: swap;
+            }
 
-        @font-face {
-            font-family: {{ $currentFont }};
-            src: url("{{ asset('fonts/' . $currentFont . '-Bold.ttf') }}") format("truetype");
-            font-weight: 700;
-            font-display: swap;
-        }
+            @font-face {
+                font-family: {{ $currentFont }};
+                src: url("{{ asset('fonts/' . $currentFont . '-SemiBold.ttf') }}") format("truetype");
+                font-weight: 600;
+                font-display: swap;
+            }
+
+            @font-face {
+                font-family: {{ $currentFont }};
+                src: url("{{ asset('fonts/' . $currentFont . '-Bold.ttf') }}") format("truetype");
+                font-weight: 700;
+                font-display: swap;
+            }
+        @endif
+
+        /* Kurdish language specific styles */
+        @if ($isKurdish)
+            body {
+                font-family: 'Noto Sans Arabic', 'Cairo', sans-serif !important;
+            }
+        @endif
     </style>
 
 </head>
 
 
 <body dir="{{ getDirection() }}">
-    <div id="loader-overlay" class="fixed inset-0 flex items-center justify-center bg-white transition-opacity duration-700 z-[99]">
+    <div id="loader-overlay"
+        class="fixed inset-0 flex items-center justify-center bg-white transition-opacity duration-700 z-[99]">
         <div class="flex flex-col items-center">
-            <img src="{{ asset('storage/' . setting('site_logo')) }}" alt="{{ setting('site_name') }}" class="md:w-[200px] md:h-[200px] w-[100px] h-[100px] animate-bounce" />
+            <img src="{{ asset('storage/' . setting('site_logo')) }}" alt="{{ setting('site_name') }}"
+                class="md:w-[200px] md:h-[200px] w-[100px] h-[100px] animate-bounce" />
         </div>
     </div>
 
@@ -127,7 +143,7 @@
     @yield('content')
     @include('share.footer')
 
-    @if($isProductionMode)
+    @if ($isProductionMode)
         @php
             $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
         @endphp
@@ -136,9 +152,9 @@
     {!! ToastMagic::scripts() !!}
 
     <script>
-        window.addEventListener('load', function () {
+        window.addEventListener('load', function() {
             const loader = document.getElementById('loader-overlay');
-            if(loader){
+            if (loader) {
                 document.body.classList.add('pageLoaded');
                 setTimeout(() => {
                     loader.style.display = 'none';
