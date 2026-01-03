@@ -68,7 +68,7 @@
                             <a class="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-3 group" 
                                href="{{ route('services') }}">
                                 <span class="w-1.5 h-1.5 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-                                {{ __('Services') }}
+                                {{ __('services') }}
                             </a>
                         </li>
                         <li>
@@ -118,7 +118,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
                         <address class="text-gray-400 not-italic group-hover:text-white transition-colors duration-200">
-                            {{ setting_lang("address") }}
+                            {!! setting_lang("address") !!}
                         </address>
                     </li>
                 </ul>
