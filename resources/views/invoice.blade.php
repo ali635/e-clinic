@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <!-- Kurdish Font - Noto Sans Arabic supports Kurdish well -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700;900&display=swap"
         rel="stylesheet">
     <style>
@@ -44,6 +43,30 @@
             margin: 0 auto;
             position: relative;
             padding: 30px 20px 80px 20px;
+            /* Add background image - Fixed path */
+            background-image: url('{{ asset("storage/" . setting_lang("prescription_logo")) }}');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Add overlay for better text readability */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.85);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Ensure all content is above the overlay */
+        .container>* {
+            position: relative;
+            z-index: 1;
         }
 
         /* Header */
@@ -81,12 +104,12 @@
             text-align: center;
             color: #fff;
             background-color: #000;
-            margin: 6px 0;
+            margin: 10px 0; /* Top and bottom spacing */
             letter-spacing: 0.5px;
             padding: 6px 0;
             display: flex;
             justify-content: center;
-            gap: 25px;
+            gap: 90px; /* Increased gap between spans from 25px to 40px */
         }
 
         .header-sub-divider {
@@ -142,7 +165,6 @@
             padding: 0 10px;
             min-height: 250px;
             position: relative;
-            /* For QR code positioning */
         }
 
         .rx-symbol {
@@ -160,16 +182,15 @@
         .medicine-list {
             padding: 0 15px;
             margin-bottom: 20px;
-            /* Space for QR codes */
         }
 
         .medicine-item {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 1.3rem;
+            margin-bottom: .5rem;
             font-weight: 700;
             font-size: 15px;
-            line-height: 1.5;
+            line-height: .5;
         }
 
         .medicine-number {
@@ -185,20 +206,16 @@
         .qr-code-section {
             display: flex;
             justify-content: center;
-            /* Center align QR codes */
             gap: 25px;
-            /* Space between QR codes */
             margin-top: 30px;
             padding: 10px 0;
         }
 
         .qr-code-section img {
             width: 65px;
-            /* Optimal size for A5 */
             height: 65px;
             object-fit: contain;
             border: 1px solid #e5e7eb;
-            /* Subtle border */
             border-radius: 4px;
         }
 
@@ -265,19 +282,6 @@
 
         [dir="rtl"] .qr-code-section {
             flex-direction: row-reverse;
-            /* Reverse order in RTL */
-        }
-
-        .footer-social {
-            background-color: #000;
-            color: white;
-            padding: 8px 15px;
-            margin: 0 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
         }
 
         .social-icons {
@@ -310,12 +314,11 @@
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <!-- Header -->
         <header class="header-section">
-            <h1 class="main-title">{{ setting('prescription_name', 'عيادة د. أزاد حسن خدر') }}</h1>
+            <h1 class="main-title">{!! setting('prescription_name', 'عيادة د. أزاد حسن خدر') !!}</h1>
 
             <div class="sub-title">
                 {{ setting('prescription_title', 'Neurology, psychiatry & psychology Clinic') }}

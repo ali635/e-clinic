@@ -18,7 +18,7 @@ class CreatePatient extends CreateRecord
             'email' => $data['email'],
             'name' => $data['name'],
             'password' => $data['password'],
-            'address' => $data['address'],
+            'address' => $data['address'] ?? '',
             'gender' => $data['gender'],
             'phone' => $data['phone'],
             'other_phone' => $data['other_phone'],
@@ -29,17 +29,19 @@ class CreatePatient extends CreateRecord
             'date_of_birth' => $data['date_of_birth'],
             'status' => $data['status'],
             'img_profile' => $data['img_profile'],
-            'hear_about_us' => $data['hear_about_us'],
+            'hear_about_us' => $data['hear_about_us'] ?? '',
             'referral_id' => $data['referral_id'],
         ]);
 
-        foreach ($data['disease_id'] as $item) {
-            DB::table('patient_diseases')->insert([
-                'patient_id' => $patient->id,
-                'disease_id' => $item,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        if (isset($data['disease_id'])) {
+            foreach ($data['disease_id'] as $item) {
+                DB::table('patient_diseases')->insert([
+                    'patient_id' => $patient->id,
+                    'disease_id' => $item,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
         }
 
         return $patient;

@@ -18,6 +18,7 @@ class PrescriptionSettings extends Settings
     public ?string $prescription_phone_three = '';
     public ?string $prescription_qr_code_one = '';
     public ?string $prescription_qr_code_two = '';
+    public ?string $prescription_logo = '';
     public ?string $prescription_website = '';
     public ?string $prescription_social_title = '';
 

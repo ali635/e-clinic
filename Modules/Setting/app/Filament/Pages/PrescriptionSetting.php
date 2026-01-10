@@ -7,6 +7,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\SettingsPage;
+use Kahusoftware\FilamentCkeditorField\CKEditor;
 use Modules\Setting\Settings\FooterSettings;
 use Modules\Setting\Settings\PrescriptionSettings;
 use TomatoPHP\FilamentSettingsHub\Traits\UseShield;
@@ -51,7 +52,7 @@ class PrescriptionSetting extends SettingsPage
                     ->description(__('Prescription settings'))
                     ->schema([
 
-                        TextInput::make('prescription_name')
+                        CKEditor::make('prescription_name')
                             ->required()
                             ->label(__('Dr Name'))
                             ->columnSpan(2)
@@ -99,14 +100,20 @@ class PrescriptionSetting extends SettingsPage
                             ->label(__('Qr Code Two'))
                             ->columnSpan(2),
 
+                        FileUpload::make('prescription_logo')
+                            ->required()
+                            ->disk('public')
+                            ->label(__('Background Logo'))
+                            ->columnSpan(2),
+
 
                         TextInput::make('prescription_website')
                             ->required()
                             ->label(__('Website Link'))
                             ->columnSpan(2)
                             ->hint(config('filament-settings-hub.show_hint') ? 'setting("prescription_website")' : null),
-                        
-                        
+
+
                         TextInput::make('prescription_social_title')
                             ->required()
                             ->label(__('Social Title'))

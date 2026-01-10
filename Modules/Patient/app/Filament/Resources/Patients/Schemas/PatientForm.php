@@ -92,10 +92,10 @@ class PatientForm
                             ->tooltip('Open WhatsApp chat')
                     ),
 
-                TextInput::make('hear_about_us')
-                    ->label(__('hear about us'))
-                    ->maxLength(255)
-                    ->required(),
+                // TextInput::make('hear_about_us')
+                //     ->label(__('hear about us'))
+                //     ->maxLength(255)
+                //     ->required(),
 
 
 
@@ -128,26 +128,26 @@ class PatientForm
                             ->toArray();
                     }),
 
-                TextInput::make('address')
-                    ->label(__('address'))
-                    ->maxLength(255),
+                // TextInput::make('address')
+                //     ->label(__('address'))
+                //     ->maxLength(255),
 
-                Select::make('disease_id')
-                    ->label(__('Diseases'))
-                    ->options(function () {
-                        return Disease::with('translations')
-                            ->get()
-                            ->pluck('name', 'id')
-                            ->toArray();
-                    })
-                    ->afterStateHydrated(function ($component, $state, $record) {
-                        if ($record) {
-                            $diseaseIds = $record->diseases->pluck('disease_id')->toArray();
-                            $component->state($diseaseIds);
-                        }
-                    })
-                    ->searchable()
-                    ->multiple(),
+                // Select::make('disease_id')
+                //     ->label(__('Diseases'))
+                //     ->options(function () {
+                //         return Disease::with('translations')
+                //             ->get()
+                //             ->pluck('name', 'id')
+                //             ->toArray();
+                //     })
+                //     ->afterStateHydrated(function ($component, $state, $record) {
+                //         if ($record) {
+                //             $diseaseIds = $record->diseases->pluck('disease_id')->toArray();
+                //             $component->state($diseaseIds);
+                //         }
+                //     })
+                //     ->searchable()
+                //     ->multiple(),
 
                 FileUpload::make('img_profile')
                     ->directory('patients/profiles')

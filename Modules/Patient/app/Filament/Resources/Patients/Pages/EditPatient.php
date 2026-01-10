@@ -24,7 +24,7 @@ class EditPatient extends EditRecord
                 $record->update([
                     'email' => $data['email'],
                     'name' => $data['name'],
-                    'address' => $data['address'],
+                    'address' => $data['address'] ?? '',
                     'gender' => $data['gender'],
                     'phone' => $data['phone'],
                     'other_phone' => $data['other_phone'],
@@ -35,7 +35,7 @@ class EditPatient extends EditRecord
                     'date_of_birth' => $data['date_of_birth'],
                     'status' => $data['status'],
                     'img_profile' => $data['img_profile'],
-                    'hear_about_us' => $data['hear_about_us'],
+                    'hear_about_us' => $data['hear_about_us']?? '',
                     'referral_id' => $data['referral_id'],
                 ]);
                 if (!empty($data['password'])) {

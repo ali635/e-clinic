@@ -43,6 +43,15 @@ class PatientsTable
                     ->label(__('email'))
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('phone')
+                    ->label(__('phone'))
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('other_phone')
+                    ->label(__('other phone'))
+                    ->searchable()
+                    ->sortable(),
 
                 // country and city (relations)
                 TextColumn::make('country.name')
@@ -123,10 +132,10 @@ class PatientsTable
                     ->query(function ($query, array $data) {
                         // only run when birthdate exists in DB
                         // Uses DB raw TIMESTAMPDIFF function which is accurate for years
-                        if (! empty($data['min_age'])) {
+                        if (!empty($data['min_age'])) {
                             $query->whereRaw('TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE()) >= ?', [(int) $data['min_age']]);
                         }
-                        if (! empty($data['max_age'])) {
+                        if (!empty($data['max_age'])) {
                             $query->whereRaw('TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE()) <= ?', [(int) $data['max_age']]);
                         }
                         return $query;
