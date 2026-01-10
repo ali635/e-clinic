@@ -197,11 +197,11 @@
 
         .medicine-number {
             font-size: 12px;
-            font-weight: 900;
+            font-weight: 600;
             margin-left: 10px;
             min-width: 18px;
             text-align: center;
-            margin-top: 2px;
+            margin-top: 1.5px;
         }
 
         /* QR Code Section */
