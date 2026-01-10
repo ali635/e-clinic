@@ -164,7 +164,7 @@
 
         /* Rx Section */
         .rx-section {
-            margin-bottom: .5rem;
+            margin-bottom: -30px;
             padding: 0 10px;
             min-height: 250px;
             position: relative;
