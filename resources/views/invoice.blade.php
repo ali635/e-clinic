@@ -123,15 +123,16 @@
         /* Patient Info */
         .patient-info {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 2rem;
+            /*justify-content: space-between;
+            align-items: flex-end; */
+            justify-content: right;
+            /* margin-bottom: 2rem; */
             font-weight: 700;
             padding: 0 5px;
         }
 
         .age-section {
-            text-align: right;
+            text-align: left;
         }
 
         .age-label {
@@ -207,9 +208,10 @@
         /* QR Code Section */
         .qr-code-section {
             display: flex;
-            justify-content: center;
+            justify-content: right;
             gap: 25px;
             margin-top: 30px;
+            margin-right: 30px;
             padding: 10px 0;
         }
 
@@ -324,13 +326,13 @@
             <h1 class="main-title">{!! setting('prescription_name', 'عيادة د. أزاد حسن خدر') !!}</h1>
 
             <div class="sub-title">
-                {{ setting('prescription_title', 'Neurology, psychiatry & psychology Clinic') }}
+                {!! setting('prescription_title', 'Neurology, psychiatry & psychology Clinic') !!}
             </div>
 
             <div class="header-divider"></div>
 
             <div class="sub-title">
-                {{ setting('prescription_sub_title', 'الطب النفسي والعصبي') }}
+                {!! setting('prescription_sub_title', 'الطب النفسي والعصبي') !!}
             </div>
 
             <div class="header-divider"></div>
@@ -346,16 +348,18 @@
 
         <!-- Patient Info -->
         <div class="patient-info">
-            <div class="age-section">
-                <span class="age-label">{{ __('Age') }}:</span>
-                <span class="age-value">{{ $record->patient->age ?? '20' }} Years</span>
-            </div>
-
-            <div class="patient-details" dir="ltr">
+            <div class="patient-details">
                 <div class="patient-name">{{ $record->patient->name ?? 'Dlshad Mhamad Amin Aziz' }}</div>
                 <div class="patient-date">
                     {{ isset($record->created_at) ? $record->created_at->format('Y/m/d') : '2025/10/26' }}
                 </div>
+            </div>
+        </div>
+        <div class="patient-info">
+
+            <div class="age-section">
+                <span class="age-label">{{ __('Age') }}:</span>
+                <span class="age-value">{{ $record->patient->age ?? '20' }} Years</span>
             </div>
         </div>
 

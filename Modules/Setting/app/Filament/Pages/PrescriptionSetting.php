@@ -58,13 +58,13 @@ class PrescriptionSetting extends SettingsPage
                             ->columnSpan(2)
                             ->hint(config('filament-settings-hub.show_hint') ? 'setting("prescription_name")' : null),
 
-                        TextInput::make('prescription_title')
+                        CKEditor::make('prescription_title')
                             ->required()
                             ->label(__('Title'))
                             ->columnSpan(2)
                             ->hint(config('filament-settings-hub.show_hint') ? 'setting("prescription_title")' : null),
 
-                        TextInput::make('prescription_sub_title')
+                        CKEditor::make('prescription_sub_title')
                             ->required()
                             ->label(__('Sub Title'))
                             ->columnSpan(2)
