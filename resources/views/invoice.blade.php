@@ -44,7 +44,7 @@
             position: relative;
             padding: 30px 20px 80px 20px;
             /* Add background image - Fixed path */
-            background-image: url('{{ asset("storage/" . setting_lang("prescription_logo")) }}');
+            background-image: url('{{ asset('storage/' . setting_lang('prescription_logo')) }}');
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
@@ -104,12 +104,14 @@
             text-align: center;
             color: #fff;
             background-color: #000;
-            margin: 10px 0; /* Top and bottom spacing */
+            margin: 10px 0;
+            /* Top and bottom spacing */
             letter-spacing: 0.5px;
             padding: 6px 0;
             display: flex;
             justify-content: center;
-            gap: 90px; /* Increased gap between spans from 25px to 40px */
+            gap: 90px;
+            /* Increased gap between spans from 25px to 40px */
         }
 
         .header-sub-divider {
@@ -190,7 +192,7 @@
             margin-bottom: .5rem;
             font-weight: 700;
             font-size: 15px;
-            line-height: .5;
+            line-height: 1.5;
         }
 
         .medicine-number {
@@ -314,6 +316,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
