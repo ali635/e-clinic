@@ -151,6 +151,19 @@ class VisitForm
                     DatePicker::make('next_visit')
                         ->label(__('Next Visit'))
                         ->helperText(__('Expected / actual next visit time'))
+                        ->live()
+                        ->hint(function ($state) {
+                            if (!$state) {
+                                return null;
+                            }
+
+                            $count = Visit::query()
+                                ->whereDate('arrival_time', $state)
+                                ->count();
+
+                            return __(':count visits scheduled for this day', ['count' => $count]);
+                        })
+                        ->hintColor('danger')
                         ->columnSpan(1),
                 ]),
 
