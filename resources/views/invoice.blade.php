@@ -125,7 +125,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             font-weight: 700;
             padding: 0 5px;
         }
@@ -163,7 +163,7 @@
 
         /* Rx Section */
         .rx-section {
-            margin-bottom: 1rem;
+            margin-bottom: .5rem;
             padding: 0 10px;
             min-height: 250px;
             position: relative;
@@ -174,7 +174,7 @@
             font-size: 42px;
             font-weight: 900;
             font-style: italic;
-            margin-bottom: 1.8rem;
+            margin-bottom: 1rem;
             text-decoration: underline;
             text-decoration-thickness: 2px;
             text-underline-offset: 5px;
