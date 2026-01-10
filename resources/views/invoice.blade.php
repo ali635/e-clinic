@@ -192,7 +192,7 @@
             margin-bottom: .5rem;
             font-weight: 700;
             font-size: 15px;
-            line-height: 1.5;
+            line-height: 1;
         }
 
         .medicine-number {
