@@ -17,12 +17,25 @@ class GeminiAIService
      */
     public function analyzeVisit(Visit $visit): ?string
     {
+        return $this->analyzeData($this->formatVisitData($visit), $visit->id, $visit->patient_id);
+    }
+
+    /**
+     * Analyze raw visit data using Gemini AI
+     * 
+     * @param string $visitData
+     * @param int|null $visitId
+     * @param int|null $patientId
+     * @return string|null
+     */
+    public function analyzeData(string $visitData, ?int $visitId = null, ?int $patientId = null): ?string
+    {
         try {
-            $prompt = $this->formatVisitPrompt($visit);
+            $prompt = $this->formatPrompt($visitData);
 
             Log::info('Sending visit data to Gemini AI', [
-                'visit_id' => $visit->id,
-                'patient_id' => $visit->patient_id
+                'visit_id' => $visitId,
+                'patient_id' => $patientId
             ]);
 
             // Send request to Gemini API
@@ -32,7 +45,7 @@ class GeminiAIService
             $response = $result->text();
 
             Log::info('Received response from Gemini AI', [
-                'visit_id' => $visit->id,
+                'visit_id' => $visitId,
                 'response_length' => strlen($response)
             ]);
 
@@ -40,7 +53,7 @@ class GeminiAIService
 
         } catch (Exception $e) {
             Log::error('Gemini AI Analysis Failed', [
-                'visit_id' => $visit->id,
+                'visit_id' => $visitId,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
@@ -55,10 +68,19 @@ class GeminiAIService
      * @param Visit $visit
      * @return string
      */
-    protected function formatVisitPrompt(Visit $visit): string
+    protected function formatVisitData(Visit $visit): string
     {
-        $visitData = $visit->getVisitDataForAI();
+        return $visit->getVisitDataForAI();
+    }
 
+    /**
+     * Format prompt with visit data
+     * 
+     * @param string $visitData
+     * @return string
+     */
+    protected function formatPrompt(string $visitData): string
+    {
         $prompt = "You are a medical AI assistant. Please analyze the following patient visit information and provide a comprehensive medical summary and insights. Include any potential concerns, treatment effectiveness observations, or recommendations for follow-up.\n\n";
         $prompt .= "VISIT INFORMATION:\n";
         $prompt .= "==================\n\n";

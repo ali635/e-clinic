@@ -2,6 +2,9 @@
 
 namespace Modules\Booking\Filament\Resources\Visits\Schemas;
 
+
+
+use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
@@ -22,6 +25,8 @@ use Modules\Service\Models\Service;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Modules\Booking\Models\Visit;
+use App\Services\GeminiAIService;
+use Filament\Notifications\Notification;
 
 class VisitForm
 {
@@ -359,12 +364,70 @@ class VisitForm
             Section::make(__('AI Assistant'))
                 ->columns(1)
                 ->columnSpan(2)
-                ->visible(fn(?Visit $record): bool => $record !== null && !empty($record->result_ai) && $record->result_ai !== '<p></p>')
+                ->visible(fn(?Visit $record): bool => $record !== null)
                 ->schema([
                     RichEditor::make('result_ai')
                         ->label(__('AI Assistant Result'))
                         ->helperText(__('AI-generated medical analysis and insights'))
-                        ->disabled(),
+                        ->disabled()
+                        ->hintAction(
+                            Action::make('generate_ai')
+                                ->label(__('Generate AI Analysis'))
+                                ->icon('heroicon-o-sparkles')
+                                ->action(function (Set $set, Get $get, ?Visit $record) {
+                                    $data = [
+                                        'chief_complaint' => $get('chief_complaint'),
+                                        'doctor_description' => $get('doctor_description'),
+                                        'medical_history' => $get('medical_history'),
+                                        'medicines_list' => $get('medicines_list'),
+                                        'diagnosis' => $get('diagnosis'),
+                                        'treatment' => $get('treatment'),
+                                        'vital_signs' => [
+                                            'sys' => $get('sys'),
+                                            'dia' => $get('dia'),
+                                            'pulse_rate' => $get('pulse_rate'),
+                                        ],
+                                        'measurements' => [
+                                            'weight' => $get('weight'),
+                                            'height' => $get('height'),
+                                            'bmi' => $get('body_max_index'),
+                                        ]
+                                    ];
+
+                                    // Format data for AI
+                                    $formattedData = "Chief Complaint: " . (is_array($data['chief_complaint']) ? implode(', ', $data['chief_complaint']) : $data['chief_complaint']) . "\n";
+                                    $formattedData .= "Doctor Description: " . strip_tags($data['doctor_description']) . "\n";
+                                    $formattedData .= "Medical History: " . (is_array($data['medical_history']) ? implode(', ', $data['medical_history']) : $data['medical_history']) . "\n";
+                                    $formattedData .= "Medicines: " . (is_array($data['medicines_list']) ? implode(', ', $data['medicines_list']) : $data['medicines_list']) . "\n";
+                                    $formattedData .= "Diagnosis: " . (is_array($data['diagnosis']) ? implode(', ', $data['diagnosis']) : $data['diagnosis']) . "\n";
+                                    $formattedData .= "Treatment: " . (is_array($data['treatment']) ? implode(', ', $data['treatment']) : $data['treatment']) . "\n";
+                                    $formattedData .= "Vital Signs: BP {$data['vital_signs']['sys']}/{$data['vital_signs']['dia']}, Pulse {$data['vital_signs']['pulse_rate']}\n";
+                                    $formattedData .= "Measurements: Weight {$data['measurements']['weight']}kg, Height {$data['measurements']['height']}cm, BMI {$data['measurements']['bmi']}\n";
+
+                                    $geminiService = new GeminiAIService();
+                                    $aiResult = $geminiService->analyzeData($formattedData, $record?->id, $record?->patient_id);
+
+                                    if ($aiResult) {
+                                        $set('result_ai', $aiResult);
+
+                                        if ($record) {
+                                            $record->update(['result_ai' => $aiResult]);
+                                        }
+
+                                        Notification::make()
+                                            ->title(__('Success'))
+                                            ->body(__('AI analysis generated successfully.'))
+                                            ->success()
+                                            ->send();
+                                    } else {
+                                        Notification::make()
+                                            ->title(__('Error'))
+                                            ->body(__('Failed to generate AI analysis.'))
+                                            ->danger()
+                                            ->send();
+                                    }
+                                })
+                        ),
 
                 ]),
         ]);
