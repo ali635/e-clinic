@@ -190,8 +190,8 @@
             display: flex;
             align-items: flex-start;
             margin-bottom: .5rem;
-            font-weight: 700;
-            font-size: 15px;
+            font-weight: 400;
+            font-size: 10px;
             line-height: 1;
         }
 
