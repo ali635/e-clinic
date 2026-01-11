@@ -323,15 +323,15 @@
     <div class="container">
         <!-- Header -->
         <header class="header-section">
-            <h1 class="main-title">{!! setting('prescription_name', 'عيادة د. أزاد حسن خدر') !!}</h1>
+            <h1 class="main-title kurdish-text">{!! setting('prescription_name', 'عيادة د. أزاد حسن خدر') !!}</h1>
 
-            <div class="sub-title">
+            <div class="sub-title kurdish-text">
                 {!! setting('prescription_title', 'Neurology, psychiatry & psychology Clinic') !!}
             </div>
 
             <div class="header-divider"></div>
 
-            <div class="sub-title">
+            <div class="sub-title kurdish-text">
                 {!! setting('prescription_sub_title', 'الطب النفسي والعصبي') !!}
             </div>
 
