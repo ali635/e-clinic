@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Modules\Location\Models\City;
+use Modules\Patient\Http\Requests\PatientRegisterApiRequest;
 use Modules\Patient\Models\Patient;
 use Modules\Patient\Http\Requests\PatientLoginRequest;
 use Modules\Patient\Http\Requests\PatientRegisterRequest;
@@ -16,7 +17,7 @@ class AuthController extends Controller
     /**
      * Register new patient
      */
-    public function register(PatientRegisterRequest $request)
+    public function register(PatientRegisterApiRequest $request)
     {
         // Get validated data FIRST
         $data = $request->validated();
@@ -101,7 +102,7 @@ class AuthController extends Controller
     /**
      * Handle profile image upload.
      */
-    private function handleProfileImage(PatientRegisterRequest $request): ?string
+    private function handleProfileImage(PatientRegisterApiRequest $request): ?string
     {
         if (!$request->hasFile('img_profile')) {
             return null;
