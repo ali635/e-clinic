@@ -6,6 +6,8 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Modules\Booking\Filament\Resources\Visits\VisitResource;
 use Modules\Booking\Filament\Widgets\VisitStatsOverview;
+use EightyNine\ExcelImport\ExcelImportAction;
+use Modules\Booking\Imports\VisitPatientImporter;
 
 class ListVisits extends ListRecords
 {
@@ -17,10 +19,16 @@ class ListVisits extends ListRecords
             VisitStatsOverview::class, // Register your StatsOverview widget here
         ];
     }
+
     protected function getHeaderActions(): array
     {
         return [
             CreateAction::make(),
+            ExcelImportAction::make()
+                ->use(VisitPatientImporter::class)
+                ->color('success')
+                ->icon('heroicon-o-arrow-up-tray')
+                ->label(__('Import Visits & Patients')),
         ];
     }
 }

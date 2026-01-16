@@ -15,6 +15,7 @@
         "charrafimed/global-search-modal": "^4.2",
         "coolsam/modules": "^5.0",
         "devrabiul/laravel-toaster-magic": "^1.5",
+        "eightynine/filament-excel-import": "^4.0",
         "filament/filament": "^4.0",
         "google-gemini-php/laravel": "^2.0",
         "kahusoftware/filament-ckeditor-field": "2.x-dev",

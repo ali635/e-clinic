@@ -18,11 +18,11 @@ class VisitObserver
 
         $admin = User::first();
         Notification::make()
-            ->title(__('New Visit from :name', ['name' => $visit->patient->name]))
+            ->title(__('New Visit from :name', ['name' => $visit->patient?->name ?? __('Unknown')]))
             ->success()
             ->body(__(':service booked for :time', [
-                'service' => $visit->service->name,
-                'time' => $visit->arrival_time,
+                'service' => $visit->service?->name ?? __('General Checkup'),
+                'time' => $visit->arrival_time?->format('H:i') ?? __('Not set'),
             ]))
             ->actions([
                 Action::make('view')
