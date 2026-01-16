@@ -31,9 +31,9 @@ class VisitPatientImporter implements ToCollection, WithHeadingRow ,WithChunkRea
 
         $processedCount = 0;
         $errorCount = 0;
-
         foreach ($rows as $index => $row) {
             // Clean up inputs - Mapping based on your Excel headers
+            dd($row);
             $phone = trim($row['phone_number'] ?? '');
             $name = trim($row['name'] ?? '');
 
@@ -135,6 +135,11 @@ class VisitPatientImporter implements ToCollection, WithHeadingRow ,WithChunkRea
                 // 'system_review', 'labrotery_investigation', etc.
                 if (!empty($row['diagnois'])) {
                     $visit->diagnosis = [$row['diagnois']];
+                }
+
+                if (!empty($row['visit_cost'])) {
+                    $visit->price = [$row['visit_cost']];
+                    $visit->total_price = [$row['visit_cost']];
                 }
 
                 // Vital Signs (handling typos in Excel)

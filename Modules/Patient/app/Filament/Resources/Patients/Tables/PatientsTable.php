@@ -29,6 +29,7 @@ class PatientsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn(Builder $query) => $query->withCount(['visits as complete_visits_count' => fn(Builder $query) => $query->where('status', 'complete')]))
             ->defaultSort('id', 'desc')
             ->columns([
                 TextColumn::make('id')
@@ -65,13 +66,18 @@ class PatientsTable
                 // computed age column (requires 'birthdate' cast to date on the model)
                 TextColumn::make('age')
                     ->label(__('age'))
-                    ->getStateUsing(fn($record) => $record->date_of_birth ? $record->date_of_birth->age : null)
-                    ->sortable(),
+                    ->getStateUsing(fn($record) => $record->date_of_birth ? $record->date_of_birth->age : null),
 
                 TextColumn::make('gender')
                     ->label(__('gender'))
                     ->searchable()
                     ->sortable(),
+
+                TextColumn::make('complete_visits_count')
+                    ->label(__('complete visits'))
+                    ->sortable(),
+
+
 
                 ToggleColumn::make('status')
                     ->label(__('status')),

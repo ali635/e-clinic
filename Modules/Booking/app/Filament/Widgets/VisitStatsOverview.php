@@ -5,6 +5,7 @@ namespace Modules\Booking\Filament\Widgets;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Modules\Booking\Models\Visit;
+use Modules\Patient\Models\Patient;
 
 class VisitStatsOverview extends BaseWidget
 {
@@ -35,7 +36,7 @@ class VisitStatsOverview extends BaseWidget
             ->whereBetween('created_at', [now()->subMonth(), now()->subMonth()->endOfMonth()])
             ->count();
         $cancalledDiff = $cancalled - $cancalledPrev;
-        $cancalledDiffPct = $cancalledPrev ? round(($cancalledDiff / $cancalledPrev) * 100, 1) : 0; 
+        $cancalledDiffPct = $cancalledPrev ? round(($cancalledDiff / $cancalledPrev) * 100, 1) : 0;
 
 
         // ----- 5. Total Price (Completed) -------------------------------------
@@ -45,6 +46,14 @@ class VisitStatsOverview extends BaseWidget
             ->sum('total_after_discount');
         $priceDiff = $totalPrice - $totalPricePrev;
         $priceDiffPct = $totalPricePrev ? round(($priceDiff / $totalPricePrev) * 100, 1) : 0;
+
+        // ----- 6. Total Active Patient -------------------------------------
+        $activePatients = Patient::where('status', 1)->count();
+        $activePatientsPrev = Patient::where('status', 1)
+            ->whereBetween('created_at', [now()->subMonth(), now()->subMonth()->endOfMonth()])
+            ->count();
+        $activePatientsDiff = $activePatients - $activePatientsPrev;
+        $activePatientsDiffPct = $activePatientsPrev ? round(($activePatientsDiff / $activePatientsPrev) * 100, 1) : 0;
 
         // ----- Build the stats -------------------------------------------------
         return [
@@ -57,8 +66,8 @@ class VisitStatsOverview extends BaseWidget
                 ->description($completedDiffPct . '% ' . ($completedDiff >= 0 ? __('increase') : __('decrease')))
                 ->descriptionIcon(
                     $completedDiff >= 0
-                        ? 'heroicon-m-arrow-trending-up'
-                        : 'heroicon-m-arrow-trending-down'
+                    ? 'heroicon-m-arrow-trending-up'
+                    : 'heroicon-m-arrow-trending-down'
                 ),
 
             // 3. Not Completed (Pending) Visits
@@ -66,17 +75,17 @@ class VisitStatsOverview extends BaseWidget
                 ->description(abs($pendingCompletedDiffPct) . '% ' . ($pendingCompletedDiff >= 0 ? __('increase') : __('decrease')))
                 ->descriptionIcon(
                     $pendingCompletedDiff >= 0
-                        ? 'heroicon-m-arrow-trending-up'
-                        : 'heroicon-m-arrow-trending-down'
+                    ? 'heroicon-m-arrow-trending-up'
+                    : 'heroicon-m-arrow-trending-down'
                 ),
 
             // 4. Not Completed (Canclled) Visits
-             Stat::make(__('Total Not Completed (Canclled) Visits'), number_format($cancalled))
+            Stat::make(__('Total Not Completed (Canclled) Visits'), number_format($cancalled))
                 ->description(abs($cancalledDiffPct) . '% ' . ($cancalledDiff >= 0 ? __('increase') : __('decrease')))
                 ->descriptionIcon(
                     $cancalledDiff >= 0
-                        ? 'heroicon-m-arrow-trending-up'
-                        : 'heroicon-m-arrow-trending-down'
+                    ? 'heroicon-m-arrow-trending-up'
+                    : 'heroicon-m-arrow-trending-down'
                 ),
 
             // 5. Total Price Received
@@ -84,8 +93,20 @@ class VisitStatsOverview extends BaseWidget
                 ->description($priceDiffPct . '% ' . ($priceDiff >= 0 ? __('increase') : __('decrease')))
                 ->descriptionIcon(
                     $priceDiff >= 0
-                        ? 'heroicon-m-arrow-trending-up'
-                        : 'heroicon-m-arrow-trending-down'
+                    ? 'heroicon-m-arrow-trending-up'
+                    : 'heroicon-m-arrow-trending-down'
+                ),
+
+
+
+
+            // 6. Total Active Patients
+            Stat::make(__('Total Active Patients'), number_format($activePatients))
+                ->description($activePatientsDiffPct . '% ' . ($activePatientsDiff >= 0 ? __('increase') : __('decrease')))
+                ->descriptionIcon(
+                    $activePatientsDiff >= 0
+                    ? 'heroicon-m-arrow-trending-up'
+                    : 'heroicon-m-arrow-trending-down'
                 ),
         ];
     }
