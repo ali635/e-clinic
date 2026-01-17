@@ -12,6 +12,7 @@ use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Modules\Booking\Models\Visit;
 use Modules\Patient\Models\Patient;
 use Modules\Service\Models\Service;
@@ -34,19 +35,30 @@ class VisitsTable
                     ->searchable(),
 
                 TextColumn::make('service.name')
-                    ->searchable(),
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->orWhereHas('service.translations', function (Builder $query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%");
+                        });
+                    }),
 
                 TextColumn::make('status')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('price')
+                    ->sortable()
                     ->searchable(),
 
                 TextColumn::make('total_price')
+                    ->sortable()
+
                     ->searchable(),
 
-                TextColumn::make('arrival_time'),
+                TextColumn::make('arrival_time')
+                    ->sortable(),
 
-                BooleanColumn::make('is_arrival'),
+                BooleanColumn::make('is_arrival')
+                    ->sortable()
+                ,
 
             ])
             ->filters([

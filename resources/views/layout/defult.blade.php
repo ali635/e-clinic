@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>@yield('title', __('Home'))</title>
-    <link rel="shortcut icon" href="{{ asset('storage/' . setting('site_logo')) }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset(setting('site_logo')) }}" type="image/x-icon">
 
     {{-- Basic Meta Tags --}}
     <meta name="description" content="@yield('meta_description', __('E-Clinic - Your trusted healthcare partner'))">
@@ -34,7 +34,7 @@
     <meta property="og:description" content="@yield('og_description', __('E-Clinic - Your trusted healthcare partner'))">
     <meta property="og:url" content="@yield('og_url', url()->current())">
     <meta property="og:site_name" content="@yield('og_site_name', __('Dr Azad Hasan'))">
-    <meta property="og:image" content="@yield('og_image', asset('storage/' . setting('site_logo')))">
+    <meta property="og:image" content="@yield('og_image', asset(setting('site_logo')))">
     <meta property="og:image:width" content="@yield('og_image_width', '1200')">
     <meta property="og:image:height" content="@yield('og_image_height', '630')">
     <meta property="og:image:alt" content="@yield('og_image_alt', __('Dr Azad Hasan'))">
@@ -47,7 +47,7 @@
     <meta name="twitter:creator" content="@yield('twitter_creator', __('Dr Azad Hasan'))">
     <meta name="twitter:title" content="@yield('twitter_title', __('Dr Azad Hasan'))">
     <meta name="twitter:description" content="@yield('twitter_description', __('E-Clinic - Your trusted healthcare partner'))">
-    <meta name="twitter:image" content="@yield('twitter_image', asset('storage/' . setting('site_logo')))">
+    <meta name="twitter:image" content="@yield('twitter_image', asset(setting('site_logo')))">
     <meta name="twitter:image:alt" content="@yield('twitter_image_alt', __('Dr Azad Hasan'))">
     <meta name="twitter:domain" content="@yield('twitter_domain', request()->getHost())">
 
@@ -134,7 +134,7 @@
     <div id="loader-overlay"
         class="fixed inset-0 flex items-center justify-center bg-white transition-opacity duration-700 z-[99]">
         <div class="flex flex-col items-center">
-            <img src="{{ asset('storage/' . setting('site_logo')) }}" alt="{{ setting('site_name') }}"
+            <img src="{{ asset(setting('site_logo')) }}" alt="{{ setting('site_name') }}"
                 class="md:w-[200px] md:h-[200px] w-[100px] h-[100px] animate-bounce" />
         </div>
     </div>

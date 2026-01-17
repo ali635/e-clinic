@@ -3,7 +3,7 @@
       <section class="relative h-[600px] overflow-hidden">
           {{-- Background Image --}}
           <div class="absolute inset-0">
-              <img src="{{ asset('storage/' . setting_lang('hero_banner')) }}" alt="{{ setting_lang('banner_title') }}"
+              <img src="{{ asset(setting_lang('hero_banner')) }}" alt="{{ setting_lang('banner_title') }}"
                   class="w-full h-full object-cover">
               {{-- Gradient Overlay --}}
               <div class="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-800/80 to-transparent"></div>

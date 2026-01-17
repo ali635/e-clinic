@@ -118,10 +118,10 @@
 
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-6">
                     @foreach ($visit->lab_tests as $lab_img)
-                        <a href="{{ asset('storage/' . $lab_img) }}" data-lightbox="lab-tests"
+                        <a href="{{ asset($lab_img) }}" data-lightbox="lab-tests"
                             class="group relative block rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                             <div class="aspect-w-1 aspect-h-1 w-full h-32 bg-gray-100">
-                                <img src="{{ asset('storage/' . $lab_img) }}" alt="{{ $visit->service->name }}"
+                                <img src="{{ asset($lab_img) }}" alt="{{ $visit->service->name }}"
                                     class="w-full h-32 object-cover group-hover:opacity-90 transition-opacity duration-200">
                             </div>
                             <div
@@ -539,7 +539,7 @@
                             </svg>
                             {{ __('Attachment') }}
                         </label>
-                        <a href="{{ asset('storage/' . $visit->attachment) }}"
+                        <a href="{{ asset($visit->attachment) }}"
                             class="inline-flex items-center gap-2 text-primary font-semibold hover:text-primary/80 transition-colors duration-200"
                             target="_blank">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"

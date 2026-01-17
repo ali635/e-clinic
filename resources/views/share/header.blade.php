@@ -10,7 +10,7 @@
             <div class="flex-shrink-0">
                 <a href="/" class="block">
                     <img class="w-16 h-16 object-contain transition-transform duration-200 hover:scale-105"
-                        src="{{ asset('storage/' . setting('site_logo')) }}" alt="{{ setting('site_name') }}">
+                        src="{{ asset(setting('site_logo')) }}" alt="{{ setting('site_name') }}">
                 </a>
             </div>
 

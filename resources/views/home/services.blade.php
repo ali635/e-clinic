@@ -14,7 +14,7 @@
 
                     <!-- Image Container -->
                     <div class="relative h-56 md:h-64 overflow-hidden">
-                        <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->name }}"
+                        <img src="{{ asset($service->image) }}" alt="{{ $service->name }}"
                             class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
 
                         <!-- Overlay on hover -->

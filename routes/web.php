@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Modules\Patient\Http\Controllers\AuthController;
@@ -15,4 +16,8 @@ Route::group([
 
 ], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/linkstorage', function () {
+        Artisan::call('storage:unlink');
+        return 'Storage link created';
+    });
 });

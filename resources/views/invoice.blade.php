@@ -44,7 +44,7 @@
             position: relative;
             padding: 30px 20px 80px 20px;
             /* Add background image - Fixed path */
-            background-image: url('{{ asset('storage/' . setting_lang('prescription_logo')) }}');
+            background-image: url('{{ asset(setting_lang('prescription_logo')) }}');
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
@@ -393,8 +393,8 @@
         <footer class="footer-section">
             <!-- QR Code Section - Added here -->
             <div class="qr-code-section">
-                <img src="{{ asset('storage/' . setting_lang('prescription_qr_code_one')) }}" alt="QR Code 1">
-                <img src="{{ asset('storage/' . setting_lang('prescription_qr_code_two')) }}" alt="QR Code 2">
+                <img src="{{ asset(setting_lang('prescription_qr_code_one')) }}" alt="QR Code 1">
+                <img src="{{ asset(setting_lang('prescription_qr_code_two')) }}" alt="QR Code 2">
             </div>
             <div class="footer-contact">
                 <div class="phone-section">

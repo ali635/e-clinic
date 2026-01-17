@@ -44,7 +44,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin-control')
             ->login()
-            ->brandLogo(setting(asset('storage/' . setting('site_logo'))))
+            ->brandLogo(setting(asset(setting('site_logo'))))
             ->brandLogoHeight('4rem')
             ->brandName(setting('site_name'))
             ->colors([
@@ -59,7 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
 
                 AccountWidget::class,
-                // FilamentInfoWidget::class,
+                    // FilamentInfoWidget::class,
                 VisitStatsOverview::class,
                 Patient::class,
                 PatientArea::class,
@@ -73,11 +73,11 @@ class AdminPanelProvider extends PanelProvider
                 FilamentTranslationsPlugin::make(),
                 GlobalSearchModalPlugin::make(),
                 AuthDesignerPlugin::make()
-                ->login(
-                    layout: AuthLayout::Split,
-                    media: asset('images/intro-image.jpg'),
-                    direction: MediaDirection::Right
-                ),
+                    ->login(
+                        layout: AuthLayout::Split,
+                        media: asset('images/intro-image.jpg'),
+                        direction: MediaDirection::Right
+                    ),
                 \TomatoPHP\FilamentSettingsHub\FilamentSettingsHubPlugin::make()
                     ->allowSiteSettings()
                     ->allowSocialMenuSettings(false),

@@ -107,7 +107,7 @@ class VisitResource extends JsonResource
         }
 
         return collect($files)->map(function ($path) {
-            return asset('storage/' . $path);
+            return asset($path);
         })->toArray();
     }
 }

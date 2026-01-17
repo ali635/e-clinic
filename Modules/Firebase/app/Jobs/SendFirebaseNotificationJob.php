@@ -82,7 +82,7 @@ class SendFirebaseNotificationJob implements ShouldQueue
         try {
             // Send notification with or without image
             if ($this->notification->image) {
-                $imageUrl = url('storage/' . $this->notification->image);
+                $imageUrl = url($this->notification->image);
 
                 $result = $firebaseService->sendNotificationWithImage(
                     $fcmToken,

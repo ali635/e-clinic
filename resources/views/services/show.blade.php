@@ -47,7 +47,7 @@
                 'description' => $service->description ?? '',
                 'price' => $service->price ?? '',
                 'patient_time_minute' => $service->patient_time_minute ?? '',
-                'image' => $service->image ? asset('storage/' . $service->image) : asset('images/default-service.jpg'),
+                'image' => $service->image ? asset($service->image) : asset('images/default-service.jpg'),
                 'is_home' => $service->is_home ?? false,
                 'schedules' => $service->schedules->map(function ($schedule) use ($daysMap) {
                     $dayValue = strtolower($schedule->day_of_week->value);
@@ -81,7 +81,7 @@
 
     <!-- Hero Section -->
     <section class="relative h-[60vh] min-h-[400px] overflow-hidden">
-        <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->name }}" class="w-full h-full object-cover">
+        <img src="{{ asset($service->image) }}" alt="{{ $service->name }}" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
 
         <div class="absolute inset-0 flex items-end">
