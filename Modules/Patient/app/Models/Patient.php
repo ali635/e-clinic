@@ -41,6 +41,7 @@ class Patient extends Authenticatable implements OAuthenticatable
         'area_id',
         'marital_status',
         'img_profile',
+        'job_id'
     ];
 
     protected $casts = [
@@ -100,6 +101,12 @@ class Patient extends Authenticatable implements OAuthenticatable
     {
         return $this->belongsTo(Referral::class);
     }
+
+     public function job()
+    {
+        return $this->belongsTo(PatientJob::class);
+    }
+
 
     public function patientInfo()
     {

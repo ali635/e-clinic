@@ -21,7 +21,7 @@ class VisitObserver
             ->title(__('New Visit from :name', ['name' => $visit->patient ?  ($visit->patient->name ? $visit->patient->name : __('Unknown') ) :  __('Unknown')]))
             ->success()
             ->body(__(':service booked for :time', [
-                'service' => $visit->service->name,
+                'service' => $visit->service ? ($visit->service->name ? $visit->service->name : __('Unknown')) : __('Unknown'),
                 'time' => $visit->arrival_time,
             ]))
             ->actions([

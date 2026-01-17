@@ -62,6 +62,15 @@ class PatientForm
                     ]),
 
 
+                Select::make('job_id')
+                    ->label(__('jobs'))
+                    ->searchable(true)
+                    ->relationship('job', 'name')
+                    ->createOptionForm([
+                        TextInput::make('name')->required(),
+                    ]),
+
+
                 TextInput::make('phone')
                     ->label(__('phone'))
                     ->maxLength(255)
@@ -107,7 +116,9 @@ class PatientForm
                     ->options(function () {
                         return Country::with('translations')
                             ->get()
-                            ->pluck('name', 'id')
+                            ->mapWithKeys(fn($country) => [
+                                $country->id => $country->name ?? $country->translate('en')?->name ?? __('Unknown Country')
+                            ])
                             ->toArray();
                     }),
 
@@ -116,7 +127,9 @@ class PatientForm
                     ->options(function () {
                         return City::with('translations')
                             ->get()
-                            ->pluck('name', 'id')
+                            ->mapWithKeys(fn($city) => [
+                                $city->id => $city->name ?? $city->translate('en')?->name ?? __('Unknown City')
+                            ])
                             ->toArray();
                     }),
                 Select::make('area_id')
@@ -124,7 +137,9 @@ class PatientForm
                     ->options(function () {
                         return Area::with('translations')
                             ->get()
-                            ->pluck('name', 'id')
+                            ->mapWithKeys(fn($area) => [
+                                $area->id => $area->name ?? $area->translate('en')?->name ?? __('Unknown Area')
+                            ])
                             ->toArray();
                     }),
 

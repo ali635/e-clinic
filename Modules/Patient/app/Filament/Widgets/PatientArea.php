@@ -16,7 +16,7 @@ class PatientArea extends StatsOverviewWidget
             ->get()
             ->map(function ($record) {
                 return Stat::make(
-                    $record->area ? $record->area->name : __('Unknown area'),
+                    $record->area?->name ?? $record->area?->translate('en')?->name ?? __('Unknown area'),
                     $record->patient_count
                 )
                     ->description(__('Patients in this area'))

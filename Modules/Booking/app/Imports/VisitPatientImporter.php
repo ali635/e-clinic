@@ -10,12 +10,15 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Modules\Location\Models\City;
+use Modules\Location\Models\Country;
 use Modules\Patient\Models\Patient;
+use Modules\Patient\Models\PatientJob;
+use Modules\Patient\Models\Referral;
 use Modules\Booking\Models\Visit;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class VisitPatientImporter implements ToCollection, WithHeadingRow ,WithChunkReading
+class VisitPatientImporter implements ToCollection, WithHeadingRow, WithChunkReading
 {
     public function collection(Collection $rows)
     {
@@ -33,7 +36,6 @@ class VisitPatientImporter implements ToCollection, WithHeadingRow ,WithChunkRea
         $errorCount = 0;
         foreach ($rows as $index => $row) {
             // Clean up inputs - Mapping based on your Excel headers
-            dd($row);
             $phone = trim($row['phone_number'] ?? '');
             $name = trim($row['name'] ?? '');
 
@@ -78,13 +80,28 @@ class VisitPatientImporter implements ToCollection, WithHeadingRow ,WithChunkRea
                     if ($city) {
                         $patient->city_id = $city->id;
                         $patient->country_id = $city->country_id;
+                    } else {
+                        $city = new City();
+                        $city->status = 1;
+                        $city->translateOrNew('en')->name = $row['address'];
+                        $city->save();
+                        $patient->city_id = $city->id;
+                        $patient->country_id = $city->country_id;
                     }
                 } else {
                     $patient->address = 'no address';
                 }
 
                 if (isset($row['referal_from_doctor'])) {
-                    $patient->hear_about_us = $row['referal_from_doctor'];
+                    $referralName = $row['referal_from_doctor'];
+                    $referral = Referral::firstOrCreate(['name' => $referralName]);
+                    $patient->referral_id = $referral->id;
+                }
+
+                if (isset($row['job'])) {
+                    $jobName = $row['job'];
+                    $job = PatientJob::firstOrCreate(['name' => $jobName]);
+                    $patient->job_id = $job->id;
                 }
 
                 if (isset($row['marital_status'])) {
@@ -119,27 +136,26 @@ class VisitPatientImporter implements ToCollection, WithHeadingRow ,WithChunkRea
                 // Medical Data Mapping
                 // 'cc' -> chief_complaint
                 if (!empty($row['cc'])) {
-                    $visit->chief_complaint = [$row['cc']]; // Store as array
+                    $visit->chief_complaint = $row['cc']; // Store as array
                 }
 
                 // 'c_history' -> medical_history 
                 if (!empty($row['c_history'])) {
-                    $visit->medical_history = [$row['c_history']];
+                    $visit->medical_history = $row['c_history'];
                 }
 
-                // 'treatment' -> treatment
                 if (!empty($row['treatment'])) {
-                    $visit->treatment = [$row['treatment']];
+                    $visit->treatment = $row['treatment'];
                 }
 
                 // 'system_review', 'labrotery_investigation', etc.
                 if (!empty($row['diagnois'])) {
-                    $visit->diagnosis = [$row['diagnois']];
+                    $visit->diagnosis = $row['diagnois'];
                 }
 
                 if (!empty($row['visit_cost'])) {
-                    $visit->price = [$row['visit_cost']];
-                    $visit->total_price = [$row['visit_cost']];
+                    $visit->price = $row['visit_cost'];
+                    $visit->total_price = $row['visit_cost'];
                 }
 
                 // Vital Signs (handling typos in Excel)

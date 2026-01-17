@@ -57,10 +57,12 @@ class PatientsTable
                 // country and city (relations)
                 TextColumn::make('country.name')
                     ->label(__('country'))
+                    ->state(fn($record) => $record->country?->name ?? $record->country?->translate('en')?->name ?? '—')
                     ->sortable(),
 
                 TextColumn::make('city.name')
                     ->label(__('city'))
+                    ->state(fn($record) => $record->city?->name ?? $record->city?->translate('en')?->name ?? '—')
                     ->sortable(),
 
                 // computed age column (requires 'birthdate' cast to date on the model)
@@ -116,7 +118,9 @@ class PatientsTable
                     ->options(function () {
                         return City::with('translations')
                             ->get()
-                            ->pluck('name', 'id')
+                            ->mapWithKeys(fn($city) => [
+                                $city->id => $city->name ?? $city->translate('en')?->name ?? __('Unknown City')
+                            ])
                             ->toArray();
                     })
                     ->searchable(),
@@ -151,7 +155,14 @@ class PatientsTable
 
                 SelectFilter::make('disease_id')
                     ->label(__('disease'))
-                    ->options(fn() => Disease::with('translations')->get()->pluck('name', 'id'))
+                    ->options(function () {
+                        return Disease::with('translations')
+                            ->get()
+                            ->mapWithKeys(fn($disease) => [
+                                $disease->id => $disease->name ?? $disease->translate('en')?->name ?? __('Unknown Disease')
+                            ])
+                            ->toArray();
+                    })
                     ->multiple()
                     ->searchable()
                     ->query(function (Builder $query, array $data) {

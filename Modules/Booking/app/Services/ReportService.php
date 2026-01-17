@@ -117,7 +117,7 @@ class ReportService
             ->get()
             ->map(function ($item) {
                 return [
-                    'city' => $item->city->name ?? 'Unknown',
+                    'city' => $item->city?->name ?? $item->city?->translate('en')?->name ?? __('Unknown City'),
                     'count' => $item->count,
                 ];
             });
@@ -227,7 +227,7 @@ class ReportService
                 'id' => $patient->id,
                 'name' => $patient->name,
                 'patient_type' => $visitsCount === 1 ? 'New' : 'Old',
-                'city' => $patient->city->name ?? 'N/A',
+                'city' => $patient->city?->name ?? $patient->city?->translate('en')?->name ?? __('N/A'),
                 'referral_source' => $patient->referral->name ?? 'N/A',
                 'visits_count' => $visitsCount,
                 'latest_diagnosis' => $latestVisit && is_array($latestVisit->diagnosis)

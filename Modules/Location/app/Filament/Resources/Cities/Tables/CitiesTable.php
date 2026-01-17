@@ -22,7 +22,7 @@ class CitiesTable
                     ->sortable(),
                 TextColumn::make('name')
                     ->label(__('name'))
-                    ->getStateUsing(fn($record) => $record->name) // use translated accessor
+                    ->getStateUsing(fn($record) => $record->name ?? $record->translate('en')?->name ?? '—')
                     ->searchable(query: function ($query, $search) {
                         $query->whereHas('translations', function ($q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
@@ -30,7 +30,7 @@ class CitiesTable
                     }),
                 TextColumn::make('country.name')
                     ->label(__('country'))
-                    ->getStateUsing(fn($record) => $record->country?->name) // show translated name safely
+                    ->getStateUsing(fn($record) => $record->country?->name ?? $record->country?->translate('en')?->name ?? '—')
                     ->searchable(query: function ($query, $search) {
                         $query->whereHas('country.translations', function ($q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");

@@ -75,13 +75,12 @@ class PatientReportTableWidget extends BaseWidget
 
                 TextColumn::make('city.name')
                     ->label('City')
-                    ->searchable()
-                    ->sortable(),
+                    ->state(function (Patient $record): ?string {
+                        return $record->city?->name ?? $record->city?->translate('en')?->name ?? __('Unknown City');
+                    }),
 
                 TextColumn::make('referral.name')
-                    ->label('Referral Source')
-                    ->searchable()
-                    ->sortable(),
+                    ->label('Referral Source'),
 
                 TextColumn::make('visits_count')
                     ->label('Total Visits')
@@ -157,7 +156,9 @@ class PatientReportTableWidget extends BaseWidget
                     ->options(function () {
                         return \Modules\Location\Models\City::with('translations')
                             ->get()
-                            ->pluck('name', 'id')
+                            ->mapWithKeys(fn($city) => [
+                                $city->id => $city->name ?? $city->translate('en')?->name ?? __('Unknown City')
+                            ])
                             ->toArray();
                     })
                     ->query(function (Builder $query, array $data): Builder {

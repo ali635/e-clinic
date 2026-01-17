@@ -16,7 +16,7 @@ class Patient extends StatsOverviewWidget
             ->get()
             ->map(function ($record) {
                 return Stat::make(
-                    $record->city ? $record->city->name : __('Unknown City'),
+                    $record->city?->name ?? $record->city?->translate('en')?->name ?? __('Unknown City'),
                     $record->patient_count
                 )
                     ->description(__('Patients in this city'))
