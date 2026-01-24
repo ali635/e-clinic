@@ -14,6 +14,7 @@ use Modules\Booking\Filament\Resources\Visits\Pages\ViewVisit;
 use Modules\Booking\Filament\Resources\Visits\Schemas\VisitForm;
 use Modules\Booking\Filament\Resources\Visits\Schemas\VisitInfolist;
 use Modules\Booking\Filament\Resources\Visits\Tables\VisitsTable;
+use Modules\Booking\Filament\Resources\Visits\RelationManagers;
 use Modules\Booking\Models\Visit;
 
 class VisitResource extends Resource
@@ -68,7 +69,7 @@ class VisitResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // RelationManagers\FollowUpsRelationManager::class,
         ];
     }
 

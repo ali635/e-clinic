@@ -10,11 +10,16 @@ use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Log;
 use Modules\Booking\Models\Visit;
+use Modules\Booking\Models\VisitWaiting;
 use Modules\Room\Models\Room;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Forms\Components\Radio;
 use BackedEnum;
 
-class RoomsDashboard extends Page
+class RoomsDashboard extends Page implements HasActions
 {
+    use InteractsWithActions;
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-squares-2x2';
 
     protected string $view = 'room::pages.rooms-dashboard';
@@ -50,7 +55,16 @@ class RoomsDashboard extends Page
             ->get();
     }
 
-    public function assignVisitToRoom(int $roomId, int $visitId): void
+    public function getVisitWaitings()
+    {
+        return VisitWaiting::with(['patient', 'visit'])
+            ->where('status', 'pending')
+            ->where('is_arrival', true)
+            ->whereNull('room_id')
+            ->get();
+    }
+
+    public function assignVisitToRoom(int $roomId, int $visitId, ?int $waitingId = null): void
     {
         $room = Room::findOrFail($roomId);
         $visit = Visit::findOrFail($visitId);
@@ -69,6 +83,11 @@ class RoomsDashboard extends Page
             'current_visit_id' => $visitId,
             'doctor_stage' => 'waiting_assistant',
         ]);
+
+        // If it was from waiting list, mark it as complete in the waiting list
+        if ($waitingId) {
+            VisitWaiting::find($waitingId)?->update(['status' => 'complete']);
+        }
 
         Notification::make()
             ->title(__('Patient assigned to room'))
@@ -98,74 +117,80 @@ class RoomsDashboard extends Page
             ->send();
     }
 
-    public function markMainDone(int $roomId): void
+    public function completeVisitAction(): Action
     {
-        $room = Room::findOrFail($roomId);
-
-        if ($room->doctor_stage !== 'waiting_main') {
-            Notification::make()
-                ->title(__('Invalid action'))
-                ->body(__('Room is not waiting for main doctor'))
-                ->warning()
-                ->send();
-            return;
-        }
-
-        // Complete the visit and free the room
-        if ($room->currentVisit) {
-             try {
-                // Get the full Visit record
+        return Action::make('completeVisit')
+            ->form([
+                Radio::make('completion_type')
+                    ->label(__('Completion Status'))
+                    ->options([
+                        'complete' => __('Complete Visit'),
+                        'move_to_waiting' => __('Complete and Move to Waiting List'),
+                    ])
+                    ->default('complete')
+                    ->required(),
+            ])
+            ->action(function (array $data, array $arguments) {
+                $roomId = $arguments['roomId'];
+                $room = Room::findOrFail($roomId);
                 $visit = $room->currentVisit;
-                // Only process if AI result hasn't been generated yet
-                if (empty($visit->result_ai) || $visit->result_ai == '<p></p>') {
-                    Log::info('Triggering Gemini AI analysis for completed visit', [
-                        'visit_id' => $visit->id,
-                        'patient_id' => $visit->patient_id
-                    ]);
 
-                    // Use the Gemini AI Service to analyze the visit
-                    $geminiService = new GeminiAIService();
-                    $aiResult = $geminiService->analyzeVisit($visit);
+                if (!$visit) {
+                    Notification::make()->title(__('No visit found'))->danger()->send();
+                    return;
+                }
 
-                    // Store the AI result if successfully generated
-                    if ($aiResult) {
-                        $result_ai = $aiResult;
-                        Log::info('Gemini AI analysis completed and stored', [
-                            'visit_id' => $visit->id
-                        ]);
-                    } else {
-                        Log::warning('Gemini AI analysis returned empty result', [
-                            'visit_id' => $visit->id
-                        ]);
+                // AI Processing Logic (moved from markMainDone)
+                try {
+                    if (empty($visit->result_ai) || $visit->result_ai == '<p></p>') {
+                        $geminiService = new GeminiAIService();
+                        $aiResult = $geminiService->analyzeVisit($visit);
+                        if ($aiResult) {
+                            $visit->update(['result_ai' => $aiResult]);
+                        }
                     }
-                } else {
-                    Log::info('Skipping AI analysis - result already exists', [
-                        'visit_id' => $visit->id
+                } catch (\Exception $e) {
+                    Log::error('AI analysis failed', ['error' => $e->getMessage()]);
+                }
+
+                $visit->update(['status' => 'complete']);
+
+                if ($data['completion_type'] === 'move_to_waiting') {
+                    VisitWaiting::create([
+                        'patient_id' => $visit->patient_id,
+                        'visit_id' => $visit->id,
+                        'status' => 'pending',
+                        'is_arrival' => false,
                     ]);
                 }
-            } catch (\Exception $e) {
-                // Log error but don't block the form from loading
-                Log::error('Failed to process Gemini AI analysis', [
-                    'visit_id' => $room->currentVisit->id ?? null,
-                    'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString()
+
+                $room->update([
+                    'current_visit_id' => null,
+                    'doctor_stage' => 'available',
                 ]);
-            }
-            $room->currentVisit->update([
-                'status' => 'complete',
-                'result_ai' => $result_ai ?? null,
-            ]);
-        }
 
-        $room->update([
-            'current_visit_id' => null,
-            'doctor_stage' => 'available',
-        ]);
+                Notification::make()
+                    ->title(__('Main doctor finished'))
+                    ->body($data['completion_type'] === 'move_to_waiting'
+                        ? __('Visit completed and added to waiting list')
+                        : __('Visit completed, room is now available'))
+                    ->success()
+                    ->send();
+            });
+    }
 
+    public function markMainDone(int $roomId): void
+    {
+        // This is now handled by completeVisitAction
+        // But we keep the method as a fallback or if triggered differently
+        $this->replaceMarkMainDoneWithAction($roomId);
+    }
+
+    protected function replaceMarkMainDoneWithAction(int $roomId): void
+    {
         Notification::make()
-            ->title(__('Main doctor finished'))
-            ->body(__('Visit completed, room is now available'))
-            ->success()
+            ->title(__('Please use the action button'))
+            ->warning()
             ->send();
     }
 

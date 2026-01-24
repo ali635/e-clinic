@@ -89,13 +89,13 @@ class VisitStatsOverview extends BaseWidget
                 ),
 
             // 5. Total Price Received
-            Stat::make(__('Total price Received Visits'), __('IQD ') . number_format($totalPrice, 2))
-                ->description($priceDiffPct . '% ' . ($priceDiff >= 0 ? __('increase') : __('decrease')))
-                ->descriptionIcon(
-                    $priceDiff >= 0
-                    ? 'heroicon-m-arrow-trending-up'
-                    : 'heroicon-m-arrow-trending-down'
-                ),
+            // Stat::make(__('Total price Received Visits'), __('IQD ') . number_format($totalPrice, 2))
+            //     ->description($priceDiffPct . '% ' . ($priceDiff >= 0 ? __('increase') : __('decrease')))
+            //     ->descriptionIcon(
+            //         $priceDiff >= 0
+            //         ? 'heroicon-m-arrow-trending-up'
+            //         : 'heroicon-m-arrow-trending-down'
+            //     ),
 
 
 

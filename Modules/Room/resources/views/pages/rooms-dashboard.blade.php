@@ -47,7 +47,8 @@
                         {{-- Room Header --}}
                         <div class="flex items-start justify-between mb-4">
                             <div class="flex-1 min-w-0">
-                                <p class="font-bold text-gray-900 dark:text-white text-lg truncate" style="color: black;">
+                                <p class="font-bold text-gray-900 dark:text-white text-lg truncate"
+                                    style="color: black;">
                                     {{ $room->name }}
                                 </p>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -68,7 +69,8 @@
                                 <div class="flex items-center gap-2 text-sm">
                                     <x-filament::icon icon="heroicon-o-user" class="w-4 h-4 text-blue-500" />
                                     <span class="text-gray-500 dark:text-gray-400">{{ __('Name') }}:</span>
-                                    <span class="font-medium text-gray-900 dark:text-white truncate" style="color: black;">
+                                    <span class="font-medium text-gray-900 dark:text-white truncate"
+                                        style="color: black;">
                                         {{ $room->currentVisit->patient->name }}
                                     </span>
                                 </div>
@@ -82,7 +84,8 @@
                                 <div class="flex items-center gap-2 text-sm">
                                     <x-filament::icon icon="heroicon-o-beaker" class="w-4 h-4 text-blue-500" />
                                     <span class="text-gray-500 dark:text-gray-400">{{ __('Service') }}:</span>
-                                    <span class="font-medium text-gray-900 dark:text-white truncate" style="color: black;">
+                                    <span class="font-medium text-gray-900 dark:text-white truncate"
+                                        style="color: black;">
                                         {{ $room->currentVisit->service->name ?? __('N/A') }}
                                     </span>
                                 </div>
@@ -109,11 +112,7 @@
                                             {{ __('Assistant Done') }}
                                         </x-filament::button>
                                     @elseif($room->doctor_stage === 'waiting_main')
-                                        <x-filament::button wire:click="markMainDone({{ $room->id }})"
-                                            color="success" icon="heroicon-o-check-badge" size="sm"
-                                            class="col-span-2">
-                                            {{ __('Main Dr. Done') }}
-                                        </x-filament::button>
+                                        {{ ($this->completeVisitAction)(['roomId' => $room->id]) }}
                                     @endif
                                 </div>
                                 <x-filament::button tag="a" :href="route('filament.admin.pages.room-view', ['roomId' => $room->id])" color="gray"
@@ -127,7 +126,7 @@
                                     style="margin-bottom: 5px;margin-top: 5px;">
                                     {{ __('View Details') }}
                                 </x-filament::button>
-                                @if ($this->getPendingVisits()->count() > 0)
+                                @if ($this->getPendingVisits()->count() > 0 || $this->getVisitWaitings()->count() > 0)
                                     <div x-data="{ open: false }" class="relative">
                                         <x-filament::button @click="open = !open" color="warning"
                                             icon="heroicon-o-user-plus" class="w-full" size="sm">
@@ -151,9 +150,10 @@
                                                         <div>
                                                             <h3 class="font-bold text-sm" style="color: black;">
                                                                 {{ __('Select Patient to Assign') }}</h3>
-                                                            <p class="text-xs text-white/80 mt-0.5" style="color: black;">
-                                                                {{ $this->getPendingVisits()->count() }}
-                                                                {{ trans_choice('patient waiting|patients waiting', $this->getPendingVisits()->count()) }}
+                                                            <p class="text-xs text-white/80 mt-0.5"
+                                                                style="color: black;">
+                                                                {{ $this->getPendingVisits()->count() + $this->getVisitWaitings()->count() }}
+                                                                {{ trans_choice('patient waiting|patients waiting', $this->getPendingVisits()->count() + $this->getVisitWaitings()->count()) }}
                                                             </p>
                                                         </div>
                                                         <button @click="open = false"
@@ -186,8 +186,8 @@
                                                                 {{-- Patient Info --}}
                                                                 <div class="flex-1 min-w-0">
                                                                     <div class="flex items-center gap-2 mb-1">
-                                                                        <p
-                                                                            class="font-semibold text-gray-900 dark:text-white truncate" style="color: black;">
+                                                                        <p class="font-semibold text-gray-900 dark:text-white truncate"
+                                                                            style="color: black;">
                                                                             {{ $visit->patient->name ?? __('Unknown Patient') }}
                                                                         </p>
                                                                         <x-filament::badge color="warning"
@@ -216,6 +216,38 @@
                                                                 {{-- Arrow Icon --}}
                                                                 <x-filament::icon icon="heroicon-o-arrow-right-circle"
                                                                     class="w-5 h-5 text-gray-300 group-hover:text-amber-500 transition-colors flex-shrink-0" />
+                                                            </div>
+                                                        </button>
+                                                    @endforeach
+
+                                                    @foreach ($this->getVisitWaitings() as $waiting)
+                                                        <button
+                                                            wire:click="assignVisitToRoom({{ $room->id }}, {{ $waiting->visit_id }}, {{ $waiting->id }})"
+                                                            @click="open = false"
+                                                            class="w-full p-4 text-left hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 border-b border-gray-100 dark:border-gray-700 last:border-0 transition-all duration-200 group">
+                                                            <div class="flex items-center gap-3">
+                                                                <div class="relative flex-shrink-0">
+                                                                    <div
+                                                                        class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-blue-500 rounded-full border-2 border-white dark:border-gray-800">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="flex-1 min-w-0">
+                                                                    <div class="flex items-center gap-2 mb-1">
+                                                                        <p class="font-semibold text-gray-900 dark:text-white truncate"
+                                                                            style="color: black;">
+                                                                            {{ $waiting->patient->name ?? __('Unknown Patient') }}
+                                                                        </p>
+                                                                        <x-filament::badge color="info"
+                                                                            size="xs">
+                                                                            {{ __('Waiting') }}
+                                                                            #{{ $waiting->visit_id }}
+                                                                        </x-filament::badge>
+                                                                    </div>
+                                                                </div>
+
+                                                                <x-filament::icon icon="heroicon-o-arrow-right-circle"
+                                                                    class="w-5 h-5 text-gray-300 group-hover:text-blue-500 transition-colors flex-shrink-0" />
                                                             </div>
                                                         </button>
                                                     @endforeach

@@ -61,8 +61,8 @@ class AdminPanelProvider extends PanelProvider
                 AccountWidget::class,
                     // FilamentInfoWidget::class,
                 VisitStatsOverview::class,
-                Patient::class,
-                PatientArea::class,
+                // Patient::class,
+                // PatientArea::class,
                 PatientDisease::class,
                 ServiceVisitsChart::class,
             ])

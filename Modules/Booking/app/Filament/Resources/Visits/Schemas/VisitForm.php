@@ -27,6 +27,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use Modules\Booking\Models\Visit;
 use App\Services\GeminiAIService;
 use Filament\Notifications\Notification;
+use Torgodly\Html2Media\Actions\Html2MediaAction;
 
 class VisitForm
 {
@@ -43,6 +44,42 @@ class VisitForm
                         ->label(__('patients'))
                         ->relationship('patient', 'name')
                         ->searchable()
+                        ->live()
+                        ->hint(function ($state) {
+                            if (!$state) {
+                                return null;
+                            }
+
+                            $patient = Patient::with('referral')->find($state);
+
+                            if (!$patient) {
+                                return null;
+                            }
+
+                            $info = [];
+
+                            if ($patient->age) {
+                                $info[] = "Age: " . $patient->age;
+                            }
+
+                            if ($patient->gender) {
+                                $info[] = "Gender: " . __($patient->gender);
+                            }
+
+                            if ($patient->referral?->name) {
+                                $info[] = "Referral: " . $patient->referral->name;
+                            }
+
+                            if ($patient->race?->name) {
+                                $info[] = "Ethnicity: " . $patient->race->name;
+                            }
+
+                            if ($patient->marital_status) {
+                                $info[] = "Status: " . __($patient->marital_status);
+                            }
+
+                            return implode(' | ', $info);
+                        })
                         ->default(fn() => request()->query('patient_id'))
                         ->columnSpan(1),
 
@@ -172,68 +209,7 @@ class VisitForm
                         ->columnSpan(1),
                 ]),
 
-            // ===== Related services repeater =====
-            Section::make(__('Related Services'))
-                ->columns(1)
-                ->columnSpan(2)
-                ->schema([
-                    Repeater::make('relatedService')
-                        ->relationship('relatedService')
-                        ->collapsible()
-                        ->addActionLabel(__('Add related service'))
-                        ->columns(3)
-                        ->reactive()
-                        ->afterStateUpdated(function ($state, callable $set, $get) {
-                            self::updateTotals($get, $set);
-                        })
-                        ->schema([
-                            Select::make('related_service_id')
-                                ->label(__('Related services'))
-                                ->options(function () {
-                                    return RelatedService::with('translations')
-                                        ->get()
-                                        ->mapWithKeys(function ($relatedService) {
-                                            return [$relatedService->id => $relatedService->name ?? __('Unnamed Related Service')];
-                                        })
-                                        ->toArray();
-                                })
-                                ->reactive()
-                                ->afterStateUpdated(function ($state, callable $set, $get) {
-                                    $relatedService = $state ? RelatedService::find($state) : null;
-                                    $unitPrice = (float) ($relatedService?->price ?? 0);
 
-                                    // store unit price (not multiplied)
-                                    $set('price_related_service', $unitPrice);
-
-                                    // recompute totals for whole form
-                                    self::updateTotals($get, $set);
-                                })
-                                ->searchable(),
-
-                            TextInput::make('price_related_service')
-                                ->label(__('Related Service Price'))
-                                ->suffixIcon('heroicon-m-currency-dollar')
-                                ->disabled()
-                                ->default(0)
-                                ->numeric()
-                                ->reactive()
-                                ->dehydrated(true),
-
-                            TextInput::make('qty')
-                                ->label(__('Quantity'))
-                                ->numeric()
-                                ->default(0)                // <-- change from 0 to 1
-                                ->reactive()
-                                ->dehydrated(true)
-                                ->afterStateUpdated(function ($state, callable $set, $get) {
-                                    $relatedService = RelatedService::find($get('related_service_id'));
-                                    $unitPrice = (float) ($relatedService?->price ?? 0);
-                                    // store unit price (not multiplied)
-                                    $set('price_related_service', $unitPrice);
-                                    self::updateTotals($get, $set);
-                                }),
-                        ]),
-                ]),
 
             Section::make(__('Blood Pressure'))
                 ->columns(3)
@@ -304,61 +280,58 @@ class VisitForm
                     TagsInput::make('chief_complaint')
                         ->label(__('chief complaint'))
                         ->separator(',')
-                        ->suggestions(fn() => self::getSuggestionsForField('chief_complaint'))
-                        ->helperText(__('chief complaint')),
+                        ->suggestions(fn() => self::getSuggestionsForField('chief_complaint')),
 
                     CKEditor::make('doctor_description')
-                        ->label(__('Doctor Description'))
-                        ->helperText(__('Clinical notes and observations')),
+                        ->label(__('HPI')),
 
                     TagsInput::make('medical_history')
                         ->label(__('past medical history'))
                         ->separator(',')
-                        ->suggestions(fn() => self::getSuggestionsForField('medical_history'))
-                        ->helperText(__('past medical history')),
+                        ->suggestions(fn() => self::getSuggestionsForField('medical_history')),
 
                     TagsInput::make('medicines_list')
                         ->label(__('Past drug hiatory'))
                         ->separator(',')
-                        ->suggestions(fn() => self::getMedicineSuggestions())
-                        ->helperText(__('Type medicine names, suggestions from previous visits')),
+                        ->suggestions(fn() => self::getMedicineSuggestions()),
 
                     TagsInput::make('diagnosis')
                         ->label(__('diagnosis'))
                         ->separator(',')
-                        ->suggestions(fn() => self::getSuggestionsForField('diagnosis'))
-                        ->helperText(__('diagnosis')),
+                        ->suggestions(fn() => self::getSuggestionsForField('diagnosis')),
 
                     TagsInput::make('treatment')
                         ->label(__('prescription'))
                         ->separator(',')
                         ->suggestions(fn() => self::getSuggestionsForField('treatment'))
-                        ->helperText(__('Treatment plan and instructions')),
+                        ->hintAction(
+                            Html2MediaAction::make('print')
+                                ->label(__('print'))
+                                ->format('a5')
+                                ->content(fn(?Visit $record) => $record ? view('invoice', ['record' => $record]) : null)
+                        ),
 
 
                 ]),
 
             // ===== Secretary & Patient Notes =====
-            Section::make(__('Secretary & Patient'))
+            Section::make(__('⁠neurological examination'))
                 ->columns(2)
                 ->columnSpan(2)
                 ->schema([
                     CKEditor::make('secretary_description')
-                        ->label(__('Secretary Description'))
-                        ->helperText(__('Administrative notes, reminders')),
+                        ->label(__('Notes')),
 
 
 
                     CKEditor::make('patient_description')
-                        ->label(__('Patient Description'))
-                        ->helperText(__('Patient description')),
+                        ->label(__('Patient Description')),
 
                     FileUpload::make('attachment')
                         ->label(__('Attachment'))
                         ->disk('public')
                         ->directory('visit')
-                        ->columnSpanFull()
-                        ->helperText(__('Patient attachments')),
+                        ->columnSpanFull(),
                 ]),
 
             Section::make(__('AI Assistant'))
@@ -429,6 +402,69 @@ class VisitForm
                                 })
                         ),
 
+                ]),
+
+            // ===== Related services repeater =====
+            Section::make(__('Related Services'))
+                ->columns(1)
+                ->columnSpan(2)
+                ->schema([
+                    Repeater::make('relatedService')
+                        ->relationship('relatedService')
+                        ->collapsible()
+                        ->addActionLabel(__('Add related service'))
+                        ->columns(3)
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, callable $set, $get) {
+                            self::updateTotals($get, $set);
+                        })
+                        ->schema([
+                            Select::make('related_service_id')
+                                ->label(__('Related services'))
+                                ->options(function () {
+                                    return RelatedService::with('translations')
+                                        ->get()
+                                        ->mapWithKeys(function ($relatedService) {
+                                            return [$relatedService->id => $relatedService->name ?? __('Unnamed Related Service')];
+                                        })
+                                        ->toArray();
+                                })
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $set, $get) {
+                                    $relatedService = $state ? RelatedService::find($state) : null;
+                                    $unitPrice = (float) ($relatedService?->price ?? 0);
+
+                                    // store unit price (not multiplied)
+                                    $set('price_related_service', $unitPrice);
+
+                                    // recompute totals for whole form
+                                    self::updateTotals($get, $set);
+                                })
+                                ->searchable(),
+
+                            TextInput::make('price_related_service')
+                                ->label(__('Related Service Price'))
+                                ->suffixIcon('heroicon-m-currency-dollar')
+                                ->disabled()
+                                ->default(0)
+                                ->numeric()
+                                ->reactive()
+                                ->dehydrated(true),
+
+                            TextInput::make('qty')
+                                ->label(__('Quantity'))
+                                ->numeric()
+                                ->default(0)                // <-- change from 0 to 1
+                                ->reactive()
+                                ->dehydrated(true)
+                                ->afterStateUpdated(function ($state, callable $set, $get) {
+                                    $relatedService = RelatedService::find($get('related_service_id'));
+                                    $unitPrice = (float) ($relatedService?->price ?? 0);
+                                    // store unit price (not multiplied)
+                                    $set('price_related_service', $unitPrice);
+                                    self::updateTotals($get, $set);
+                                }),
+                        ]),
                 ]),
         ]);
     }

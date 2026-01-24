@@ -41,7 +41,8 @@ class Patient extends Authenticatable implements OAuthenticatable
         'area_id',
         'marital_status',
         'img_profile',
-        'job_id'
+        'job_id',
+        'race_id'
     ];
 
     protected $casts = [
@@ -90,6 +91,11 @@ class Patient extends Authenticatable implements OAuthenticatable
     public function area()
     {
         return $this->belongsTo(Area::class);
+    }
+
+    public function race()
+    {
+        return $this->belongsTo(PatientRace::class);
     }
 
     public function visits()

@@ -61,6 +61,14 @@ class PatientForm
                         TextInput::make('name')->required(),
                     ]),
 
+                Select::make('race_id')
+                    ->label(__('Ethnicity'))
+                    ->searchable(true)
+                    ->relationship('race', 'name')
+                    ->createOptionForm([
+                        TextInput::make('name')->required(),
+                    ]),
+
 
                 Select::make('job_id')
                     ->label(__('jobs'))

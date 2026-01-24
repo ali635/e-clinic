@@ -28,4 +28,9 @@ class VisitFollow extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+
+    public function history(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(VisitFollow::class, 'visit_id', 'visit_id');
+    }
 }

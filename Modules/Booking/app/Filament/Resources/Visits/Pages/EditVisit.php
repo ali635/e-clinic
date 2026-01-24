@@ -9,7 +9,9 @@ use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Log;
 use Modules\Booking\Filament\Resources\Visits\VisitResource;
+use Modules\Booking\Models\VisitWaiting;
 use Modules\Room\Filament\Pages\RoomView;
+use Filament\Notifications\Notification;
 
 class EditVisit extends EditRecord
 {
@@ -77,5 +79,38 @@ class EditVisit extends EditRecord
                 ]);
             }
         }
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getSaveFormAction(),
+            Action::make('saveAndMoveToWaiting')
+                ->label(__('Save & Move to Waiting List'))
+                ->color('warning')
+                ->action('saveAndMoveToWaiting'),
+            $this->getCancelFormAction(),
+        ];
+    }
+
+    public function saveAndMoveToWaiting(): void
+    {
+        $this->save();
+
+        $visit = $this->record;
+
+        VisitWaiting::create([
+            'patient_id' => $visit->patient_id,
+            'visit_id' => $visit->id,
+            'status' => 'pending',
+            'is_arrival' => false,
+        ]);
+
+        Notification::make()
+            ->title(__('Saved and moved to waiting list'))
+            ->success()
+            ->send();
+
+        $this->redirect(VisitResource::getUrl('index'));
     }
 }

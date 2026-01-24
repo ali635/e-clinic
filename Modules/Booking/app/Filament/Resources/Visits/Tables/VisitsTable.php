@@ -34,24 +34,32 @@ class VisitsTable
                 TextColumn::make('patient.name')
                     ->searchable(),
 
-                TextColumn::make('service.name')
-                    ->searchable(query: function (Builder $query, string $search): Builder {
-                        return $query->orWhereHas('service.translations', function (Builder $query) use ($search) {
-                            $query->where('name', 'like', "%{$search}%");
-                        });
-                    }),
+                TextColumn::make('patient.race.name')->label(__('Ethnicity'))
+                    ->searchable(),
+                TextColumn::make('patient.age')->label(__('Age'))
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('patient.gender')->label(__('Gender'))
+                    ->sortable()
+                    ->searchable(),
+
+                // TextColumn::make('service.name')
+                //     ->searchable(query: function (Builder $query, string $search): Builder {
+                //         return $query->orWhereHas('service.translations', function (Builder $query) use ($search) {
+                //             $query->where('name', 'like', "%{$search}%");
+                //         });
+                //     }),
 
                 TextColumn::make('status')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('price')
-                    ->sortable()
-                    ->searchable(),
+                // TextColumn::make('price')
+                //     ->sortable()
+                //     ->searchable(),
 
-                TextColumn::make('total_price')
-                    ->sortable()
-
-                    ->searchable(),
+                // TextColumn::make('total_price')
+                //     ->sortable()
+                //     ->searchable(),
 
                 TextColumn::make('arrival_time')
                     ->sortable(),

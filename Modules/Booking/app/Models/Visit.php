@@ -14,6 +14,8 @@ use Spatie\Activitylog\LogOptions;
 // use Spatie\Activitylog\Traits\LogsActivity;
 
 // use Modules\Booking\Database\Factories\VisitFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 #[ObservedBy([VisitObserver::class])]
 class Visit extends Model
 {
@@ -108,6 +110,11 @@ class Visit extends Model
      * 
      * @return string
      */
+    public function follows(): HasMany
+    {
+        return $this->hasMany(VisitFollow::class, 'visit_id');
+    }
+
     public function getVisitDataForAI(): string
     {
         $data = [];

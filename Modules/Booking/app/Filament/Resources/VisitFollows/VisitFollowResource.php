@@ -12,13 +12,14 @@ use Modules\Booking\Filament\Resources\VisitFollows\Pages\ViewVisitFollow;
 use Modules\Booking\Filament\Resources\VisitFollows\Schemas\VisitFollowForm;
 use Modules\Booking\Filament\Resources\VisitFollows\Schemas\VisitFollowInfolist;
 use Modules\Booking\Filament\Resources\VisitFollows\Tables\VisitFollowsTable;
+use Modules\Booking\Filament\Resources\Visits\RelationManagers\HistoryVisitFollowRelationManager;
 use Modules\Booking\Models\VisitFollow;
 
 class VisitFollowResource extends Resource
 {
     protected static ?string $model = VisitFollow::class;
 
-   public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('Patient Information');
     }
@@ -65,7 +66,7 @@ class VisitFollowResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            HistoryVisitFollowRelationManager::class,
         ];
     }
 
