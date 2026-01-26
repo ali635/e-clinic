@@ -39,4 +39,9 @@ class HomeController extends Controller
 
         return view('home.index', compact('services', 'posts', 'banners', 'feedbacks'));
     }
+
+    public function privacy()
+    {
+        return view('privacy.privacy');
+    }
 }

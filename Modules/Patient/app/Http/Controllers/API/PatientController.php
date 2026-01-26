@@ -116,4 +116,18 @@ class PatientController extends Controller
             )
         ]);
     }
+
+    public function destroy()
+    {
+        $patient = auth('api')->user();
+        if (!$patient) {
+            return response()->json(['message' => __('Unauthorized')], 401);
+        }
+
+        $patient->delete();
+
+        return response()->json([
+            'message' => __('Profile deleted successfully')
+        ]);
+    }
 }

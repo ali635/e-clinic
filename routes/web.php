@@ -16,6 +16,7 @@ Route::group([
 
 ], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/privacy', [HomeController::class, 'privacy'])->name('privacy');
     Route::get('/linkstorage', function () {
         Artisan::call('storage:unlink');
         return 'Storage link created';
