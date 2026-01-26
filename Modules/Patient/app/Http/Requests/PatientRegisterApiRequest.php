@@ -4,7 +4,7 @@ namespace Modules\Patient\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class 0000t9otgllbvlvlf[tt5;    ] extends FormRequest
+class PatientRegisterApiRequest extends FormRequest
 {
     public function authorize(): bool
     {
