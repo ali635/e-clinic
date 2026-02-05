@@ -64,7 +64,7 @@ class AuthController extends Controller
         if (!$patient || !Hash::check($credentials['password'], $patient->password)) {
             return response()->json([
                 'status' => false,
-                'message' => __('Invalid email or password'),
+                'message' => __('Invalid phone or password'),
             ], 401);
         }
         if ($patient->status == 0) {
