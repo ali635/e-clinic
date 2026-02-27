@@ -36,11 +36,11 @@ class BookingController extends Controller
         // Categorize in memory (no extra SQL)
         $visitCompleted = $visits->where('status', 'complete')->where('is_arrival', true);
 
-        $visitPending = $visits->where('status', 'pending')->where('is_arrival', false)
-            ->filter(fn($v) => $v->arrival_time > $now);
+        $visitPending = $visits->where('status', 'pending')->where('is_arrival', false);
+            // ->filter(fn($v) => $v->arrival_time > $now);
 
-        $visitCancelled = $visits->where('status', 'cancelled')->where('is_arrival', false)
-            ->filter(fn($v) => $v->arrival_time < $now);
+        $visitCancelled = $visits->where('status', 'cancelled')->where('is_arrival', false);
+            // ->filter(fn($v) => $v->arrival_time < $now);
 
         // Calculate counts (cheap, in memory)
         $completedVisits = $visitCompleted->count();
