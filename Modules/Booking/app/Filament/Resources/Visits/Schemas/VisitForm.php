@@ -8,6 +8,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 // use Filament\Forms\Components\CKEditor;
 use Filament\Forms\Components\RichEditor;
@@ -17,6 +18,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\HtmlString;
 use Kahusoftware\FilamentCkeditorField\CKEditor;
 use Modules\Booking\Enums\PaymentMethod;
 use Modules\Patient\Models\Patient;
@@ -34,10 +36,59 @@ class VisitForm
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
+            // ===== Patient Information (sticky) =====
+            Section::make(__('Patient Information'))
+                ->columns(5)
+                ->columnSpan(2)
+                ->icon('heroicon-o-user-circle')
+                ->compact()
+                ->extraAttributes([
+                    'style' => 'background: rgb(239 246 255); border: 1px solid rgb(191 219 254); border-radius: 0.75rem; position: fixed; z-index: 40; width: 50%; bottom: 735px; inset-inline-end: 265px;',
+                ])
+                ->visible(fn (Get $get): bool => filled($get('patient_id')))
+                ->schema([
+                    Placeholder::make('patient_age')
+                        ->label(__('Age'))
+                        ->content(function (Get $get) {
+                            $patient = Patient::find($get('patient_id'));
+                            return $patient?->age ?? '—';
+                        }),
+
+                    Placeholder::make('patient_gender')
+                        ->label(__('Gender'))
+                        ->content(function (Get $get) {
+                            $patient = Patient::find($get('patient_id'));
+                            return $patient?->gender ? __($patient->gender) : '—';
+                        }),
+
+                    Placeholder::make('patient_referral')
+                        ->label(__('Referral'))
+                        ->content(function (Get $get) {
+                            $patient = Patient::with('referral')->find($get('patient_id'));
+                            return $patient?->referral?->name ?? '—';
+                        }),
+
+                    Placeholder::make('patient_ethnicity')
+                        ->label(__('Ethnicity'))
+                        ->content(function (Get $get) {
+                            $patient = Patient::with('race')->find($get('patient_id'));
+                            return $patient?->race?->name ?? '—';
+                        }),
+
+                    Placeholder::make('patient_status')
+                        ->label(__('Marital Status'))
+                        ->content(function (Get $get) {
+                            $patient = Patient::find($get('patient_id'));
+                            return $patient?->marital_status ? __($patient->marital_status) : '—';
+                        }),
+                ]),
+
             // ===== General info (patient, service, price, total) =====
             Section::make(__('General Information'))
                 ->columns(2)
                 ->columnSpan(1)
+                // ->collapsible()
+                // ->collapsed()
                 ->schema([
                     // Patient select
                     Select::make('patient_id')
@@ -45,41 +96,6 @@ class VisitForm
                         ->relationship('patient', 'name')
                         ->searchable()
                         ->live()
-                        ->hint(function ($state) {
-                            if (!$state) {
-                                return null;
-                            }
-
-                            $patient = Patient::with('referral')->find($state);
-
-                            if (!$patient) {
-                                return null;
-                            }
-
-                            $info = [];
-
-                            if ($patient->age) {
-                                $info[] = "Age: " . $patient->age;
-                            }
-
-                            if ($patient->gender) {
-                                $info[] = "Gender: " . __($patient->gender);
-                            }
-
-                            if ($patient->referral?->name) {
-                                $info[] = "Referral: " . $patient->referral->name;
-                            }
-
-                            if ($patient->race?->name) {
-                                $info[] = "Ethnicity: " . $patient->race->name;
-                            }
-
-                            if ($patient->marital_status) {
-                                $info[] = "Status: " . __($patient->marital_status);
-                            }
-
-                            return implode(' | ', $info);
-                        })
                         ->default(fn() => request()->query('patient_id'))
                         ->columnSpan(1),
 
@@ -165,6 +181,8 @@ class VisitForm
             Section::make(__('Arrival Information'))
                 ->columns(1)
                 ->columnSpan(1)
+                // ->collapsible()
+                // ->collapsed()
                 ->schema([
                     DateTimePicker::make('arrival_time')
                         ->label(__('Arrival Time'))
@@ -214,6 +232,8 @@ class VisitForm
             Section::make(__('Blood Pressure'))
                 ->columns(3)
                 ->columnSpan(2)
+                // ->collapsible()
+                // ->collapsed()
                 ->schema([
                     TextInput::make('sys')
                         ->numeric(),
@@ -227,6 +247,8 @@ class VisitForm
             Section::make(__('Anthropometric Measurements'))
                 ->columns(3)
                 ->columnSpan(2)
+                // ->collapsible()
+                // ->collapsed()
                 ->schema([
                     TextInput::make('weight')
                         ->numeric()
@@ -259,6 +281,8 @@ class VisitForm
             Section::make(__('Attachments'))
                 ->columns(1)
                 ->columnSpan(2)
+                ->collapsible()
+                ->collapsed()
                 ->schema([
                     FileUpload::make('lab_tests')
                         ->label(__('Lab tests \ x-rays'))
@@ -275,6 +299,8 @@ class VisitForm
             Section::make(__('Doctor & Treatment Notes'))
                 ->columns(1)
                 ->columnSpan(2)
+                ->collapsible()
+                ->collapsed()
                 ->schema([
 
                     TagsInput::make('chief_complaint')
@@ -300,16 +326,38 @@ class VisitForm
                         ->separator(',')
                         ->suggestions(fn() => self::getSuggestionsForField('diagnosis')),
 
-                    TagsInput::make('treatment')
-                        ->label(__('prescription'))
-                        ->separator(',')
-                        ->suggestions(fn() => self::getSuggestionsForField('treatment'))
-                        ->hintAction(
-                            Html2MediaAction::make('print')
-                                ->label(__('print'))
-                                ->format('a5')
-                                ->content(fn(?Visit $record) => $record ? view('invoice', ['record' => $record]) : null)
-                        ),
+
+TagsInput::make('treatment')
+    ->label(__('prescription'))
+    ->separator(',')
+    ->suggestions(fn() => self::getSuggestionsForField('treatment'))
+    ->hintActions([
+        Action::make('copy')
+            ->label(__('Copy'))
+            ->icon('heroicon-o-clipboard')
+            ->extraAttributes([
+                'x-on:click' => '
+                    let tags = $wire.get("data.treatment");
+                    let text = Array.isArray(tags) ? tags.join(", ") : tags;
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(text);
+                    } else {
+                        let ta = document.createElement("textarea");
+                        ta.value = text;
+                        ta.style.position = "fixed";
+                        ta.style.opacity = 0;
+                        document.body.appendChild(ta);
+                        ta.focus(); ta.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(ta);
+                    }
+                ',
+            ]),
+        Html2MediaAction::make('print')
+            ->label(__('print'))
+            ->format('a5')
+            ->content(fn(?Visit $record) => $record ? view('invoice', ['record' => $record]) : null),
+    ]),
 
 
                 ]),
@@ -318,6 +366,8 @@ class VisitForm
             Section::make(__('⁠neurological examination'))
                 ->columns(2)
                 ->columnSpan(2)
+                ->collapsible()
+                ->collapsed()
                 ->schema([
                     CKEditor::make('secretary_description')
                         ->label(__('Notes')),
@@ -337,6 +387,8 @@ class VisitForm
             Section::make(__('AI Assistant'))
                 ->columns(1)
                 ->columnSpan(2)
+                ->collapsible()
+                ->collapsed()
                 ->visible(fn(?Visit $record): bool => $record !== null)
                 ->schema([
                     RichEditor::make('result_ai')
@@ -408,6 +460,8 @@ class VisitForm
             Section::make(__('Related Services'))
                 ->columns(1)
                 ->columnSpan(2)
+                ->collapsible()
+                ->collapsed()
                 ->schema([
                     Repeater::make('relatedService')
                         ->relationship('relatedService')
