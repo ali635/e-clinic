@@ -36,52 +36,59 @@ class VisitForm
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            // ===== Patient Information (sticky) =====
-            Section::make(__('Patient Information'))
-                ->columns(5)
-                ->columnSpan(2)
-                ->icon('heroicon-o-user-circle')
-                ->compact()
-                ->extraAttributes([
-                    'style' => 'background: rgb(239 246 255); border: 1px solid rgb(191 219 254); border-radius: 0.75rem; position: fixed; z-index: 40; width: 50%; bottom: 735px; inset-inline-end: 265px;',
-                ])
-                ->visible(fn (Get $get): bool => filled($get('patient_id')))
-                ->schema([
-                    Placeholder::make('patient_age')
-                        ->label(__('Age'))
-                        ->content(function (Get $get) {
-                            $patient = Patient::find($get('patient_id'));
-                            return $patient?->age ?? '—';
-                        }),
+// ===== Patient Information (Sticky Top, Single Line) =====
+Section::make(__('Patient Information'))
+    ->icon('heroicon-o-user-circle')
+    ->columns(7) // Set to 7 so each of the 7 placeholders gets its own column
+    ->columnSpan(2)
+    ->compact()
+    ->collapsible() 
+    ->collapsed()   
+    ->extraAttributes([
+        'style' => '
+            background: rgb(239 246 255); 
+            border: 0px solid rgb(191 219 254); 
+            border-radius: 0.75rem; 
+            position: fixed; 
+            z-index: 40; 
+            width: 70%; /* Slightly wider to accommodate one line */
+            top: 50px; 
+            bottom: auto; 
+            inset-inline-end: 10px; 
+            box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.9);
+            transition: all 0.3s ease;
+        ',
+    ])
+    ->visible(fn (Get $get): bool => filled($get('patient_id')))
+    ->schema([
+        Placeholder::make('patient_age')
+            ->label(__('Age'))
+            ->content(fn (Get $get) => Patient::find($get('patient_id'))?->age ?? '—'),
+            
+        Placeholder::make('patient_gender')
+            ->label(__('Gender'))
+            ->content(fn (Get $get) => ($g = Patient::find($get('patient_id'))?->gender) ? __($g) : '—'),
 
-                    Placeholder::make('patient_gender')
-                        ->label(__('Gender'))
-                        ->content(function (Get $get) {
-                            $patient = Patient::find($get('patient_id'));
-                            return $patient?->gender ? __($patient->gender) : '—';
-                        }),
+        Placeholder::make('name')
+            ->label(__('Name'))
+            ->content(fn (Get $get) => Patient::find($get('patient_id'))?->name ?? '—'),
 
-                    Placeholder::make('patient_referral')
-                        ->label(__('Referral'))
-                        ->content(function (Get $get) {
-                            $patient = Patient::with('referral')->find($get('patient_id'));
-                            return $patient?->referral?->name ?? '—';
-                        }),
+        Placeholder::make('phone')
+            ->label(__('Phone'))
+            ->content(fn (Get $get) => Patient::find($get('patient_id'))?->phone ?? '—'),
 
-                    Placeholder::make('patient_ethnicity')
-                        ->label(__('Ethnicity'))
-                        ->content(function (Get $get) {
-                            $patient = Patient::with('race')->find($get('patient_id'));
-                            return $patient?->race?->name ?? '—';
-                        }),
+        Placeholder::make('patient_referral')
+            ->label(__('Referral'))
+            ->content(fn (Get $get) => Patient::with('referral')->find($get('patient_id'))?->referral?->name ?? '—'),
 
-                    Placeholder::make('patient_status')
-                        ->label(__('Marital Status'))
-                        ->content(function (Get $get) {
-                            $patient = Patient::find($get('patient_id'));
-                            return $patient?->marital_status ? __($patient->marital_status) : '—';
-                        }),
-                ]),
+        Placeholder::make('patient_ethnicity')
+            ->label(__('Ethnicity'))
+            ->content(fn (Get $get) => Patient::with('race')->find($get('patient_id'))?->race?->name ?? '—'),
+
+        Placeholder::make('patient_status')
+            ->label(__('Status')) // Shortened label to save horizontal space
+            ->content(fn (Get $get) => ($s = Patient::find($get('patient_id'))?->marital_status) ? __($s) : '—'),
+    ]),
 
             // ===== General info (patient, service, price, total) =====
             Section::make(__('General Information'))
