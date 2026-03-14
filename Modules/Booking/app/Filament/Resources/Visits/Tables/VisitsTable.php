@@ -37,8 +37,7 @@ class VisitsTable
                 TextColumn::make('patient.race.name')->label(__('Ethnicity'))
                     ->searchable(),
                 TextColumn::make('patient.age')->label(__('Age'))
-                    ->sortable()
-                    ->searchable(),
+                    ->sortable(),
                 TextColumn::make('patient.gender')->label(__('Gender'))
                     ->sortable()
                     ->searchable(),
